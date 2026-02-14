@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import 'learn_screen.dart';
-import 'game_hub_screen.dart';
 import 'game_screen.dart';
 
 /// ホーム画面: グループ一覧 + 進捗 + 段階解放
@@ -204,10 +203,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _goPlay(PhonicsGroup group) {
+    final maxQ = group.items.length.clamp(1, 10);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => GameHubScreen(group: group),
+        builder: (_) => GameScreen(
+          items: group.items,
+          numOptions: 3,
+          groupName: group.name,
+          mode: GameMode.soundToLetter,
+          maxQuestions: maxQ,
+        ),
       ),
     ).then((_) => _refresh());
   }
@@ -300,8 +306,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _selectVoice(VoiceType type, BuildContext ctx) async {
     await TtsService.setVoiceType(type);
-    if (mounted) setState(() {});
-    Navigator.pop(ctx);
+    if (!mounted) return;
+    setState(() {});
+    if (ctx.mounted) Navigator.pop(ctx);
     // Play a sample sound to preview the voice
     if (allPhonicsItems.isNotEmpty) {
       TtsService.speakSound(allPhonicsItems.first);

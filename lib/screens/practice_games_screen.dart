@@ -5,15 +5,21 @@ import '../services/tts_service.dart';
 import 'game_screen.dart';
 
 class PracticeGamesScreen extends StatelessWidget {
-  const PracticeGamesScreen({super.key, required this.group});
+  const PracticeGamesScreen({super.key, this.group});
 
-  final PhonicsGroup group;
+  final PhonicsGroup? group;
+
+  /// group が指定されていなければ全グループの CVC words を結合
+  List<String> get _cvcWords {
+    if (group != null) return group!.cvcWords;
+    return phonicsGroups.expand((g) => g.cvcWords).toSet().toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${group.name} - Practice Lab'),
+        title: Text(group != null ? '${group!.name} - Practice Lab' : 'Practice Lab'),
         centerTitle: true,
       ),
       body: ListView(
@@ -125,7 +131,7 @@ class PracticeGamesScreen extends StatelessWidget {
             color: Colors.blue,
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => BlendingBuilderGameScreen(group: group)),
+              MaterialPageRoute(builder: (_) => BlendingBuilderGameScreen(cvcWords: _cvcWords)),
             ),
           ),
           const SizedBox(height: 12),
@@ -136,7 +142,7 @@ class PracticeGamesScreen extends StatelessWidget {
             color: Colors.green,
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => WordChainingGameScreen(group: group)),
+              MaterialPageRoute(builder: (_) => WordChainingGameScreen(cvcWords: _cvcWords)),
             ),
           ),
           const SizedBox(height: 12),
@@ -216,9 +222,9 @@ class _Tile extends StatelessWidget {
 }
 
 class BlendingBuilderGameScreen extends StatefulWidget {
-  const BlendingBuilderGameScreen({super.key, required this.group});
+  const BlendingBuilderGameScreen({super.key, required this.cvcWords});
 
-  final PhonicsGroup group;
+  final List<String> cvcWords;
 
   @override
   State<BlendingBuilderGameScreen> createState() => _BlendingBuilderGameScreenState();
@@ -242,7 +248,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
   }
 
   void _nextQuestion() {
-    final words = widget.group.cvcWords.where((w) => w.length >= 3 && w.length <= 5).toList();
+    final words = widget.cvcWords.where((w) => w.length >= 3 && w.length <= 5).toList();
     _answer = words[_rng.nextInt(words.length)].toLowerCase();
 
     final letters = _answer.split('');
@@ -260,12 +266,12 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
     if (_answered || _typed.length != _answer.length) return;
     final correct = _typed == _answer;
 
-    await ProgressService.recordAttempt('mini:blend:${widget.group.id}:$_answer');
+    await ProgressService.recordAttempt('mini:blend:$_answer');
     if (correct) {
-      await ProgressService.recordCorrect('mini:blend:${widget.group.id}:$_answer');
+      await ProgressService.recordCorrect('mini:blend:$_answer');
       _score++;
     } else {
-      await ProgressService.recordWrong('mini:blend:${widget.group.id}:$_answer');
+      await ProgressService.recordWrong('mini:blend:$_answer');
     }
 
     setState(() => _answered = true);
@@ -364,9 +370,9 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
 }
 
 class WordChainingGameScreen extends StatefulWidget {
-  const WordChainingGameScreen({super.key, required this.group});
+  const WordChainingGameScreen({super.key, required this.cvcWords});
 
-  final PhonicsGroup group;
+  final List<String> cvcWords;
 
   @override
   State<WordChainingGameScreen> createState() => _WordChainingGameScreenState();
@@ -399,7 +405,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
   }
 
   void _nextQuestion() {
-    final words = widget.group.cvcWords.where((w) => w.length == 3).map((e) => e.toLowerCase()).toSet().toList();
+    final words = widget.cvcWords.where((w) => w.length == 3).map((e) => e.toLowerCase()).toSet().toList();
 
     // 1音差ペアを作る
     final pairs = <(String, String)>[];
@@ -431,12 +437,12 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
     if (_answered) return;
     final correct = selected == _answer;
 
-    await ProgressService.recordAttempt('mini:chain:${widget.group.id}:$_currentWord>$_answer');
+    await ProgressService.recordAttempt('mini:chain:$_currentWord>$_answer');
     if (correct) {
-      await ProgressService.recordCorrect('mini:chain:${widget.group.id}:$_currentWord>$_answer');
+      await ProgressService.recordCorrect('mini:chain:$_currentWord>$_answer');
       _score++;
     } else {
-      await ProgressService.recordWrong('mini:chain:${widget.group.id}:$_currentWord>$_answer');
+      await ProgressService.recordWrong('mini:chain:$_currentWord>$_answer');
     }
 
     setState(() => _answered = true);

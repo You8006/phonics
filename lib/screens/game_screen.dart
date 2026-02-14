@@ -164,6 +164,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
   Future<void> _onTap(PhonicsItem item) async {
     if (_answered) return;
+    _answered = true; // 即座にガードを設定し、二重タップを防止
 
     final correct = item.progressKey == _answer.progressKey;
     await ProgressService.recordAttempt(_answer.progressKey);
@@ -183,7 +184,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
         _feedback[_answer.progressKey] = const Color(0xFF4DB6AC);
         TtsService.playWrong();
       }
-      _answered = true;
     });
 
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -258,7 +258,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
           children: [
             // Question Area
             Expanded(
-              flex: 4,
+              flex: 3,
               child: FadeInDown(
                 key: ValueKey(_current),
                 child: Center(
@@ -269,7 +269,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
             
             // Choices Area
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -283,26 +283,38 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     Expanded(
-                      child: GridView.count(
-                        crossAxisCount: widget.numOptions <= 2 ? 1 : 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: widget.numOptions <= 2 ? 2.5 : 1.1,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: _options.asMap().entries.map((entry) {
-                             final idx = entry.key;
-                             final opt = entry.value;
-                             return FadeInUp(
-                               delay: Duration(milliseconds: 100 * idx),
-                               child: _ChoiceButton(
-                                 label: opt.label,
-                                 color: _feedback[opt.key],
-                                 onTap: () => _onTap(opt.item),
-                               ),
-                             );
-                        }).toList(),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final cols = widget.numOptions <= 2 ? 1 : 2;
+                          final rows = (_options.length / cols).ceil();
+                          final totalVSpacing = (rows - 1) * 14;
+                          final cellHeight = (constraints.maxHeight - totalVSpacing) / rows;
+                          final totalHSpacing = (cols - 1) * 14;
+                          final cellWidth = (constraints.maxWidth - totalHSpacing) / cols;
+                          final ratio = (cellWidth / cellHeight).clamp(0.5, 4.0);
+
+                          return GridView.count(
+                            crossAxisCount: cols,
+                            mainAxisSpacing: 14,
+                            crossAxisSpacing: 14,
+                            childAspectRatio: ratio,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: _options.asMap().entries.map((entry) {
+                                 final idx = entry.key;
+                                 final opt = entry.value;
+                                 return FadeInUp(
+                                   delay: Duration(milliseconds: 100 * idx),
+                                   child: _ChoiceButton(
+                                     label: opt.label,
+                                     color: _feedback[opt.key],
+                                     onTap: () => _onTap(opt.item),
+                                   ),
+                                 );
+                            }).toList(),
+                          );
+                        },
                       ),
                     ),
                   ],

@@ -3,6 +3,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import 'game_setup_screen.dart';
 import 'settings_screen.dart';
+import 'practice_games_screen.dart';
 
 /// ゲームタイプ選択 — ホーム画面
 class GameSelectScreen extends StatelessWidget {
@@ -102,21 +103,100 @@ class GameSelectScreen extends StatelessWidget {
             ),
             // ── Game Grid ──
             Expanded(
-              child: GridView.builder(
+              child: ListView(
                 physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.92,
-                  crossAxisSpacing: 14,
-                  mainAxisSpacing: 14,
-                ),
-                itemCount: games.length,
-                itemBuilder: (context, i) {
-                  return FadeInUp(
-                    delay: Duration(milliseconds: 80 * i),
-                    child: _GameTypeCard(def: games[i]),
-                  );
-                },
+                children: [
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.92,
+                      crossAxisSpacing: 14,
+                      mainAxisSpacing: 14,
+                    ),
+                    itemCount: games.length,
+                    itemBuilder: (context, i) {
+                      return FadeInUp(
+                        delay: Duration(milliseconds: 80 * i),
+                        child: _GameTypeCard(def: games[i]),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  // ── Practice Lab ──
+                  FadeInUp(
+                    delay: const Duration(milliseconds: 400),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blueGrey.withValues(alpha: 0.15),
+                            blurRadius: 14,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                        border: Border.all(color: Colors.blueGrey.withValues(alpha: 0.08)),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PracticeGamesScreen(),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueGrey.withValues(alpha: 0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.science_rounded, size: 32, color: Colors.blueGrey),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        l10n.practiceLab,
+                                        style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Blending・Word Chaining・Minimal Pairs',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade500,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(Icons.chevron_right_rounded, color: Colors.black38),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
           ],

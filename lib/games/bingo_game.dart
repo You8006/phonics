@@ -25,7 +25,6 @@ class _BingoGameState extends State<BingoGame> {
   final Set<int> _markedIndices = {};
   bool _bingo = false;
   int _wrongCount = 0;
-  int _correctCount = 0;
 
   @override
   void initState() {
@@ -68,7 +67,6 @@ class _BingoGameState extends State<BingoGame> {
       _markedIndices.clear();
       _bingo = false;
       _wrongCount = 0;
-      _correctCount = 0;
     });
 
     _nextTarget();
@@ -110,7 +108,6 @@ class _BingoGameState extends State<BingoGame> {
       ProgressService.recordCorrect(_currentTarget.progressKey);
       setState(() {
         _markedIndices.add(index);
-        _correctCount++;
       });
       TtsService.playCorrect();
       _checkBingo();

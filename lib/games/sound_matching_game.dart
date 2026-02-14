@@ -81,6 +81,7 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
   void _handleAnswer(PhonicsItem selected) {
     if (_answered) return;
+    _answered = true; // 即座にガードを設定し、二重タップを防止
 
     final correct = selected.progressKey == _target.progressKey;
 
@@ -93,7 +94,6 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
     }
 
     setState(() {
-      _answered = true;
       if (correct) {
         _feedback[selected.progressKey] = const Color(0xFF4DB6AC);
         _score++;
@@ -177,7 +177,7 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
             // Sound Button
             Expanded(
-              flex: 4,
+              flex: 3,
               child: FadeInDown(
                 key: ValueKey(_current),
                 child: Center(
@@ -229,29 +229,41 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
             // Options Grid
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: GridView.count(
-                  crossAxisCount: _options.length <= 3 ? 1 : 2,
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  childAspectRatio: _options.length <= 3 ? 3.0 : 1.2,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: _options.asMap().entries.map((entry) {
-                    final idx = entry.key;
-                    final item = entry.value;
-                    final color = _feedback[item.progressKey];
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final cols = _options.length <= 3 ? 1 : 2;
+                    final rows = (_options.length / cols).ceil();
+                    final totalVSpacing = (rows - 1) * 14;
+                    final cellHeight = (constraints.maxHeight - totalVSpacing) / rows;
+                    final totalHSpacing = (cols - 1) * 14;
+                    final cellWidth = (constraints.maxWidth - totalHSpacing) / cols;
+                    final ratio = (cellWidth / cellHeight).clamp(0.5, 4.0);
 
-                    return FadeInUp(
-                      delay: Duration(milliseconds: 80 * idx),
-                      child: _OptionCard(
-                        label: item.letter,
-                        color: color,
-                        onTap: () => _handleAnswer(item),
-                      ),
+                    return GridView.count(
+                      crossAxisCount: cols,
+                      mainAxisSpacing: 14,
+                      crossAxisSpacing: 14,
+                      childAspectRatio: ratio,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: _options.asMap().entries.map((entry) {
+                        final idx = entry.key;
+                        final item = entry.value;
+                        final color = _feedback[item.progressKey];
+
+                        return FadeInUp(
+                          delay: Duration(milliseconds: 80 * idx),
+                          child: _OptionCard(
+                            label: item.letter,
+                            color: color,
+                            onTap: () => _handleAnswer(item),
+                          ),
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
             ),
