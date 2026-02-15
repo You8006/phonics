@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
+import '../models/word_data.dart';
 import '../services/tts_service.dart';
 import 'game_screen.dart';
 import '../games/bingo_game.dart';
@@ -134,16 +135,16 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
 
     // Blending / WordChaining / MinimalPairs は音選択不要で直接遊べる
     if (widget.gameType == GameType.blending) {
-      final cvcWords = phonicsGroups.expand((g) => g.cvcWords).toSet().toList();
+      final allWords = wordLibrary.map((w) => w.word.toLowerCase()).toSet().toList();
       Navigator.push(context, MaterialPageRoute(
-        builder: (_) => BlendingBuilderGameScreen(cvcWords: cvcWords),
+        builder: (_) => BlendingBuilderGameScreen(cvcWords: allWords),
       ));
       return;
     }
     if (widget.gameType == GameType.wordChaining) {
-      final cvcWords = phonicsGroups.expand((g) => g.cvcWords).toSet().toList();
+      final allWords = wordLibrary.map((w) => w.word.toLowerCase()).toSet().toList();
       Navigator.push(context, MaterialPageRoute(
-        builder: (_) => WordChainingGameScreen(cvcWords: cvcWords),
+        builder: (_) => WordChainingGameScreen(cvcWords: allWords),
       ));
       return;
     }

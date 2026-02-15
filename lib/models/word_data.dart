@@ -190,6 +190,223 @@ const wordLibrary = <WordItem>[
   WordItem(word: 'lamp', meaning: 'ランプ', category: 'daily', phonicsNote: 'l-a-mp / læmp'),
   WordItem(word: 'soap', meaning: 'せっけん', category: 'daily', phonicsNote: 'oa = /oʊ/; p'),
   WordItem(word: 'key', meaning: 'かぎ', category: 'daily', phonicsNote: 'ey = /iː/'),
+
+  // ── Extra Phonics Words ── おとずかん用に追加
+  // -- 既存の追加分 --
+  WordItem(word: 'cook', meaning: 'りょうりする', category: 'actions', phonicsNote: 'oo = /ʊ/'),
+  WordItem(word: 'fork', meaning: 'フォーク', category: 'food', phonicsNote: 'or = /ɔː/'),
+  WordItem(word: 'car', meaning: 'くるま', category: 'daily', phonicsNote: 'ar = /ɑː/'),
+  WordItem(word: 'park', meaning: 'こうえん', category: 'nature', phonicsNote: 'ar = /ɑː/'),
+  WordItem(word: 'her', meaning: 'かのじょの', category: 'sight', phonicsNote: 'er = /ɜː/'),
+  WordItem(word: 'turn', meaning: 'まわる', category: 'actions', phonicsNote: 'ur = /ɜː/'),
+  WordItem(word: 'out', meaning: 'そと', category: 'sight', phonicsNote: 'ou = /aʊ/'),
+  WordItem(word: 'house', meaning: 'いえ', category: 'daily', phonicsNote: 'ou = /aʊ/'),
+  WordItem(word: 'coin', meaning: 'コイン', category: 'daily', phonicsNote: 'oi = /ɔɪ/'),
+  WordItem(word: 'toy', meaning: 'おもちゃ', category: 'daily', phonicsNote: 'oy = /ɔɪ/'),
+  WordItem(word: 'oil', meaning: 'あぶら', category: 'food', phonicsNote: 'oi = /ɔɪ/'),
+  WordItem(word: 'near', meaning: 'ちかい', category: 'adjectives', phonicsNote: 'ear = /ɪər/'),
+  WordItem(word: 'hear', meaning: 'きく', category: 'actions', phonicsNote: 'ear = /ɪər/'),
+  WordItem(word: 'dear', meaning: 'しんあいな', category: 'adjectives', phonicsNote: 'ear = /ɪər/'),
+  WordItem(word: 'chin', meaning: 'あご', category: 'body', phonicsNote: 'ch = /tʃ/'),
+  WordItem(word: 'lunch', meaning: 'ひるごはん', category: 'food', phonicsNote: 'ch = /tʃ/'),
+  WordItem(word: 'much', meaning: 'たくさん', category: 'adjectives', phonicsNote: 'ch = /tʃ/'),
+  WordItem(word: 'jug', meaning: 'ジャグ', category: 'daily', phonicsNote: 'j = /dʒ/'),
+  WordItem(word: 'jet', meaning: 'ジェット', category: 'daily', phonicsNote: 'j = /dʒ/'),
+  WordItem(word: 'ring', meaning: 'ゆびわ', category: 'daily', phonicsNote: 'ng = /ŋ/'),
+  WordItem(word: 'king', meaning: 'おうさま', category: 'family', phonicsNote: 'ng = /ŋ/'),
+  WordItem(word: 'ship', meaning: 'ふね', category: 'daily', phonicsNote: 'sh = /ʃ/'),
+  WordItem(word: 'thin', meaning: 'うすい', category: 'adjectives', phonicsNote: 'th = /θ/'),
+  WordItem(word: 'bath', meaning: 'おふろ', category: 'daily', phonicsNote: 'th = /θ/'),
+  WordItem(word: 'tooth', meaning: 'は', category: 'body', phonicsNote: 'th = /θ/; oo = /uː/'),
+  WordItem(word: 'this', meaning: 'これ', category: 'sight', phonicsNote: 'th = /ð/'),
+  WordItem(word: 'that', meaning: 'それ', category: 'sight', phonicsNote: 'th = /ð/'),
+  WordItem(word: 'van', meaning: 'バン', category: 'daily', phonicsNote: 'v = /v/'),
+  WordItem(word: 'love', meaning: 'あい', category: 'adjectives', phonicsNote: 'v = /v/'),
+  WordItem(word: 'yes', meaning: 'はい', category: 'sight', phonicsNote: 'y = /j/'),
+  WordItem(word: 'yak', meaning: 'ヤク', category: 'animals', phonicsNote: 'y = /j/'),
+  WordItem(word: 'zip', meaning: 'ジッパー', category: 'daily', phonicsNote: 'z = /z/'),
+  WordItem(word: 'zoo', meaning: 'どうぶつえん', category: 'daily', phonicsNote: 'z = /z/'),
+  WordItem(word: 'buzz', meaning: 'ブーン', category: 'nature', phonicsNote: 'zz = /z/'),
+  WordItem(word: 'mix', meaning: 'まぜる', category: 'actions', phonicsNote: 'x = /ks/'),
+
+  // -- スペリング別グルーピング用の追加単語 (94語) --
+  // e_short / ea
+  WordItem(word: 'bread', meaning: 'パン', category: 'food', phonicsNote: 'ea = /ɛ/'),
+  WordItem(word: 'dead', meaning: 'しんだ', category: 'adjectives', phonicsNote: 'ea = /ɛ/'),
+  WordItem(word: 'spread', meaning: 'ひろげる', category: 'actions', phonicsNote: 'ea = /ɛ/'),
+  // ei / a_e
+  WordItem(word: 'make', meaning: 'つくる', category: 'actions', phonicsNote: 'a_e = /eɪ/'),
+  WordItem(word: 'name', meaning: 'なまえ', category: 'daily', phonicsNote: 'a_e = /eɪ/'),
+  WordItem(word: 'game', meaning: 'ゲーム', category: 'daily', phonicsNote: 'a_e = /eɪ/'),
+  WordItem(word: 'lake', meaning: 'みずうみ', category: 'nature', phonicsNote: 'a_e = /eɪ/'),
+  // ei / ai
+  WordItem(word: 'train', meaning: 'でんしゃ', category: 'daily', phonicsNote: 'ai = /eɪ/'),
+  WordItem(word: 'tail', meaning: 'しっぽ', category: 'animals', phonicsNote: 'ai = /eɪ/'),
+  WordItem(word: 'snail', meaning: 'カタツムリ', category: 'animals', phonicsNote: 'ai = /eɪ/'),
+  WordItem(word: 'wait', meaning: 'まつ', category: 'actions', phonicsNote: 'ai = /eɪ/'),
+  // ei / ay
+  WordItem(word: 'day', meaning: 'にち', category: 'daily', phonicsNote: 'ay = /eɪ/'),
+  WordItem(word: 'say', meaning: 'いう', category: 'actions', phonicsNote: 'ay = /eɪ/'),
+  WordItem(word: 'way', meaning: 'みち', category: 'daily', phonicsNote: 'ay = /eɪ/'),
+  WordItem(word: 'stay', meaning: 'とまる', category: 'actions', phonicsNote: 'ay = /eɪ/'),
+  // ii / ea
+  WordItem(word: 'tea', meaning: 'おちゃ', category: 'food', phonicsNote: 'ea = /iː/'),
+  WordItem(word: 'sea', meaning: 'うみ', category: 'nature', phonicsNote: 'ea = /iː/'),
+  // ii / e
+  WordItem(word: 'me', meaning: 'わたし', category: 'sight', phonicsNote: 'e = /iː/'),
+  WordItem(word: 'be', meaning: '〜である', category: 'sight', phonicsNote: 'e = /iː/'),
+  // ai / i_e
+  WordItem(word: 'bike', meaning: 'じてんしゃ', category: 'daily', phonicsNote: 'i_e = /aɪ/'),
+  WordItem(word: 'kite', meaning: 'たこ', category: 'daily', phonicsNote: 'i_e = /aɪ/'),
+  // ai / ie
+  WordItem(word: 'tie', meaning: 'ネクタイ', category: 'daily', phonicsNote: 'ie = /aɪ/'),
+  WordItem(word: 'die', meaning: 'サイコロ', category: 'daily', phonicsNote: 'ie = /aɪ/'),
+  WordItem(word: 'lie', meaning: 'よこになる', category: 'actions', phonicsNote: 'ie = /aɪ/'),
+  // ai / y
+  WordItem(word: 'fly', meaning: 'とぶ', category: 'actions', phonicsNote: 'y = /aɪ/'),
+  WordItem(word: 'cry', meaning: 'なく', category: 'actions', phonicsNote: 'y = /aɪ/'),
+  WordItem(word: 'try', meaning: 'ためす', category: 'actions', phonicsNote: 'y = /aɪ/'),
+  WordItem(word: 'sky', meaning: 'そら', category: 'nature', phonicsNote: 'y = /aɪ/'),
+  // ai / igh
+  WordItem(word: 'high', meaning: 'たかい', category: 'adjectives', phonicsNote: 'igh = /aɪ/'),
+  WordItem(word: 'night', meaning: 'よる', category: 'nature', phonicsNote: 'igh = /aɪ/'),
+  WordItem(word: 'light', meaning: 'ひかり', category: 'daily', phonicsNote: 'igh = /aɪ/'),
+  WordItem(word: 'right', meaning: 'みぎ/ただしい', category: 'adjectives', phonicsNote: 'igh = /aɪ/'),
+  // ou_long / o_e
+  WordItem(word: 'home', meaning: 'いえ', category: 'daily', phonicsNote: 'o_e = /oʊ/'),
+  WordItem(word: 'bone', meaning: 'ほね', category: 'body', phonicsNote: 'o_e = /oʊ/'),
+  WordItem(word: 'hope', meaning: 'きぼう', category: 'adjectives', phonicsNote: 'o_e = /oʊ/'),
+  // ou_long / oa
+  WordItem(word: 'boat', meaning: 'ボート', category: 'daily', phonicsNote: 'oa = /oʊ/'),
+  WordItem(word: 'coat', meaning: 'コート', category: 'daily', phonicsNote: 'oa = /oʊ/'),
+  WordItem(word: 'goat', meaning: 'ヤギ', category: 'animals', phonicsNote: 'oa = /oʊ/'),
+  // ou_long / ow
+  WordItem(word: 'blow', meaning: 'ふく', category: 'actions', phonicsNote: 'ow = /oʊ/'),
+  WordItem(word: 'grow', meaning: 'そだつ', category: 'actions', phonicsNote: 'ow = /oʊ/'),
+  // ou_long / o
+  WordItem(word: 'go', meaning: 'いく', category: 'actions', phonicsNote: 'o = /oʊ/'),
+  WordItem(word: 'no', meaning: 'いいえ', category: 'sight', phonicsNote: 'o = /oʊ/'),
+  // uu / oo
+  WordItem(word: 'food', meaning: 'たべもの', category: 'food', phonicsNote: 'oo = /uː/'),
+  WordItem(word: 'cool', meaning: 'すずしい', category: 'adjectives', phonicsNote: 'oo = /uː/'),
+  // uu / ew
+  WordItem(word: 'flew', meaning: 'とんだ', category: 'actions', phonicsNote: 'ew = /uː/'),
+  WordItem(word: 'drew', meaning: 'えがいた', category: 'actions', phonicsNote: 'ew = /uː/'),
+  WordItem(word: 'chew', meaning: 'かむ', category: 'actions', phonicsNote: 'ew = /uː/'),
+  // uu / ue
+  WordItem(word: 'clue', meaning: 'ヒント', category: 'daily', phonicsNote: 'ue = /uː/'),
+  WordItem(word: 'true', meaning: 'ほんとう', category: 'adjectives', phonicsNote: 'ue = /uː/'),
+  WordItem(word: 'glue', meaning: 'のり', category: 'daily', phonicsNote: 'ue = /uː/'),
+  // or_sound / or
+  WordItem(word: 'corn', meaning: 'トウモロコシ', category: 'food', phonicsNote: 'or = /ɔː/'),
+  WordItem(word: 'born', meaning: 'うまれた', category: 'adjectives', phonicsNote: 'or = /ɔː/'),
+  WordItem(word: 'sort', meaning: 'わける', category: 'actions', phonicsNote: 'or = /ɔː/'),
+  // or_sound / all
+  WordItem(word: 'fall', meaning: 'おちる', category: 'actions', phonicsNote: 'all = /ɔːl/'),
+  WordItem(word: 'tall', meaning: 'たかい', category: 'adjectives', phonicsNote: 'all = /ɔːl/'),
+  WordItem(word: 'wall', meaning: 'かべ', category: 'daily', phonicsNote: 'all = /ɔːl/'),
+  // er_sound / er
+  WordItem(word: 'fern', meaning: 'シダ', category: 'nature', phonicsNote: 'er = /ɜː/'),
+  WordItem(word: 'herb', meaning: 'ハーブ', category: 'food', phonicsNote: 'er = /ɜː/'),
+  WordItem(word: 'herd', meaning: 'むれ', category: 'animals', phonicsNote: 'er = /ɜː/'),
+  // er_sound / ir
+  WordItem(word: 'dirt', meaning: 'どろ', category: 'nature', phonicsNote: 'ir = /ɜː/'),
+  WordItem(word: 'shirt', meaning: 'シャツ', category: 'daily', phonicsNote: 'ir = /ɜː/'),
+  // er_sound / ur
+  WordItem(word: 'burn', meaning: 'もえる', category: 'actions', phonicsNote: 'ur = /ɜː/'),
+  WordItem(word: 'hurt', meaning: 'いたい', category: 'adjectives', phonicsNote: 'ur = /ɜː/'),
+  WordItem(word: 'fur', meaning: 'けがわ', category: 'animals', phonicsNote: 'ur = /ɜː/'),
+  // au_sound / ou
+  WordItem(word: 'loud', meaning: 'おおきい(おと)', category: 'adjectives', phonicsNote: 'ou = /aʊ/'),
+  WordItem(word: 'mouth', meaning: 'くち', category: 'body', phonicsNote: 'ou = /aʊ/'),
+  // au_sound / ow
+  WordItem(word: 'down', meaning: 'した', category: 'adjectives', phonicsNote: 'ow = /aʊ/'),
+  WordItem(word: 'town', meaning: 'まち', category: 'daily', phonicsNote: 'ow = /aʊ/'),
+  // oi_sound / oi
+  WordItem(word: 'join', meaning: 'くわわる', category: 'actions', phonicsNote: 'oi = /ɔɪ/'),
+  WordItem(word: 'point', meaning: 'さす', category: 'actions', phonicsNote: 'oi = /ɔɪ/'),
+  // oi_sound / oy
+  WordItem(word: 'joy', meaning: 'よろこび', category: 'adjectives', phonicsNote: 'oy = /ɔɪ/'),
+  WordItem(word: 'enjoy', meaning: 'たのしむ', category: 'actions', phonicsNote: 'oy = /ɔɪ/'),
+  // ear_sound / eer
+  WordItem(word: 'deer', meaning: 'シカ', category: 'animals', phonicsNote: 'eer = /ɪər/'),
+  WordItem(word: 'cheer', meaning: 'おうえん', category: 'actions', phonicsNote: 'eer = /ɪər/'),
+  WordItem(word: 'steer', meaning: 'かじをとる', category: 'actions', phonicsNote: 'eer = /ɪər/'),
+  WordItem(word: 'peer', meaning: 'じっと見る', category: 'actions', phonicsNote: 'eer = /ɪər/'),
+  // k_sound / k
+  WordItem(word: 'keep', meaning: 'たもつ', category: 'actions', phonicsNote: 'k = /k/'),
+  // f_sound / ph
+  WordItem(word: 'phone', meaning: 'でんわ', category: 'daily', phonicsNote: 'ph = /f/'),
+  WordItem(word: 'photo', meaning: 'しゃしん', category: 'daily', phonicsNote: 'ph = /f/'),
+  WordItem(word: 'dolphin', meaning: 'イルカ', category: 'animals', phonicsNote: 'ph = /f/'),
+  WordItem(word: 'elephant', meaning: 'ゾウ', category: 'animals', phonicsNote: 'ph = /f/'),
+  // n_sound / kn
+  WordItem(word: 'knee', meaning: 'ひざ', category: 'body', phonicsNote: 'kn = /n/'),
+  WordItem(word: 'knife', meaning: 'ナイフ', category: 'daily', phonicsNote: 'kn = /n/'),
+  WordItem(word: 'knot', meaning: 'むすびめ', category: 'daily', phonicsNote: 'kn = /n/'),
+  WordItem(word: 'know', meaning: 'しる', category: 'sight', phonicsNote: 'kn = /n/'),
+  // r_sound / wr
+  WordItem(word: 'write', meaning: 'かく', category: 'actions', phonicsNote: 'wr = /r/'),
+  WordItem(word: 'wrong', meaning: 'まちがい', category: 'adjectives', phonicsNote: 'wr = /r/'),
+  WordItem(word: 'wrap', meaning: 'つつむ', category: 'actions', phonicsNote: 'wr = /r/'),
+  WordItem(word: 'wrist', meaning: 'てくび', category: 'body', phonicsNote: 'wr = /r/'),
+  // w_sound / wh
+  WordItem(word: 'what', meaning: 'なに', category: 'sight', phonicsNote: 'wh = /w/'),
+  WordItem(word: 'when', meaning: 'いつ', category: 'sight', phonicsNote: 'wh = /w/'),
+  WordItem(word: 'where', meaning: 'どこ', category: 'sight', phonicsNote: 'wh = /w/'),
+  WordItem(word: 'whale', meaning: 'クジラ', category: 'animals', phonicsNote: 'wh = /w/'),
+  // z_sound
+  WordItem(word: 'zero', meaning: 'ゼロ', category: 'numbers', phonicsNote: 'z = /z/'),
+  WordItem(word: 'song', meaning: 'うた', category: 'daily', phonicsNote: 'ng = /ŋ/'),
+
+  // ── MinimalPairs 追加単語 ──
+  WordItem(word: 'sheep', meaning: 'ひつじ', category: 'animals', phonicsNote: 'ee = /iː/; sh = /ʃ/'),
+  WordItem(word: 'full', meaning: 'いっぱいの', category: 'adjectives', phonicsNote: 'u = /ʊ/; ll'),
+  WordItem(word: 'fool', meaning: 'おろかもの', category: 'adjectives', phonicsNote: 'oo = /uː/'),
+  WordItem(word: 'cut', meaning: 'きる', category: 'CVC基本', phonicsNote: 'c-u-t / kʌt'),
+  WordItem(word: 'bad', meaning: 'わるい', category: 'adjectives', phonicsNote: 'b-a-d / bæd'),
+  WordItem(word: 'sat', meaning: 'すわった', category: 'CVC基本', phonicsNote: 's-a-t / sæt'),
+  WordItem(word: 'pin', meaning: 'ピン', category: 'daily', phonicsNote: 'p-i-n / pɪn'),
+  WordItem(word: 'cop', meaning: 'けいかん', category: 'CVC基本', phonicsNote: 'c-o-p / kɒp'),
+  WordItem(word: 'hit', meaning: 'たたく', category: 'CVC基本', phonicsNote: 'h-i-t / hɪt'),
+  WordItem(word: 'not', meaning: 'ではない', category: 'sight', phonicsNote: 'n-o-t / nɒt'),
+  WordItem(word: 'bet', meaning: 'かける', category: 'CVC基本', phonicsNote: 'b-e-t / bɛt'),
+  WordItem(word: 'bat', meaning: 'バット', category: 'CVC基本', phonicsNote: 'b-a-t / bæt'),
+  WordItem(word: 'fan', meaning: 'せんぷうき', category: 'daily', phonicsNote: 'f-a-n / fæn'),
+  WordItem(word: 'then', meaning: 'それから', category: 'sight', phonicsNote: 'th = /ð/; e = /ɛ/'),
+  WordItem(word: 'lice', meaning: 'シラミ', category: 'animals', phonicsNote: 'i_e = /aɪ/; c = /s/'),
+  WordItem(word: 'sip', meaning: 'すする', category: 'CVC基本', phonicsNote: 's-i-p / sɪp'),
+  WordItem(word: 'ban', meaning: 'きんし', category: 'CVC基本', phonicsNote: 'b-a-n / bæn'),
+  WordItem(word: 'yet', meaning: 'まだ', category: 'sight', phonicsNote: 'y = /j/; e = /ɛ/'),
+  WordItem(word: 'cap', meaning: 'ぼうし', category: 'daily', phonicsNote: 'c-a-p / kæp'),
+  WordItem(word: 'beer', meaning: 'ビール', category: 'food', phonicsNote: 'eer = /ɪər/'),
+
+  // ── cvcWords & PhonicsItem.example 不足分 25語 ──
+  WordItem(word: 'tip', meaning: 'チップ・先', category: 'CVC基本', phonicsNote: 't-i-p / tɪp'),
+  WordItem(word: 'tan', meaning: 'ひやけ', category: 'CVC基本', phonicsNote: 't-a-n / tæn'),
+  WordItem(word: 'pan', meaning: 'フライパン', category: 'CVC基本', phonicsNote: 'p-a-n / pæn'),
+  WordItem(word: 'nap', meaning: 'ひるね', category: 'CVC基本', phonicsNote: 'n-a-p / næp'),
+  WordItem(word: 'tap', meaning: 'じゃぐち', category: 'CVC基本', phonicsNote: 't-a-p / tæp'),
+  WordItem(word: 'tin', meaning: 'かん・ブリキ', category: 'CVC基本', phonicsNote: 't-i-n / tɪn'),
+  WordItem(word: 'met', meaning: 'あった', category: 'CVC基本', phonicsNote: 'm-e-t / mɛt'),
+  WordItem(word: 'hem', meaning: 'すそ', category: 'CVC基本', phonicsNote: 'h-e-m / hɛm'),
+  WordItem(word: 'deck', meaning: 'デッキ', category: 'CVC基本', phonicsNote: 'd-e-ck / dɛk; ck = /k/'),
+  WordItem(word: 'mad', meaning: 'おこった', category: 'CVC基本', phonicsNote: 'm-a-d / mæd'),
+  WordItem(word: 'ram', meaning: 'おすひつじ', category: 'animals', phonicsNote: 'r-a-m / ræm'),
+  WordItem(word: 'dam', meaning: 'ダム', category: 'CVC基本', phonicsNote: 'd-a-m / dæm'),
+  WordItem(word: 'log', meaning: 'まるた', category: 'nature', phonicsNote: 'l-o-g / lɒɡ'),
+  WordItem(word: 'bug', meaning: 'むし', category: 'animals', phonicsNote: 'b-u-g / bʌɡ'),
+  WordItem(word: 'fog', meaning: 'きり', category: 'nature', phonicsNote: 'f-o-g / fɒɡ'),
+  WordItem(word: 'bun', meaning: 'まるパン', category: 'food', phonicsNote: 'b-u-n / bʌn'),
+  WordItem(word: 'ink', meaning: 'インク', category: 'daily', phonicsNote: 'i-nk / ɪŋk; nk = /ŋk/'),
+  WordItem(word: 'net', meaning: 'ネット', category: 'CVC基本', phonicsNote: 'n-e-t / nɛt'),
+  WordItem(word: 'sock', meaning: 'くつした', category: 'daily', phonicsNote: 's-o-ck / sɒk; ck = /k/'),
+  WordItem(word: 'rat', meaning: 'ネズミ', category: 'animals', phonicsNote: 'r-a-t / ræt'),
+  WordItem(word: 'got', meaning: 'てにいれた', category: 'CVC基本', phonicsNote: 'g-o-t / ɡɒt'),
+  WordItem(word: 'on', meaning: 'のうえに', category: 'sight', phonicsNote: 'ɒn'),
+  WordItem(word: 'up', meaning: 'うえに', category: 'sight', phonicsNote: 'ʌp'),
+  WordItem(word: 'web', meaning: 'くものす', category: 'nature', phonicsNote: 'w-e-b / wɛb'),
+  WordItem(word: 'queen', meaning: 'じょおう', category: 'daily', phonicsNote: 'qu = /kw/; ee = /iː/'),
 ];
 
 /// カテゴリごとの単語を取得

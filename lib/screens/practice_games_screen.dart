@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
+import '../models/word_data.dart';
 import '../services/tts_service.dart';
 import 'game_screen.dart';
 
@@ -9,10 +10,10 @@ class PracticeGamesScreen extends StatelessWidget {
 
   final PhonicsGroup? group;
 
-  /// group が指定されていなければ全グループの CVC words を結合
-  List<String> get _cvcWords {
+  /// wordLibrary から全単語を取得（Blending/WordChaining用）
+  List<String> get _allWords {
     if (group != null) return group!.cvcWords;
-    return phonicsGroups.expand((g) => g.cvcWords).toSet().toList();
+    return wordLibrary.map((w) => w.word.toLowerCase()).toSet().toList();
   }
 
   @override
@@ -131,7 +132,7 @@ class PracticeGamesScreen extends StatelessWidget {
             color: Colors.blue,
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => BlendingBuilderGameScreen(cvcWords: _cvcWords)),
+              MaterialPageRoute(builder: (_) => BlendingBuilderGameScreen(cvcWords: _allWords)),
             ),
           ),
           const SizedBox(height: 12),
@@ -142,7 +143,7 @@ class PracticeGamesScreen extends StatelessWidget {
             color: Colors.green,
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => WordChainingGameScreen(cvcWords: _cvcWords)),
+              MaterialPageRoute(builder: (_) => WordChainingGameScreen(cvcWords: _allWords)),
             ),
           ),
           const SizedBox(height: 12),
@@ -302,7 +303,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FilledButton.icon(
-              onPressed: () => TtsService.speak(_answer),
+              onPressed: () => TtsService.speakLibraryWord(_answer),
               icon: const Icon(Icons.volume_up),
               label: const Text('単語を聞く'),
             ),
@@ -405,7 +406,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
   }
 
   void _nextQuestion() {
-    final words = widget.cvcWords.where((w) => w.length == 3).map((e) => e.toLowerCase()).toSet().toList();
+    final words = widget.cvcWords.where((w) => w.length >= 3 && w.length <= 4).map((e) => e.toLowerCase()).toSet().toList();
 
     // 1音差ペアを作る
     final pairs = <(String, String)>[];
@@ -485,7 +486,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                     ),
                     const SizedBox(height: 10),
                     OutlinedButton.icon(
-                      onPressed: () => TtsService.speak(_currentWord),
+                      onPressed: () => TtsService.speakLibraryWord(_currentWord),
                       icon: const Icon(Icons.volume_up),
                       label: const Text('音を聞く'),
                     ),
@@ -519,7 +520,8 @@ class MinimalPairsGameScreen extends StatefulWidget {
 
 class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
   final _rng = Random();
-  static const _totalRounds = 10;
+  late final int _totalRounds;
+  final Set<int> _usedIndices = {};
 
   late MinimalPair _pair;
   late String _target;
@@ -530,11 +532,19 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
   @override
   void initState() {
     super.initState();
+    _totalRounds = min(12, minimalPairs.length);
     _nextQuestion();
   }
 
   void _nextQuestion() {
-    _pair = minimalPairs[_rng.nextInt(minimalPairs.length)];
+    // 重複しないように未出題のペアを選ぶ
+    if (_usedIndices.length >= minimalPairs.length) _usedIndices.clear();
+    int idx;
+    do {
+      idx = _rng.nextInt(minimalPairs.length);
+    } while (_usedIndices.contains(idx));
+    _usedIndices.add(idx);
+    _pair = minimalPairs[idx];
     _target = _rng.nextBool() ? _pair.a : _pair.b;
     _answered = false;
     setState(() {});
@@ -590,7 +600,7 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
                     Text('Focus: ${_pair.focus}', style: TextStyle(color: Colors.grey.shade600)),
                     const SizedBox(height: 12),
                     FilledButton.icon(
-                      onPressed: () => TtsService.speak(_target),
+                      onPressed: () => TtsService.speakLibraryWord(_target),
                       icon: const Icon(Icons.volume_up),
                       label: const Text('Play Sound'),
                     ),

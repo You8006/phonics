@@ -4,7 +4,7 @@ import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
 
-/// フォニックスのおとずかん — 同じ音のグループごとに綴りを表示
+/// フォニックスのおとずかん — スペリングごとに単語を表示
 class PhonicsDictionaryScreen extends StatefulWidget {
   const PhonicsDictionaryScreen({super.key});
 
@@ -15,7 +15,8 @@ class PhonicsDictionaryScreen extends StatefulWidget {
 
 class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
   String? _playingGroupId;
-  String? _expandedGroupId;
+  /// 選択されたスペリング ("groupId::spelling" 形式)
+  String? _selectedSpellingKey;
   String? _playingWord;
 
   /// グループの音を再生
@@ -37,11 +38,20 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
     if (mounted) setState(() => _playingWord = null);
   }
 
-  /// グループの展開/折りたたみ
-  void _toggleExpand(String groupId) {
+  /// スペリングの展開/折りたたみ
+  void _toggleSpelling(String groupId, String spelling) {
+    final key = '$groupId::$spelling';
     setState(() {
-      _expandedGroupId = _expandedGroupId == groupId ? null : groupId;
+      _selectedSpellingKey = _selectedSpellingKey == key ? null : key;
     });
+  }
+
+  /// 指定グループで選択中のスペリングを取得
+  String? _getSelectedSpelling(String groupId) {
+    if (_selectedSpellingKey == null) return null;
+    final parts = _selectedSpellingKey!.split('::');
+    if (parts.length == 2 && parts[0] == groupId) return parts[1];
+    return null;
   }
 
   @override
@@ -93,7 +103,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'おなじ音をだす いろいろな つづりを見てみよう',
+                    'つづりをタップして ことばを見てみよう',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey.shade500,
@@ -132,8 +142,8 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final group = section.value[index];
-                  final isExpanded = _expandedGroupId == group.id;
                   final isPlaying = _playingGroupId == group.id;
+                  final selectedSpelling = _getSelectedSpelling(group.id);
 
                   return FadeInUp(
                     delay: Duration(milliseconds: 50 * (index % 10)),
@@ -142,10 +152,11 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                       child: _SoundGroupCard(
                         group: group,
                         isPlaying: isPlaying,
-                        isExpanded: isExpanded,
+                        selectedSpelling: selectedSpelling,
                         playingWord: _playingWord,
                         onPlaySound: () => _playGroupSound(group),
-                        onToggleExpand: () => _toggleExpand(group.id),
+                        onSelectSpelling: (spelling) =>
+                            _toggleSpelling(group.id, spelling),
                         onPlayWord: _playWord,
                       ),
                     ),
@@ -171,25 +182,24 @@ class _SoundGroupCard extends StatelessWidget {
   const _SoundGroupCard({
     required this.group,
     required this.isPlaying,
-    required this.isExpanded,
+    required this.selectedSpelling,
     required this.playingWord,
     required this.onPlaySound,
-    required this.onToggleExpand,
+    required this.onSelectSpelling,
     required this.onPlayWord,
   });
 
   final SoundGroup group;
   final bool isPlaying;
-  final bool isExpanded;
+  final String? selectedSpelling;
   final String? playingWord;
   final VoidCallback onPlaySound;
-  final VoidCallback onToggleExpand;
+  final ValueChanged<String> onSelectSpelling;
   final ValueChanged<String> onPlayWord;
 
   @override
   Widget build(BuildContext context) {
     final groupColor = Color(group.color);
-    final words = getWordsForGroup(group);
 
     return Container(
       decoration: BoxDecoration(
@@ -215,9 +225,9 @@ class _SoundGroupCard extends StatelessWidget {
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: const Color(0xFF5D4037),
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              color: Color(0xFF5D4037),
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(14),
                 topRight: Radius.circular(14),
               ),
@@ -261,73 +271,123 @@ class _SoundGroupCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                if (words.isNotEmpty)
-                  GestureDetector(
-                    onTap: onToggleExpand,
-                    child: AnimatedRotation(
-                      turns: isExpanded ? 0.5 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: const Icon(
-                        Icons.expand_more_rounded,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-
-          // ── 綴りタイル ──
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: group.spellings.map((spelling) {
-                      return GestureDetector(
-                        onTap: () {
-                          // タップしたら展開 + 音再生
-                          onToggleExpand();
-                          onPlaySound();
-                        },
-                        child: _SpellingTile(
-                          spelling: spelling,
-                          color: groupColor,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // スピーカーボタン
+                // スピーカーボタン（ヘッダー内）
                 _SpeakerButton(
                   isPlaying: isPlaying,
                   color: groupColor,
                   onTap: onPlaySound,
+                  size: 36,
                 ),
               ],
             ),
           ),
 
-          // ── 展開: 例単語 ──
-          AnimatedCrossFade(
-            firstChild: const SizedBox.shrink(),
-            secondChild: words.isNotEmpty
-                ? _WordExamplesSection(
-                    words: words,
-                    groupColor: groupColor,
-                    playingWord: playingWord,
-                    onPlayWord: onPlayWord,
-                  )
-                : const SizedBox.shrink(),
-            crossFadeState: isExpanded
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 250),
+          // ── 綴りタイルとその単語 ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+            child: Column(
+              children: group.spellings.map((spelling) {
+                final isSelected = selectedSpelling == spelling;
+                final words = getWordsForSpelling(group, spelling);
+
+                return Column(
+                  children: [
+                    // スペリングタイル（タップ可能）
+                    GestureDetector(
+                      onTap: () => onSelectSpelling(spelling),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? groupColor.withValues(alpha: 0.08)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isSelected
+                                ? groupColor
+                                : const Color(0xFFE0D6CC),
+                            width: isSelected ? 2 : 1.5,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              spelling,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                                color: isSelected
+                                    ? groupColor
+                                    : groupColor.withValues(alpha: 0.7),
+                                fontFamily: 'monospace',
+                              ),
+                            ),
+                            const Spacer(),
+                            // 単語数バッジ
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? groupColor.withValues(alpha: 0.15)
+                                    : Colors.grey.shade100,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '${words.length} words',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: isSelected
+                                      ? groupColor
+                                      : Colors.grey.shade500,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            AnimatedRotation(
+                              turns: isSelected ? 0.5 : 0,
+                              duration: const Duration(milliseconds: 200),
+                              child: Icon(
+                                Icons.expand_more_rounded,
+                                color: isSelected
+                                    ? groupColor
+                                    : Colors.grey.shade400,
+                                size: 22,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // ── 展開: スペリング別の単語 ──
+                    AnimatedCrossFade(
+                      firstChild: const SizedBox.shrink(),
+                      secondChild: words.isNotEmpty
+                          ? _SpellingWordList(
+                              words: words,
+                              spelling: spelling,
+                              groupColor: groupColor,
+                              playingWord: playingWord,
+                              onPlayWord: onPlayWord,
+                            )
+                          : const SizedBox.shrink(),
+                      crossFadeState: isSelected
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 250),
+                    ),
+
+                    if (spelling != group.spellings.last)
+                      const SizedBox(height: 8),
+                  ],
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),
@@ -335,102 +395,19 @@ class _SoundGroupCard extends StatelessWidget {
   }
 }
 
-// ── 綴りタイル ──
+// ── スペリング別の単語リスト ──
 
-class _SpellingTile extends StatelessWidget {
-  const _SpellingTile({
-    required this.spelling,
-    required this.color,
-  });
-
-  final String spelling;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 52, minHeight: 52),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFE0D6CC),
-          width: 1.5,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          spelling,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w900,
-            color: color,
-            fontFamily: 'monospace',
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ── スピーカーボタン ──
-
-class _SpeakerButton extends StatelessWidget {
-  const _SpeakerButton({
-    required this.isPlaying,
-    required this.color,
-    required this.onTap,
-  });
-
-  final bool isPlaying;
-  final Color color;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 52,
-        height: 52,
-        decoration: BoxDecoration(
-          color: isPlaying
-              ? const Color(0xFF5D4037)
-              : const Color(0xFF5D4037).withValues(alpha: 0.9),
-          borderRadius: BorderRadius.circular(26),
-          boxShadow: isPlaying
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFF5D4037).withValues(alpha: 0.4),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ]
-              : [],
-        ),
-        child: Icon(
-          isPlaying ? Icons.volume_up_rounded : Icons.volume_up_rounded,
-          color: Colors.white,
-          size: 26,
-        ),
-      ),
-    );
-  }
-}
-
-// ── 例単語セクション ──
-
-class _WordExamplesSection extends StatelessWidget {
-  const _WordExamplesSection({
+class _SpellingWordList extends StatelessWidget {
+  const _SpellingWordList({
     required this.words,
+    required this.spelling,
     required this.groupColor,
     required this.playingWord,
     required this.onPlayWord,
   });
 
   final List<WordItem> words;
+  final String spelling;
   final Color groupColor;
   final String? playingWord;
   final ValueChanged<String> onPlayWord;
@@ -439,31 +416,26 @@ class _WordExamplesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(
-            color: Colors.grey.shade200,
-            height: 1,
-          ),
-          const SizedBox(height: 10),
           Row(
             children: [
               Icon(Icons.menu_book_rounded,
-                  size: 16, color: Colors.grey.shade500),
-              const SizedBox(width: 6),
+                  size: 14, color: Colors.grey.shade500),
+              const SizedBox(width: 4),
               Text(
-                'この音をつかう ことば',
+                '「$spelling」のつづりを使うことば',
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Colors.grey.shade600,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Wrap(
             spacing: 6,
             runSpacing: 6,
@@ -495,7 +467,8 @@ class _WordExamplesSection extends StatelessWidget {
                             ? Icons.volume_up_rounded
                             : Icons.play_circle_outline_rounded,
                         size: 16,
-                        color: isPlaying ? groupColor : Colors.grey.shade400,
+                        color:
+                            isPlaying ? groupColor : Colors.grey.shade400,
                       ),
                       const SizedBox(width: 6),
                       Text(
@@ -524,6 +497,54 @@ class _WordExamplesSection extends StatelessWidget {
             }).toList(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ── スピーカーボタン ──
+
+class _SpeakerButton extends StatelessWidget {
+  const _SpeakerButton({
+    required this.isPlaying,
+    required this.color,
+    required this.onTap,
+    this.size = 52,
+  });
+
+  final bool isPlaying;
+  final Color color;
+  final VoidCallback onTap;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: isPlaying
+              ? const Color(0xFF5D4037)
+              : const Color(0xFF5D4037).withValues(alpha: 0.9),
+          borderRadius: BorderRadius.circular(size / 2),
+          boxShadow: isPlaying
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF5D4037).withValues(alpha: 0.4),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : [],
+        ),
+        child: Icon(
+          Icons.volume_up_rounded,
+          color: Colors.white,
+          size: size * 0.5,
+        ),
       ),
     );
   }

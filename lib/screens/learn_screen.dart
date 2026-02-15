@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
+import '../models/sound_group_data.dart';
+import '../models/word_data.dart';
 import '../services/tts_service.dart';
 
 /// Learn 画面: カードをスワイプして音を聞く + 例単語
@@ -31,16 +33,63 @@ class _LearnScreenState extends State<LearnScreen> {
 
   List<PhonicsItem> get _items => widget.group.items;
 
+  /// 関連単語の Widget リストを構築
+  List<Widget> _buildRelatedWords(PhonicsItem item, ColorScheme cs) {
+    final words = _relatedWords(item);
+    if (words.isEmpty) return [];
+
+    // wordLibrary から意味を取得
+    String meaning(String key) {
+      final wi = wordLibrary.cast<WordItem?>().firstWhere(
+            (w) => w!.word.toLowerCase() == key,
+            orElse: () => null,
+          );
+      return wi?.meaning ?? '';
+    }
+
+    return [
+      const Divider(),
+      const SizedBox(height: 4),
+      const Text(
+        'Example words',
+        style: TextStyle(fontSize: 13, color: Colors.grey),
+      ),
+      const SizedBox(height: 4),
+      Wrap(
+        spacing: 8,
+        runSpacing: 4,
+        alignment: WrapAlignment.center,
+        children: words.map((w) {
+          final m = meaning(w);
+          return ActionChip(
+            avatar: Icon(Icons.volume_up, size: 16, color: cs.primary),
+            label: Text(
+              m.isNotEmpty ? '$w ($m)' : w,
+              style: const TextStyle(fontSize: 16),
+            ),
+            onPressed: () => TtsService.speakLibraryWord(w),
+          );
+        }).toList(),
+      ),
+    ];
+  }
+
   void _speakCurrent() {
     final item = _items[_current];
     TtsService.speakSound(item);
   }
 
-  void _speakExample() {
-    final item = _items[_current];
-    if (item.example.isNotEmpty) {
-      TtsService.speakWord(item);
+  /// PhonicsItem.letter からマッチする SoundGroup の単語を最大6個取得
+  List<String> _relatedWords(PhonicsItem item) {
+    final letter = item.letter.toLowerCase();
+    for (final sg in soundGroups) {
+      if (sg.spellingWords.containsKey(letter)) {
+        return sg.spellingWords[letter]!.take(6).toList();
+      }
     }
+    // fallback: item.example のみ
+    if (item.example.isNotEmpty) return [item.example.toLowerCase()];
+    return [];
   }
 
   @override
@@ -118,39 +167,8 @@ class _LearnScreenState extends State<LearnScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          // 例単語
-                          if (item.example.isNotEmpty) ...[
-                            const Divider(),
-                            const SizedBox(height: 8),
-                            const Text(
-                              'Example word',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            GestureDetector(
-                              onTap: _speakExample,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    item.example,
-                                    style: const TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    Icons.play_circle_outline,
-                                    color: cs.primary,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                          // 関連する単語を複数表示
+                          ..._buildRelatedWords(item, cs),
                         ],
                       ),
                     ),
