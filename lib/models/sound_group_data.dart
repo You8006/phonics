@@ -45,7 +45,7 @@ const soundGroups = <SoundGroup>[
     spellings: ['a'],
     wordKeys: [
       'cat', 'hat', 'ant', 'map', 'bag', 'dad', 'sad',
-      'clap', 'hand', 'lamp', 'fast', 'jam', 'black',
+      'clap', 'hand', 'lamp', 'fast', 'jam', 'black', 'and',
     ],
   ),
   SoundGroup(
@@ -56,7 +56,7 @@ const soundGroups = <SoundGroup>[
     spellings: ['e', 'ea'],
     wordKeys: [
       'pen', 'bed', 'egg', 'hen', 'red', 'leg', 'wet',
-      'ten', 'bell', 'head', 'seven',
+      'ten', 'bell', 'head', 'seven', 'friend', 'yellow',
     ],
   ),
   SoundGroup(
@@ -67,7 +67,7 @@ const soundGroups = <SoundGroup>[
     spellings: ['i', 'y'],
     wordKeys: [
       'pig', 'sit', 'fish', 'six', 'big', 'milk', 'wind',
-      'pink', 'swim', 'it',
+      'pink', 'swim', 'it', 'is', 'chip', 'sing',
     ],
   ),
   SoundGroup(
@@ -89,7 +89,7 @@ const soundGroups = <SoundGroup>[
     spellings: ['u'],
     wordKeys: [
       'sun', 'bus', 'cup', 'nut', 'run', 'fun', 'jump',
-      'plum', 'duck',
+      'plum', 'duck', 'one',
     ],
   ),
 
@@ -101,7 +101,7 @@ const soundGroups = <SoundGroup>[
     color: 0xFFE53935, // red
     spellings: ['a', 'ai', 'ay', 'a_e', 'ea', 'ei', 'ey'],
     wordKeys: [
-      'rain', 'cake', 'play', 'baby',
+      'rain', 'cake', 'play', 'baby', 'they',
     ],
   ),
   SoundGroup(
@@ -142,7 +142,7 @@ const soundGroups = <SoundGroup>[
     color: 0xFFE65100, // deep orange
     spellings: ['oo', 'ew', 'o', 'ou', 'u', 'ue', 'ui'],
     wordKeys: [
-      'moon', 'blue', 'soup', 'shoe', 'two', 'new',
+      'moon', 'blue', 'soup', 'shoe', 'two', 'new', 'you',
     ],
   ),
 
@@ -213,7 +213,7 @@ const soundGroups = <SoundGroup>[
     spellings: ['b', 'bb'],
     wordKeys: [
       'bus', 'bed', 'box', 'book', 'ball', 'bag', 'bell',
-      'bee', 'bird', 'boy', 'baby', 'big', 'brown', 'black',
+      'bee', 'bird', 'boy', 'baby', 'big', 'brown', 'black', 'blue',
     ],
   ),
   SoundGroup(
@@ -367,12 +367,12 @@ const soundGroups = <SoundGroup>[
     color: 0xFF37474F, // blue grey dark
     spellings: ['t', 'tt'],
     wordKeys: [
-      'ten', 'tree', 'two', 'three', 'hat', 'hot', 'it',
+      'ten', 'tree', 'two', 'hat', 'hot', 'it',
       'ant', 'nut',
     ],
   ),
   SoundGroup(
-    id: 'th_voice',
+    id: 'th_voiceless',
     displayName: 'th',
     ipa: 'θ',
     color: 0xFF4E342E, // brown
@@ -380,7 +380,7 @@ const soundGroups = <SoundGroup>[
     wordKeys: ['three'],
   ),
   SoundGroup(
-    id: 'th_soft',
+    id: 'th_voiced',
     displayName: 'th',
     ipa: 'ð',
     color: 0xFF5D4037, // brown light
@@ -426,14 +426,6 @@ const soundGroups = <SoundGroup>[
     color: 0xFF455A64, // grey
     spellings: ['x'],
     wordKeys: ['fox', 'six', 'box'],
-  ),
-  SoundGroup(
-    id: 'kw_sound',
-    displayName: 'qu',
-    ipa: 'kw',
-    color: 0xFF6D4C41, // brown
-    spellings: ['qu'],
-    wordKeys: [],
   ),
 ];
 
