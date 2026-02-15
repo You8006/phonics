@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
+import 'phonics_dictionary_screen.dart';
+
+/// 表示モード
+enum LibraryViewMode { words, phonicsDictionary }
 
 /// 音声ライブラリー画面: カテゴリ別に100単語を表示し、3種の音声で聞ける
 class AudioLibraryScreen extends StatefulWidget {
@@ -15,6 +19,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   String? _selectedCategory;
   String _searchQuery = '';
   String? _playingWord;
+  LibraryViewMode _viewMode = LibraryViewMode.words;
 
   List<WordItem> get _filteredWords {
     var words = _selectedCategory != null
@@ -52,17 +57,66 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          // ── ヘッダー ──
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: FadeInDown(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        children: [
+          // ── 表示モード切替 ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: FadeInDown(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.all(3),
+                child: Row(
                   children: [
+                    Expanded(
+                      child: _ViewModeTab(
+                        label: '📚 ことば',
+                        selected: _viewMode == LibraryViewMode.words,
+                        onTap: () => setState(
+                            () => _viewMode = LibraryViewMode.words),
+                      ),
+                    ),
+                    Expanded(
+                      child: _ViewModeTab(
+                        label: '🔊 おとずかん',
+                        selected:
+                            _viewMode == LibraryViewMode.phonicsDictionary,
+                        onTap: () => setState(() =>
+                            _viewMode = LibraryViewMode.phonicsDictionary),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // ── メインコンテンツ ──
+          Expanded(
+            child: _viewMode == LibraryViewMode.phonicsDictionary
+                ? const PhonicsDictionaryScreen()
+                : _buildWordLibrary(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWordLibrary() {
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        // ── ヘッダー ──
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+            child: FadeInDown(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                     Row(
                       children: [
                         const Text(
@@ -228,6 +282,52 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
           // ── 底部の余白 ──
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
         ],
+      );
+  }
+}
+
+// ── 表示モードタブ ──
+
+class _ViewModeTab extends StatelessWidget {
+  const _ViewModeTab({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ]
+              : [],
+        ),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: selected ? const Color(0xFF2A2A2A) : Colors.grey.shade500,
+          ),
+        ),
       ),
     );
   }
