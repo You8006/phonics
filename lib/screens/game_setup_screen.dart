@@ -7,6 +7,7 @@ import 'game_screen.dart';
 import '../games/bingo_game.dart';
 import '../games/space_ship_game.dart';
 import '../games/sound_matching_game.dart';
+import 'practice_games_screen.dart';
 
 // ── Game Type Enum ──
 
@@ -15,6 +16,9 @@ enum GameType {
   soundMatch,
   bingo,
   spaceShip,
+  blending,
+  wordChaining,
+  minimalPairs,
 }
 
 // ── Setup Screen (Reading Bingo-style) ──
@@ -90,6 +94,12 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         return const Color(0xFFFF8E3C);
       case GameType.spaceShip:
         return const Color(0xFF00ACC1);
+      case GameType.blending:
+        return const Color(0xFF2196F3);
+      case GameType.wordChaining:
+        return const Color(0xFF4CAF50);
+      case GameType.minimalPairs:
+        return const Color(0xFF7B1FA2);
     }
   }
 
@@ -103,6 +113,12 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         return l10n.gameBingo;
       case GameType.spaceShip:
         return l10n.gameSpaceShip;
+      case GameType.blending:
+        return l10n.gameBlending;
+      case GameType.wordChaining:
+        return l10n.gameWordChaining;
+      case GameType.minimalPairs:
+        return l10n.gameMinimalPairs;
     }
   }
 
@@ -110,6 +126,29 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
 
   void _play() {
     final items = _items;
+
+    // Blending / WordChaining / MinimalPairs は音選択不要で直接遊べる
+    if (widget.gameType == GameType.blending) {
+      final cvcWords = phonicsGroups.expand((g) => g.cvcWords).toSet().toList();
+      Navigator.push(context, MaterialPageRoute(
+        builder: (_) => BlendingBuilderGameScreen(cvcWords: cvcWords),
+      ));
+      return;
+    }
+    if (widget.gameType == GameType.wordChaining) {
+      final cvcWords = phonicsGroups.expand((g) => g.cvcWords).toSet().toList();
+      Navigator.push(context, MaterialPageRoute(
+        builder: (_) => WordChainingGameScreen(cvcWords: cvcWords),
+      ));
+      return;
+    }
+    if (widget.gameType == GameType.minimalPairs) {
+      Navigator.push(context, MaterialPageRoute(
+        builder: (_) => const MinimalPairsGameScreen(),
+      ));
+      return;
+    }
+
     final minNeeded = widget.gameType == GameType.bingo
         ? _gridSize * _gridSize
         : widget.gameType == GameType.soundQuiz
@@ -146,6 +185,10 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         game = BingoGame(items: items, gridSize: _gridSize);
       case GameType.spaceShip:
         game = SpaceShipGame(items: items);
+      case GameType.blending:
+      case GameType.wordChaining:
+      case GameType.minimalPairs:
+        return; // handled by early return above
     }
 
     Navigator.push(context, MaterialPageRoute(builder: (_) => game));
@@ -171,7 +214,60 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: wide ? _wideLayout(l10n) : _narrowLayout(l10n),
+      body: _isSimpleGame ? _simpleLayout(l10n) : (wide ? _wideLayout(l10n) : _narrowLayout(l10n)),
+    );
+  }
+
+  bool get _isSimpleGame =>
+      widget.gameType == GameType.blending ||
+      widget.gameType == GameType.wordChaining ||
+      widget.gameType == GameType.minimalPairs;
+
+  // ── Simple (no sound selection needed) ──
+
+  Widget _simpleLayout(AppLocalizations l10n) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              widget.gameType == GameType.blending
+                  ? Icons.extension_rounded
+                  : widget.gameType == GameType.wordChaining
+                      ? Icons.swap_horiz_rounded
+                      : Icons.hearing_rounded,
+              size: 80,
+              color: _accent.withValues(alpha: 0.7),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              _title(l10n),
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w900,
+                color: _accent,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              widget.gameType == GameType.blending
+                  ? l10n.gameBlendingDesc
+                  : widget.gameType == GameType.wordChaining
+                      ? l10n.gameWordChainingDesc
+                      : l10n.gameMinimalPairsDesc,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 40),
+            _playButton(),
+          ],
+        ),
+      ),
     );
   }
 

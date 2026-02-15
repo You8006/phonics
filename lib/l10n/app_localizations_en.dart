@@ -220,4 +220,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectSoundsHint => 'Select sounds, then hit Play!';
+
+  @override
+  String get gameBlending => 'Blending';
+
+  @override
+  String get gameBlendingDesc => 'Build words from sounds';
+
+  @override
+  String get gameWordChaining => 'Word Chain';
+
+  @override
+  String get gameWordChainingDesc => 'Change one sound at a time';
+
+  @override
+  String get gameMinimalPairs => 'Listening';
+
+  @override
+  String get gameMinimalPairsDesc => 'Spot the difference in sounds';
 }

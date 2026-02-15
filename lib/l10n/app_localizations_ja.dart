@@ -220,4 +220,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get selectSoundsHint => '音を選んでPlayを押そう！';
+
+  @override
+  String get gameBlending => 'ブレンディング';
+
+  @override
+  String get gameBlendingDesc => '音をつなげて単語を作ろう';
+
+  @override
+  String get gameWordChaining => 'ワードチェイン';
+
+  @override
+  String get gameWordChainingDesc => '1音だけ変えて次の単語へ';
+
+  @override
+  String get gameMinimalPairs => 'リスニング';
+
+  @override
+  String get gameMinimalPairsDesc => '似た音を聞き分けよう';
 }

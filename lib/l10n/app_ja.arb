@@ -70,5 +70,11 @@
   "questionsLabel": "問題数",
   "gridSizeLabel": "マス目",
   "modeLabel": "モード",
-  "selectSoundsHint": "音を選んでPlayを押そう！"
+  "selectSoundsHint": "音を選んでPlayを押そう！",
+  "gameBlending": "ブレンディング",
+  "gameBlendingDesc": "音をつなげて単語を作ろう",
+  "gameWordChaining": "ワードチェイン",
+  "gameWordChainingDesc": "1音だけ変えて次の単語へ",
+  "gameMinimalPairs": "リスニング",
+  "gameMinimalPairsDesc": "似た音を聞き分けよう"
 }

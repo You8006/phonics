@@ -3,7 +3,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import 'game_setup_screen.dart';
 import 'settings_screen.dart';
-import 'practice_games_screen.dart';
 
 /// ゲームタイプ選択 — ホーム画面
 class GameSelectScreen extends StatelessWidget {
@@ -41,6 +40,27 @@ class GameSelectScreen extends StatelessWidget {
         l10n.gameSpaceShipDesc,
         Icons.rocket_launch_rounded,
         const Color(0xFF00ACC1),
+      ),
+      _GameDef(
+        GameType.blending,
+        l10n.gameBlending,
+        l10n.gameBlendingDesc,
+        Icons.extension_rounded,
+        const Color(0xFF2196F3),
+      ),
+      _GameDef(
+        GameType.wordChaining,
+        l10n.gameWordChaining,
+        l10n.gameWordChainingDesc,
+        Icons.swap_horiz_rounded,
+        const Color(0xFF4CAF50),
+      ),
+      _GameDef(
+        GameType.minimalPairs,
+        l10n.gameMinimalPairs,
+        l10n.gameMinimalPairsDesc,
+        Icons.hearing_rounded,
+        const Color(0xFF7B1FA2),
       ),
     ];
 
@@ -103,100 +123,22 @@ class GameSelectScreen extends StatelessWidget {
             ),
             // ── Game Grid ──
             Expanded(
-              child: ListView(
+              child: GridView.builder(
                 physics: const BouncingScrollPhysics(),
-                children: [
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.92,
-                      crossAxisSpacing: 14,
-                      mainAxisSpacing: 14,
-                    ),
-                    itemCount: games.length,
-                    itemBuilder: (context, i) {
-                      return FadeInUp(
-                        delay: Duration(milliseconds: 80 * i),
-                        child: _GameTypeCard(def: games[i]),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  // ── Practice Lab ──
-                  FadeInUp(
-                    delay: const Duration(milliseconds: 400),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blueGrey.withValues(alpha: 0.15),
-                            blurRadius: 14,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                        border: Border.all(color: Colors.blueGrey.withValues(alpha: 0.08)),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(20),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const PracticeGamesScreen(),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blueGrey.withValues(alpha: 0.1),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(Icons.science_rounded, size: 32, color: Colors.blueGrey),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        l10n.practiceLab,
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w800,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Blending・Word Chaining・Minimal Pairs',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade500,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Icon(Icons.chevron_right_rounded, color: Colors.black38),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                ],
+                padding: const EdgeInsets.only(bottom: 24),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.92,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                ),
+                itemCount: games.length,
+                itemBuilder: (context, i) {
+                  return FadeInUp(
+                    delay: Duration(milliseconds: 80 * i),
+                    child: _GameTypeCard(def: games[i]),
+                  );
+                },
               ),
             ),
           ],

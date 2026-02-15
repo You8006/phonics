@@ -70,5 +70,11 @@
   "questionsLabel": "Questions",
   "gridSizeLabel": "Grid Size",
   "modeLabel": "Mode",
-  "selectSoundsHint": "Select sounds, then hit Play!"
+  "selectSoundsHint": "Select sounds, then hit Play!",
+  "gameBlending": "Blending",
+  "gameBlendingDesc": "Build words from sounds",
+  "gameWordChaining": "Word Chain",
+  "gameWordChainingDesc": "Change one sound at a time",
+  "gameMinimalPairs": "Listening",
+  "gameMinimalPairsDesc": "Spot the difference in sounds"
 }

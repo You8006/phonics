@@ -523,6 +523,42 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'音を選んでPlayを押そう！'**
   String get selectSoundsHint;
+
+  /// No description provided for @gameBlending.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブレンディング'**
+  String get gameBlending;
+
+  /// No description provided for @gameBlendingDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'音をつなげて単語を作ろう'**
+  String get gameBlendingDesc;
+
+  /// No description provided for @gameWordChaining.
+  ///
+  /// In ja, this message translates to:
+  /// **'ワードチェイン'**
+  String get gameWordChaining;
+
+  /// No description provided for @gameWordChainingDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'1音だけ変えて次の単語へ'**
+  String get gameWordChainingDesc;
+
+  /// No description provided for @gameMinimalPairs.
+  ///
+  /// In ja, this message translates to:
+  /// **'リスニング'**
+  String get gameMinimalPairs;
+
+  /// No description provided for @gameMinimalPairsDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'似た音を聞き分けよう'**
+  String get gameMinimalPairsDesc;
 }
 
 class _AppLocalizationsDelegate
