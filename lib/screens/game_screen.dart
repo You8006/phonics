@@ -178,15 +178,19 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
       if (correct) {
         _feedback[item.progressKey] = const Color(0xFF4DB6AC);
         _score++;
-        TtsService.playCorrect();
       } else {
         _feedback[item.progressKey] = const Color(0xFFFF5E5E);
         _feedback[_answer.progressKey] = const Color(0xFF4DB6AC);
-        TtsService.playWrong();
       }
     });
 
-    await Future.delayed(const Duration(milliseconds: 1000));
+    if (correct) {
+      await TtsService.playCorrect();
+    } else {
+      await TtsService.playWrong();
+    }
+
+    await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
     _next();
   }

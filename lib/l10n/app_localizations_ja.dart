@@ -238,4 +238,37 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get gameMinimalPairsDesc => '似た音を聞き分けよう';
+
+  @override
+  String get gameFillInBlank => '穴うめクイズ';
+
+  @override
+  String get gameFillInBlankDesc => '音を聞いて、空白のフォニックスを選ぼう';
+
+  @override
+  String get audioLibrary => '単語ライブラリー';
+
+  @override
+  String get audioLibraryDesc => '100の基本単語を聞こう';
+
+  @override
+  String get lessons => 'レッスン';
+
+  @override
+  String get games => 'ゲーム';
+
+  @override
+  String get library => 'ライブラリー';
+
+  @override
+  String get settings => '設定';
+
+  @override
+  String get searchWords => '単語を検索...';
+
+  @override
+  String get allCategories => 'すべて';
+
+  @override
+  String get tapToListen => 'タップして発音を聞こう';
 }

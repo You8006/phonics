@@ -57,11 +57,8 @@ phonics_voice/output/
 # Duplicate sound effects at root (use assets/audio/effects/ instead)
 /sounds/
 
-# makemovie (Remotion + VOICEVOX 動画制作)
-makemovie/node_modules/
-makemovie/out/
-makemovie/public/audio/
-makemovie/dist/
+# makemovie (Remotion + VOICEVOX 動画制作) - ローカル専用
+makemovie/
 
 # OS specific
 Thumbs.db

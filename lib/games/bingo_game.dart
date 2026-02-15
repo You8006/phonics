@@ -97,7 +97,7 @@ class _BingoGameState extends State<BingoGame> {
     await TtsService.speakSound(_currentTarget);
   }
 
-  void _onCellTap(int index) {
+  Future<void> _onCellTap(int index) async {
     if (_markedIndices.contains(index) || _bingo) return;
 
     // Record attempt for the target
@@ -109,18 +109,17 @@ class _BingoGameState extends State<BingoGame> {
       setState(() {
         _markedIndices.add(index);
       });
-      TtsService.playCorrect();
+      await TtsService.playCorrect();
       _checkBingo();
       if (!_bingo) {
-        Future.delayed(const Duration(milliseconds: 800), () {
-          if (!mounted) return;
-          _nextTarget();
-        });
+        await Future.delayed(const Duration(milliseconds: 300));
+        if (!mounted) return;
+        _nextTarget();
       }
     } else {
       ProgressService.recordWrong(_currentTarget.progressKey);
       setState(() => _wrongCount++);
-      TtsService.playWrong();
+      await TtsService.playWrong();
     }
   }
 

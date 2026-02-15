@@ -79,7 +79,7 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
     await TtsService.speakSound(_target);
   }
 
-  void _handleAnswer(PhonicsItem selected) {
+  Future<void> _handleAnswer(PhonicsItem selected) async {
     if (_answered) return;
     _answered = true; // 即座にガードを設定し、二重タップを防止
 
@@ -97,19 +97,22 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
       if (correct) {
         _feedback[selected.progressKey] = const Color(0xFF4DB6AC);
         _score++;
-        TtsService.playCorrect();
       } else {
         _feedback[selected.progressKey] = const Color(0xFFFF5E5E);
         _feedback[_target.progressKey] = const Color(0xFF4DB6AC);
-        TtsService.playWrong();
       }
     });
 
-    Future.delayed(const Duration(milliseconds: 1200), () {
-      if (!mounted) return;
-      setState(() => _current++);
-      _loadQuestion();
-    });
+    if (correct) {
+      await TtsService.playCorrect();
+    } else {
+      await TtsService.playWrong();
+    }
+
+    await Future.delayed(const Duration(milliseconds: 400));
+    if (!mounted) return;
+    setState(() => _current++);
+    _loadQuestion();
   }
 
   void _showResult() {

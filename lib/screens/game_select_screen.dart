@@ -3,6 +3,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import 'game_setup_screen.dart';
 import 'settings_screen.dart';
+import '../games/fill_in_blank_game.dart';
 
 /// ゲームタイプ選択 — ホーム画面
 class GameSelectScreen extends StatelessWidget {
@@ -61,6 +62,13 @@ class GameSelectScreen extends StatelessWidget {
         l10n.gameMinimalPairsDesc,
         Icons.hearing_rounded,
         const Color(0xFF7B1FA2),
+      ),
+      _GameDef(
+        GameType.fillInBlank,
+        l10n.gameFillInBlank,
+        l10n.gameFillInBlankDesc,
+        Icons.edit_note_rounded,
+        const Color(0xFF8D6E63),
       ),
     ];
 
@@ -184,12 +192,21 @@ class _GameTypeCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => GameSetupScreen(gameType: def.type),
-            ),
-          ),
+          onTap: () {
+            if (def.type == GameType.fillInBlank) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FillInBlankGame()),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => GameSetupScreen(gameType: def.type),
+                ),
+              );
+            }
+          },
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(

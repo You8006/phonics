@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:phonics/services/settings_service.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/game_select_screen.dart';
+import 'screens/main_shell.dart';
 import 'services/tts_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await TtsService.loadVoiceType();
-  runApp(const MyApp());
+  
+  // Initialize services
+  final settingsService = SettingsService();
+  await settingsService.loadSettings();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: settingsService),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -92,7 +105,7 @@ class MyApp extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: kPrimaryColor, size: 28),
       ),
-      home: const GameSelectScreen(),
+      home: const MainShell(),
     );
   }
 }

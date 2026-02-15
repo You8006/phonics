@@ -19,6 +19,7 @@ enum GameType {
   blending,
   wordChaining,
   minimalPairs,
+  fillInBlank,
 }
 
 // ── Setup Screen (Reading Bingo-style) ──
@@ -100,6 +101,8 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         return const Color(0xFF4CAF50);
       case GameType.minimalPairs:
         return const Color(0xFF7B1FA2);
+      case GameType.fillInBlank:
+        return const Color(0xFF8D6E63);
     }
   }
 
@@ -119,6 +122,8 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         return l10n.gameWordChaining;
       case GameType.minimalPairs:
         return l10n.gameMinimalPairs;
+      case GameType.fillInBlank:
+        return l10n.gameFillInBlank;
     }
   }
 
@@ -188,6 +193,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
       case GameType.blending:
       case GameType.wordChaining:
       case GameType.minimalPairs:
+      case GameType.fillInBlank:
         return; // handled by early return above
     }
 

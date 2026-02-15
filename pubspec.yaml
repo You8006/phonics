@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^6.1.0
   animate_do: ^3.3.4
   audioplayers: ^6.1.0
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,9 @@ flutter:
     - assets/audio/male/words/
     - assets/audio/child/sounds/
     - assets/audio/child/words/
+    - assets/audio/words_library/
+    - assets/audio/male/words_library/
+    - assets/audio/child/words_library/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

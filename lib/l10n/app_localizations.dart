@@ -559,6 +559,72 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'似た音を聞き分けよう'**
   String get gameMinimalPairsDesc;
+
+  /// No description provided for @gameFillInBlank.
+  ///
+  /// In ja, this message translates to:
+  /// **'穴うめクイズ'**
+  String get gameFillInBlank;
+
+  /// No description provided for @gameFillInBlankDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'音を聞いて、空白のフォニックスを選ぼう'**
+  String get gameFillInBlankDesc;
+
+  /// No description provided for @audioLibrary.
+  ///
+  /// In ja, this message translates to:
+  /// **'単語ライブラリー'**
+  String get audioLibrary;
+
+  /// No description provided for @audioLibraryDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'100の基本単語を聞こう'**
+  String get audioLibraryDesc;
+
+  /// No description provided for @lessons.
+  ///
+  /// In ja, this message translates to:
+  /// **'レッスン'**
+  String get lessons;
+
+  /// No description provided for @games.
+  ///
+  /// In ja, this message translates to:
+  /// **'ゲーム'**
+  String get games;
+
+  /// No description provided for @library.
+  ///
+  /// In ja, this message translates to:
+  /// **'ライブラリー'**
+  String get library;
+
+  /// No description provided for @settings.
+  ///
+  /// In ja, this message translates to:
+  /// **'設定'**
+  String get settings;
+
+  /// No description provided for @searchWords.
+  ///
+  /// In ja, this message translates to:
+  /// **'単語を検索...'**
+  String get searchWords;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In ja, this message translates to:
+  /// **'すべて'**
+  String get allCategories;
+
+  /// No description provided for @tapToListen.
+  ///
+  /// In ja, this message translates to:
+  /// **'タップして発音を聞こう'**
+  String get tapToListen;
 }
 
 class _AppLocalizationsDelegate

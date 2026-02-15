@@ -112,6 +112,18 @@ const _group7Items = <PhonicsItem>[
   PhonicsItem('ar', 'ar', ipa: 'ɑː', example: 'car'),
 ];
 
+// ── 追加フォニックスパターン (ゲーム・ライブラリで使う単語をカバー) ──
+const _extraItems = <PhonicsItem>[
+  PhonicsItem('ow', 'ow', ipa: 'aʊ', example: 'cow'),
+  PhonicsItem('ay', 'ay', ipa: 'eɪ', example: 'play'),
+  PhonicsItem('ea', 'ee', ipa: 'iː', example: 'eat'),
+  PhonicsItem('ey', 'ee', ipa: 'iː', example: 'key'),
+  PhonicsItem('ew', 'yoo', ipa: 'juː', example: 'new'),
+  PhonicsItem('ir', 'er', ipa: 'ɜːr', example: 'bird'),
+  PhonicsItem('wh', 'wuh', ipa: 'w', example: 'white'),
+  PhonicsItem('ear', 'eer', ipa: 'ɪər', example: 'ear'),
+];
+
 /// 全 7 グループ
 const phonicsGroups = <PhonicsGroup>[
   PhonicsGroup(
@@ -160,7 +172,7 @@ const phonicsGroups = <PhonicsGroup>[
 
 /// 全グループの全アイテムを1リストで返す
 List<PhonicsItem> get allPhonicsItems =>
-    phonicsGroups.expand((g) => g.items).toList();
+    [...phonicsGroups.expand((g) => g.items), ..._extraItems];
 
 /// 最小ペア（1音だけ違う単語）
 class MinimalPair {

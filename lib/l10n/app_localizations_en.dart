@@ -238,4 +238,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameMinimalPairsDesc => 'Spot the difference in sounds';
+
+  @override
+  String get gameFillInBlank => 'Fill-in Quiz';
+
+  @override
+  String get gameFillInBlankDesc => 'Listen and fill in the missing phonics';
+
+  @override
+  String get audioLibrary => 'Word Library';
+
+  @override
+  String get audioLibraryDesc => 'Listen to 100 essential words';
+
+  @override
+  String get lessons => 'Lessons';
+
+  @override
+  String get games => 'Games';
+
+  @override
+  String get library => 'Library';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get searchWords => 'Search words...';
+
+  @override
+  String get allCategories => 'All';
+
+  @override
+  String get tapToListen => 'Tap a word to hear its pronunciation';
 }

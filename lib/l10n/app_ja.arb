@@ -76,5 +76,16 @@
   "gameWordChaining": "ワードチェイン",
   "gameWordChainingDesc": "1音だけ変えて次の単語へ",
   "gameMinimalPairs": "リスニング",
-  "gameMinimalPairsDesc": "似た音を聞き分けよう"
+  "gameMinimalPairsDesc": "似た音を聞き分けよう",
+  "gameFillInBlank": "穴うめクイズ",
+  "gameFillInBlankDesc": "音を聞いて、空白のフォニックスを選ぼう",
+  "audioLibrary": "単語ライブラリー",
+  "audioLibraryDesc": "100の基本単語を聞こう",
+  "lessons": "レッスン",
+  "games": "ゲーム",
+  "library": "ライブラリー",
+  "settings": "設定",
+  "searchWords": "単語を検索...",
+  "allCategories": "すべて",
+  "tapToListen": "タップして発音を聞こう"
 }

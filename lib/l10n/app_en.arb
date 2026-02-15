@@ -76,5 +76,16 @@
   "gameWordChaining": "Word Chain",
   "gameWordChainingDesc": "Change one sound at a time",
   "gameMinimalPairs": "Listening",
-  "gameMinimalPairsDesc": "Spot the difference in sounds"
+  "gameMinimalPairsDesc": "Spot the difference in sounds",
+  "gameFillInBlank": "Fill-in Quiz",
+  "gameFillInBlankDesc": "Listen and fill in the missing phonics",
+  "audioLibrary": "Word Library",
+  "audioLibraryDesc": "Listen to 100 essential words",
+  "lessons": "Lessons",
+  "games": "Games",
+  "library": "Library",
+  "settings": "Settings",
+  "searchWords": "Search words...",
+  "allCategories": "All",
+  "tapToListen": "Tap a word to hear its pronunciation"
 }
