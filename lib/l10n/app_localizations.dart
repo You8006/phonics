@@ -158,12 +158,6 @@ abstract class AppLocalizations {
   /// **'スタンダード'**
   String get gameStandard;
 
-  /// No description provided for @gameLetterToSound.
-  ///
-  /// In ja, this message translates to:
-  /// **'文字→音'**
-  String get gameLetterToSound;
-
   /// No description provided for @gameSingleFocus.
   ///
   /// In ja, this message translates to:
@@ -187,6 +181,12 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'IPAクイズ'**
   String get gameIpaQuiz;
+
+  /// No description provided for @gameIpaQuizDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'音を聞いて正しい発音記号を選ぼう'**
+  String get gameIpaQuizDesc;
 
   /// No description provided for @gameIpaSprint.
   ///
@@ -272,17 +272,11 @@ abstract class AppLocalizations {
   /// **'音を聞いて正しい文字を選ぼう'**
   String get soundToLetterSubtitle;
 
-  /// No description provided for @letterToSoundSubtitle.
+  /// No description provided for @soundToIpaSubtitle.
   ///
   /// In ja, this message translates to:
-  /// **'文字に対応する音を選ぼう'**
-  String get letterToSoundSubtitle;
-
-  /// No description provided for @ipaToLetterSubtitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'発音記号に対応する文字を選ぼう'**
-  String get ipaToLetterSubtitle;
+  /// **'音を聞いて正しい発音記号を選ぼう'**
+  String get soundToIpaSubtitle;
 
   /// No description provided for @soundToLetterTitle.
   ///
@@ -290,17 +284,11 @@ abstract class AppLocalizations {
   /// **'Sound Game'**
   String get soundToLetterTitle;
 
-  /// No description provided for @letterToSoundTitle.
-  ///
-  /// In ja, this message translates to:
-  /// **'Letter Game'**
-  String get letterToSoundTitle;
-
-  /// No description provided for @ipaToLetterTitle.
+  /// No description provided for @soundToIpaTitle.
   ///
   /// In ja, this message translates to:
   /// **'IPA Game'**
-  String get ipaToLetterTitle;
+  String get soundToIpaTitle;
 
   /// No description provided for @play.
   ///
@@ -392,12 +380,6 @@ abstract class AppLocalizations {
   /// **'新しいゲーム 🌟'**
   String get gameNewVariations;
 
-  /// No description provided for @gameSoundMatch.
-  ///
-  /// In ja, this message translates to:
-  /// **'サウンド・マッチ'**
-  String get gameSoundMatch;
-
   /// No description provided for @gameBingo.
   ///
   /// In ja, this message translates to:
@@ -439,12 +421,6 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'音を聞いて正しい文字を選ぼう'**
   String get gameSoundQuizDesc;
-
-  /// No description provided for @gameSoundMatchDesc.
-  ///
-  /// In ja, this message translates to:
-  /// **'音と文字をマッチさせよう'**
-  String get gameSoundMatchDesc;
 
   /// No description provided for @gameBingoDesc.
   ///

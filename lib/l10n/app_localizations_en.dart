@@ -39,9 +39,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameStandard => 'Standard';
 
   @override
-  String get gameLetterToSound => 'Letter→Sound';
-
-  @override
   String get gameSingleFocus => 'Single Focus';
 
   @override
@@ -52,6 +49,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameIpaQuiz => 'IPA Quiz';
+
+  @override
+  String get gameIpaQuizDesc => 'Listen and pick the right IPA symbol';
 
   @override
   String get gameIpaSprint => 'IPA Sprint';
@@ -96,19 +96,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get soundToLetterSubtitle => 'Listen and choose the correct letter';
 
   @override
-  String get letterToSoundSubtitle => 'Choose the sound for this letter';
-
-  @override
-  String get ipaToLetterSubtitle => 'Choose the letter for this IPA symbol';
+  String get soundToIpaSubtitle => 'Listen and choose the correct IPA symbol';
 
   @override
   String get soundToLetterTitle => 'Sound Game';
 
   @override
-  String get letterToSoundTitle => 'Letter Game';
-
-  @override
-  String get ipaToLetterTitle => 'IPA Game';
+  String get soundToIpaTitle => 'IPA Game';
 
   @override
   String get play => 'Play Sound';
@@ -156,9 +150,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameNewVariations => 'New Variations 🌟';
 
   @override
-  String get gameSoundMatch => 'Sound Match';
-
-  @override
   String get gameBingo => 'Bingo';
 
   @override
@@ -178,9 +169,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameSoundQuizDesc => 'Listen and pick the right letter';
-
-  @override
-  String get gameSoundMatchDesc => 'Match sounds to letters';
 
   @override
   String get gameBingoDesc => 'Mark your bingo card!';

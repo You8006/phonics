@@ -6,14 +6,13 @@ import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
 import '../games/bingo_game.dart';
-import '../games/sound_matching_game.dart';
 import 'practice_games_screen.dart';
 
 // ── Game Type Enum ──
 
 enum GameType {
   soundQuiz,
-  soundMatch,
+  ipaQuiz,
   bingo,
   blending,
   wordChaining,
@@ -37,7 +36,6 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
   int _choices = 3;
   int _questions = 10;
   int _gridSize = 3;
-  GameMode _gameMode = GameMode.soundToLetter;
 
   late final List<PhonicsItem> _vowels = shortVowelItems;
   late final List<PhonicsItem> _cons = consonantItems;
@@ -45,7 +43,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
 
   static const _gameAccents = {
     GameType.soundQuiz: AppColors.accentBlue,
-    GameType.soundMatch: AppColors.accentIndigo,
+    GameType.ipaQuiz: AppColors.accentIndigo,
     GameType.bingo: AppColors.primary,
     GameType.blending: AppColors.accentTeal,
     GameType.wordChaining: AppColors.accentGreen,
@@ -93,7 +91,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
   String _title(AppLocalizations l10n) {
     switch (widget.gameType) {
       case GameType.soundQuiz: return l10n.gameSoundQuiz;
-      case GameType.soundMatch: return l10n.gameSoundMatch;
+      case GameType.ipaQuiz: return l10n.gameIpaQuiz;
       case GameType.bingo: return l10n.gameBingo;
       case GameType.blending: return l10n.gameBlending;
       case GameType.wordChaining: return l10n.gameWordChaining;
@@ -128,9 +126,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
 
     final minNeeded = widget.gameType == GameType.bingo
         ? _gridSize * _gridSize
-        : widget.gameType == GameType.soundQuiz
-            ? _choices
-            : 2;
+        : _choices;
 
     if (items.length < minNeeded) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -149,13 +145,15 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
           items: items,
           numOptions: _choices.clamp(2, items.length),
           groupName: 'Sound Quiz',
-          mode: _gameMode,
+          mode: GameMode.soundToLetter,
           maxQuestions: _questions,
         );
-      case GameType.soundMatch:
-        game = SoundMatchingGame(
+      case GameType.ipaQuiz:
+        game = GameScreen(
           items: items,
           numOptions: _choices.clamp(2, items.length),
+          groupName: 'IPA Quiz',
+          mode: GameMode.soundToIpa,
           maxQuestions: _questions,
         );
       case GameType.bingo:
@@ -374,29 +372,13 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
                 color: AppColors.textPrimary)),
         const SizedBox(height: AppSpacing.lg),
 
-        if (widget.gameType == GameType.soundQuiz) ...[
-          _optionRow(l10n.modeLabel, [
-            _Opt('🔊→🔤', GameMode.soundToLetter),
-            _Opt('🔤→🔊', GameMode.letterToSound),
-            _Opt('IPA', GameMode.ipaToLetter),
-          ], _gameMode, (v) => setState(() => _gameMode = v as GameMode)),
-          const SizedBox(height: AppSpacing.lg),
-          _optionRow(l10n.choicesLabel, [
+        if (widget.gameType == GameType.soundQuiz ||
+            widget.gameType == GameType.ipaQuiz) ...[          _optionRow(l10n.choicesLabel, [
             _Opt('2', 2), _Opt('3', 3), _Opt('4', 4),
           ], _choices, (v) => setState(() => _choices = v as int)),
           const SizedBox(height: AppSpacing.lg),
           _optionRow(l10n.questionsLabel, [
             _Opt('5', 5), _Opt('10', 10), _Opt('15', 15), _Opt('20', 20),
-          ], _questions, (v) => setState(() => _questions = v as int)),
-        ],
-
-        if (widget.gameType == GameType.soundMatch) ...[
-          _optionRow(l10n.choicesLabel, [
-            _Opt('3', 3), _Opt('4', 4), _Opt('5', 5),
-          ], _choices, (v) => setState(() => _choices = v as int)),
-          const SizedBox(height: AppSpacing.lg),
-          _optionRow(l10n.questionsLabel, [
-            _Opt('5', 5), _Opt('10', 10), _Opt('15', 15),
           ], _questions, (v) => setState(() => _questions = v as int)),
         ],
 

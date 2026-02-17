@@ -39,9 +39,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameStandard => 'スタンダード';
 
   @override
-  String get gameLetterToSound => '文字→音';
-
-  @override
   String get gameSingleFocus => '単文字に集中';
 
   @override
@@ -52,6 +49,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get gameIpaQuiz => 'IPAクイズ';
+
+  @override
+  String get gameIpaQuizDesc => '音を聞いて正しい発音記号を選ぼう';
 
   @override
   String get gameIpaSprint => 'IPAスプリント';
@@ -96,19 +96,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get soundToLetterSubtitle => '音を聞いて正しい文字を選ぼう';
 
   @override
-  String get letterToSoundSubtitle => '文字に対応する音を選ぼう';
-
-  @override
-  String get ipaToLetterSubtitle => '発音記号に対応する文字を選ぼう';
+  String get soundToIpaSubtitle => '音を聞いて正しい発音記号を選ぼう';
 
   @override
   String get soundToLetterTitle => 'Sound Game';
 
   @override
-  String get letterToSoundTitle => 'Letter Game';
-
-  @override
-  String get ipaToLetterTitle => 'IPA Game';
+  String get soundToIpaTitle => 'IPA Game';
 
   @override
   String get play => '再生';
@@ -156,9 +150,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameNewVariations => '新しいゲーム 🌟';
 
   @override
-  String get gameSoundMatch => 'サウンド・マッチ';
-
-  @override
   String get gameBingo => 'おとビンゴ';
 
   @override
@@ -178,9 +169,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get gameSoundQuizDesc => '音を聞いて正しい文字を選ぼう';
-
-  @override
-  String get gameSoundMatchDesc => '音と文字をマッチさせよう';
 
   @override
   String get gameBingoDesc => 'ビンゴカードを埋めよう！';

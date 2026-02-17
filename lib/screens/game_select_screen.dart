@@ -10,7 +10,7 @@ class GameSelectScreen extends StatelessWidget {
 
   static const _gameColors = [
     AppColors.accentBlue,    // Sound Quiz
-    AppColors.accentIndigo,  // Sound Match
+    AppColors.accentIndigo,  // IPA Quiz
     AppColors.primary,       // Bingo
     AppColors.accentTeal,    // Blending
     AppColors.accentGreen,   // Word Chaining
@@ -25,8 +25,8 @@ class GameSelectScreen extends StatelessWidget {
     final games = [
       _GameDef(GameType.soundQuiz, l10n.gameSoundQuiz, l10n.gameSoundQuizDesc,
           Icons.volume_up_rounded, _gameColors[0]),
-      _GameDef(GameType.soundMatch, l10n.gameSoundMatch, l10n.gameSoundMatchDesc,
-          Icons.graphic_eq_rounded, _gameColors[1]),
+      _GameDef(GameType.ipaQuiz, l10n.gameIpaQuiz, l10n.gameIpaQuizDesc,
+          Icons.translate_rounded, _gameColors[1]),
       _GameDef(GameType.bingo, l10n.gameBingo, l10n.gameBingoDesc,
           Icons.grid_on_rounded, _gameColors[2]),
       _GameDef(GameType.blending, l10n.gameBlending, l10n.gameBlendingDesc,

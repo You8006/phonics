@@ -125,12 +125,20 @@ class TtsService {
     }
   }
 
-  /// 単語ライブラリーの単語を再生
+  /// 単語ライブラリーの単語を再生（ゆっくり → 間 → 通常速度）
   static Future<void> speakLibraryWord(String word) async {
     final key = word.toLowerCase().replaceAll(' ', '_');
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      // 1) ゆっくり再生
+      final slowPath = '$prefix/words_library/word_${key}_slow.mp3';
+      await _player.play(AssetSource(slowPath));
+      // 再生完了を待つ
+      await _player.onPlayerComplete.first;
+      // 2) 少し間を空ける
+      await Future.delayed(const Duration(milliseconds: 150));
+      // 3) 通常速度で再生
       await _player.play(AssetSource('$prefix/words_library/word_$key.mp3'));
     } catch (e) {
       // フォールバック: TTS で読み上げ（声タイプ反映）

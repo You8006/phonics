@@ -8,8 +8,7 @@ import 'result_screen.dart';
 
 enum GameMode {
   soundToLetter,
-  letterToSound,
-  ipaToLetter,
+  soundToIpa,
 }
 
 extension GameModeLabel on GameMode {
@@ -17,10 +16,8 @@ extension GameModeLabel on GameMode {
     switch (this) {
       case GameMode.soundToLetter:
         return l10n.soundToLetterTitle;
-      case GameMode.letterToSound:
-        return l10n.letterToSoundTitle;
-      case GameMode.ipaToLetter:
-        return l10n.ipaToLetterTitle;
+      case GameMode.soundToIpa:
+        return l10n.soundToIpaTitle;
     }
   }
 
@@ -28,10 +25,8 @@ extension GameModeLabel on GameMode {
     switch (this) {
       case GameMode.soundToLetter:
         return l10n.soundToLetterSubtitle;
-      case GameMode.letterToSound:
-        return l10n.letterToSoundSubtitle;
-      case GameMode.ipaToLetter:
-        return l10n.ipaToLetterSubtitle;
+      case GameMode.soundToIpa:
+        return l10n.soundToIpaSubtitle;
     }
   }
 }
@@ -138,7 +133,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
     switch (widget.mode) {
       case GameMode.soundToLetter:
-      case GameMode.ipaToLetter:
         _options = picks
             .map(
               (item) => _GameOption(
@@ -149,7 +143,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
             )
             .toList();
         break;
-      case GameMode.letterToSound:
+      case GameMode.soundToIpa:
         _options = picks
             .map(
               (item) => _GameOption(
@@ -335,65 +329,41 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildPrompt(AppLocalizations l10n) {
-    if (widget.mode == GameMode.soundToLetter || widget.mode == GameMode.ipaToLetter) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ScaleTransition(
-              scale: _scaleAnim,
-              child: GestureDetector(
-                onTap: _playSound,
-                child: Container(
-                  width: 140,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 8),
-                    boxShadow: [
-                       BoxShadow(
-                         color: AppColors.primary.withValues(alpha: 0.1),
-                         blurRadius: 30,
-                         offset: const Offset(0, 10),
-                       )
-                    ],
-                  ),
-                  child: Icon(
-                    Icons.volume_up_rounded,
-                    size: 64,
-                    color: AppColors.primary,
-                  ),
-                ),
+    // Both modes: play sound and choose
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ScaleTransition(
+          scale: _scaleAnim,
+          child: GestureDetector(
+            onTap: _playSound,
+            child: Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 8),
+                boxShadow: [
+                   BoxShadow(
+                     color: AppColors.primary.withValues(alpha: 0.1),
+                     blurRadius: 30,
+                     offset: const Offset(0, 10),
+                   )
+                ],
               ),
-            ),
-            const SizedBox(height: 24),
-            Text(l10n.listenSound, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
-            if (widget.mode == GameMode.ipaToLetter)
-               Text('/${_answer.ipa}/', style: TextStyle(fontSize: 24, color: AppColors.textTertiary)),
-          ],
-        );
-    } else {
-        // Letter question
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _answer.letter,
-              style: TextStyle(
-                fontSize: 100,
-                fontWeight: FontWeight.w900,
+              child: Icon(
+                Icons.volume_up_rounded,
+                size: 64,
                 color: AppColors.primary,
               ),
             ),
-            const SizedBox(height: 16),
-            IconButton(
-              onPressed: _playSound, 
-              icon: Icon(Icons.hearing_rounded, color: AppColors.textTertiary),
-              tooltip: 'Play sound',
-            )
-          ],
-        );
-    }
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(l10n.listenSound, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
+      ],
+    );
   }
 
   @override

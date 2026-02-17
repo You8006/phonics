@@ -283,19 +283,20 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
-                          final cols = _q.choices.length <= 3 ? 1 : 2;
-                          final rows = (_q.choices.length / cols).ceil();
+                          final count = _q.choices.length;
+                          final cols = count <= 2 ? 1 : 2;
+                          final rows = (count / cols).ceil();
                           final totalVSpacing = (rows - 1) * 12;
                           final cellH = (constraints.maxHeight - totalVSpacing) / rows;
                           final totalHSpacing = (cols - 1) * 12;
                           final cellW = (constraints.maxWidth - totalHSpacing) / cols;
-                          final ratio = (cellW / cellH).clamp(0.5, 4.0);
+                          final ratio = cellW / cellH.clamp(1.0, double.infinity);
 
                           return GridView.count(
                             crossAxisCount: cols,
                             mainAxisSpacing: 12,
                             crossAxisSpacing: 12,
-                            childAspectRatio: ratio,
+                            childAspectRatio: ratio.clamp(0.5, double.infinity),
                             physics: const NeverScrollableScrollPhysics(),
                             children: _q.choices.asMap().entries.map((e) {
                           return _buildChoiceCard(e.value);
