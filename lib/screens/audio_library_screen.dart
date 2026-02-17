@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 import 'phonics_dictionary_screen.dart';
 
 /// 表示モード
@@ -37,14 +37,6 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     return words;
   }
 
-  WordCategory? get _currentCategory {
-    if (_selectedCategory == null) return null;
-    return wordCategories.firstWhere(
-      (c) => c.id == _selectedCategory,
-      orElse: () => wordCategories.first,
-    );
-  }
-
   Future<void> _playWord(String word) async {
     setState(() => _playingWord = word);
     await TtsService.speakLibraryWord(word);
@@ -56,40 +48,37 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
       body: Column(
         children: [
           // ── 表示モード切替 ──
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-            child: FadeInDown(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(3),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _ViewModeTab(
-                        label: '📚 ことば',
-                        selected: _viewMode == LibraryViewMode.words,
-                        onTap: () => setState(
-                            () => _viewMode = LibraryViewMode.words),
-                      ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.surfaceDim,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+              padding: const EdgeInsets.all(3),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _ViewModeTab(
+                      label: '📚 ことば',
+                      selected: _viewMode == LibraryViewMode.words,
+                      onTap: () => setState(
+                          () => _viewMode = LibraryViewMode.words),
                     ),
-                    Expanded(
-                      child: _ViewModeTab(
-                        label: '🔊 おとずかん',
-                        selected:
-                            _viewMode == LibraryViewMode.phonicsDictionary,
-                        onTap: () => setState(() =>
-                            _viewMode = LibraryViewMode.phonicsDictionary),
-                      ),
+                  ),
+                  Expanded(
+                    child: _ViewModeTab(
+                      label: '🔊 おとずかん',
+                      selected:
+                          _viewMode == LibraryViewMode.phonicsDictionary,
+                      onTap: () => setState(() =>
+                          _viewMode = LibraryViewMode.phonicsDictionary),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -113,8 +102,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-            child: FadeInDown(
-              child: Column(
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     Row(
@@ -126,10 +114,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                         const SizedBox(width: 10),
                         Text(
                           'Word Library',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.w900,
-                            color: Color(0xFF2A2A2A),
+                            color: AppColors.textPrimary,
                           ),
                         ),
                         const Spacer(),
@@ -139,15 +127,15 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFF8E3C).withValues(alpha: 0.12),
+                            color: AppColors.primary.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             '${wordLibrary.length} words',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFFFF8E3C),
+                              color: AppColors.primary,
                             ),
                           ),
                         ),
@@ -158,51 +146,40 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                       'タップして単語の発音を聞いてみよう',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey.shade500,
+                        color: AppColors.textSecondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
           ),
+        ),
 
           // ── 検索バー ──
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-              child: FadeInDown(
-                delay: const Duration(milliseconds: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    onChanged: (v) => setState(() => _searchQuery = v),
-                    decoration: InputDecoration(
-                      hintText: 'Search words...',
-                      hintStyle: TextStyle(
-                        color: Colors.grey.shade400,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search_rounded,
-                        color: Colors.grey.shade400,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
+                child: TextField(
+                  onChanged: (v) => setState(() => _searchQuery = v),
+                  decoration: InputDecoration(
+                    hintText: 'Search words...',
+                    hintStyle: TextStyle(
+                      color: AppColors.textTertiary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      color: AppColors.textTertiary,
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
                     ),
                   ),
                 ),
@@ -214,34 +191,31 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
           SliverToBoxAdapter(
             child: SizedBox(
               height: 48,
-              child: FadeInDown(
-                delay: const Duration(milliseconds: 150),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: wordCategories.length + 1, // +1 for "All"
-                  itemBuilder: (context, i) {
-                    if (i == 0) {
-                      return _CategoryChip(
-                        label: 'すべて',
-                        emoji: '🌐',
-                        color: const Color(0xFFFF8E3C),
-                        selected: _selectedCategory == null,
-                        onTap: () =>
-                            setState(() => _selectedCategory = null),
-                      );
-                    }
-                    final cat = wordCategories[i - 1];
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: wordCategories.length + 1, // +1 for "All"
+                itemBuilder: (context, i) {
+                  if (i == 0) {
                     return _CategoryChip(
-                      label: cat.nameJa,
-                      emoji: cat.icon,
-                      color: Color(cat.color),
-                      selected: _selectedCategory == cat.id,
+                      label: 'すべて',
+                      emoji: '🌐',
+                      color: AppColors.primary,
+                      selected: _selectedCategory == null,
                       onTap: () =>
-                          setState(() => _selectedCategory = cat.id),
+                          setState(() => _selectedCategory = null),
                     );
-                  },
-                ),
+                  }
+                  final cat = wordCategories[i - 1];
+                  return _CategoryChip(
+                    label: cat.nameJa,
+                    emoji: cat.icon,
+                    color: Color(cat.color),
+                    selected: _selectedCategory == cat.id,
+                    onTap: () =>
+                        setState(() => _selectedCategory = cat.id),
+                  );
+                },
               ),
             ),
           ),
@@ -261,16 +235,13 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   );
                   final isPlaying = _playingWord == word.word;
 
-                  return FadeInUp(
-                    delay: Duration(milliseconds: 30 * (index % 15)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: _WordCard(
-                        word: word,
-                        category: cat,
-                        isPlaying: isPlaying,
-                        onPlay: () => _playWord(word.word),
-                      ),
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: _WordCard(
+                      word: word,
+                      category: cat,
+                      isPlaying: isPlaying,
+                      onPlay: () => _playWord(word.word),
                     ),
                   );
                 },
@@ -307,17 +278,8 @@ class _ViewModeTab extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ]
-              : [],
+          color: selected ? AppColors.surface : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
         child: Text(
           label,
@@ -325,7 +287,7 @@ class _ViewModeTab extends StatelessWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: selected ? const Color(0xFF2A2A2A) : Colors.grey.shade500,
+            color: selected ? AppColors.textPrimary : AppColors.textSecondary,
           ),
         ),
       ),
@@ -360,21 +322,12 @@ class _CategoryChip extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? color : Colors.white,
-            borderRadius: BorderRadius.circular(24),
+            color: selected ? color : AppColors.surface,
+            borderRadius: BorderRadius.circular(AppRadius.xxl),
             border: Border.all(
-              color: selected ? color : Colors.grey.shade200,
+              color: selected ? color : AppColors.surfaceDim,
               width: selected ? 2 : 1,
             ),
-            boxShadow: selected
-                ? [
-                    BoxShadow(
-                      color: color.withValues(alpha: 0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ]
-                : [],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -386,7 +339,7 @@ class _CategoryChip extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: selected ? Colors.white : Colors.grey.shade700,
+                  color: selected ? AppColors.onPrimary : AppColors.textPrimary,
                 ),
               ),
             ],
@@ -418,8 +371,8 @@ class _WordCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         boxShadow: [
           BoxShadow(
             color: (isPlaying ? catColor : Colors.black).withValues(alpha: isPlaying ? 0.15 : 0.04),
@@ -428,7 +381,7 @@ class _WordCard extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: isPlaying ? catColor.withValues(alpha: 0.5) : Colors.grey.shade100,
+          color: isPlaying ? catColor.withValues(alpha: 0.5) : AppColors.surfaceDim,
           width: isPlaying ? 2 : 1,
         ),
       ),
@@ -436,7 +389,7 @@ class _WordCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onPlay,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Row(
@@ -450,13 +403,13 @@ class _WordCard extends StatelessWidget {
                     color: isPlaying
                         ? catColor
                         : catColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(
                     isPlaying
                         ? Icons.volume_up_rounded
                         : Icons.play_arrow_rounded,
-                    color: isPlaying ? Colors.white : catColor,
+                    color: isPlaying ? AppColors.onPrimary : catColor,
                     size: 26,
                   ),
                 ),
@@ -474,7 +427,7 @@ class _WordCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
-                              color: isPlaying ? catColor : const Color(0xFF2A2A2A),
+                              color: isPlaying ? catColor : AppColors.textPrimary,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -482,7 +435,7 @@ class _WordCard extends StatelessWidget {
                             word.meaning,
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey.shade500,
+                              color: AppColors.textSecondary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -494,7 +447,7 @@ class _WordCard extends StatelessWidget {
                           word.phonicsNote,
                           style: TextStyle(
                             fontSize: 11,
-                            color: Colors.grey.shade400,
+                            color: AppColors.textTertiary,
                             fontWeight: FontWeight.w500,
                           ),
                           maxLines: 1,
@@ -513,7 +466,7 @@ class _WordCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: catColor.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Text(
                     category.icon,

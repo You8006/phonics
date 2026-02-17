@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
-import '../models/phonics_data.dart';
-import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
+import '../widgets/voice_picker.dart';
 import 'game_select_screen.dart';
 import 'settings_screen.dart';
 import 'audio_library_screen.dart';
 
-/// メインナビゲーションシェル: BottomNavigationBar で4画面を切り替え
+/// メインナビゲーションシェル
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
@@ -18,27 +17,24 @@ class _MainShellState extends State<MainShell> {
   int _currentIndex = 1;
 
   final _pages = const <Widget>[
-    HomeScreen(),          // レッスン
-    GameSelectScreen(),    // ゲーム
-    AudioLibraryScreen(),  // 音声ライブラリー
-    _SettingsPage(),       // 設定
+    HomeScreen(),
+    GameSelectScreen(),
+    AudioLibraryScreen(),
+    _SettingsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
+        decoration: const BoxDecoration(
+          color: AppColors.surface,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 20,
-              offset: const Offset(0, -4),
+              color: Color(0x0A000000),
+              blurRadius: 16,
+              offset: Offset(0, -2),
             ),
           ],
         ),
@@ -52,28 +48,28 @@ class _MainShellState extends State<MainShell> {
                   icon: Icons.auto_stories_rounded,
                   label: 'Lessons',
                   isSelected: _currentIndex == 0,
-                  color: const Color(0xFFE8604C),
+                  color: AppColors.navLessons,
                   onTap: () => setState(() => _currentIndex = 0),
                 ),
                 _NavItem(
                   icon: Icons.sports_esports_rounded,
                   label: 'Games',
                   isSelected: _currentIndex == 1,
-                  color: const Color(0xFF4ECDC4),
+                  color: AppColors.navGames,
                   onTap: () => setState(() => _currentIndex = 1),
                 ),
                 _NavItem(
                   icon: Icons.music_note_rounded,
                   label: 'Library',
                   isSelected: _currentIndex == 2,
-                  color: const Color(0xFF2ECC71),
+                  color: AppColors.navLibrary,
                   onTap: () => setState(() => _currentIndex = 2),
                 ),
                 _NavItem(
                   icon: Icons.tune_rounded,
                   label: 'Settings',
                   isSelected: _currentIndex == 3,
-                  color: const Color(0xFF9B59B6),
+                  color: AppColors.navSettings,
                   onTap: () => setState(() => _currentIndex = 3),
                 ),
               ],
@@ -108,24 +104,20 @@ class _NavItem extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
         padding: EdgeInsets.symmetric(
           horizontal: isSelected ? 16 : 12,
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? color.withValues(alpha: 0.12) : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
+          color: isSelected ? color.withValues(alpha: 0.10) : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 24,
-              color: isSelected ? color : Colors.grey.shade400,
-            ),
+            Icon(icon, size: 22, color: isSelected ? color : AppColors.textTertiary),
             if (isSelected) ...[
               const SizedBox(width: 6),
               Text(
@@ -144,7 +136,7 @@ class _NavItem extends StatelessWidget {
   }
 }
 
-// ── 設定ページ（既存の設定画面からボイス選択等をラップ） ──
+// ── 設定ページ ──
 
 class _SettingsPage extends StatefulWidget {
   const _SettingsPage();
@@ -157,61 +149,46 @@ class _SettingsPageState extends State<_SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FadeInDown(
-                child: const Text(
-                  '⚙️ Settings',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0xFF2A2A2A),
-                  ),
+              const Text(
+                '⚙️ Settings',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 8),
-              FadeInDown(
-                delay: const Duration(milliseconds: 50),
-                child: Text(
-                  'アプリの設定を変更できます',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade500,
-                    fontWeight: FontWeight.w600,
-                  ),
+              const SizedBox(height: 4),
+              const Text(
+                'アプリの設定を変更できます',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textSecondary,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.xxl),
 
-              // ── 音声設定 ──
-              FadeInUp(
-                delay: const Duration(milliseconds: 100),
-                child: _SettingsTile(
-                  icon: Icons.record_voice_over_rounded,
-                  title: 'Voice Settings',
-                  subtitle: '音声の種類を変更',
-                  color: const Color(0xFF3A86FF),
-                  onTap: () => _showVoicePicker(context),
-                ),
+              _SettingsTile(
+                icon: Icons.record_voice_over_rounded,
+                title: 'Voice Settings',
+                subtitle: '音声の種類を変更',
+                color: AppColors.accentBlue,
+                onTap: () => showVoicePicker(context, () {
+                  if (mounted) setState(() {});
+                }),
               ),
-
-              const SizedBox(height: 12),
-
-              // ── バージョン情報 ──
-              FadeInUp(
-                delay: const Duration(milliseconds: 150),
-                child: _SettingsTile(
-                  icon: Icons.info_outline_rounded,
-                  title: 'About',
-                  subtitle: 'Pop Phonics v1.0.0',
-                  color: const Color(0xFF9B59B6),
-                  onTap: () {},
-                ),
+              const SizedBox(height: AppSpacing.md),
+              _SettingsTile(
+                icon: Icons.info_outline_rounded,
+                title: 'About',
+                subtitle: 'Pop Phonics v1.0.0',
+                color: AppColors.accentPurple,
+                onTap: () {},
               ),
             ],
           ),
@@ -219,97 +196,7 @@ class _SettingsPageState extends State<_SettingsPage> {
       ),
     );
   }
-
-  void _showVoicePicker(BuildContext context) {
-    // 既存の HomeScreen のボイスピッカーと同じロジック
-    import_showVoicePicker(context, () {
-      if (mounted) setState(() {});
-    });
-  }
 }
-
-/// ボイスピッカーを表示するヘルパー
-void import_showVoicePicker(BuildContext context, VoidCallback onChanged) {
-  showModalBottomSheet(
-    context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (ctx) {
-      return SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                '音声を選択',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const SizedBox(height: 16),
-              ...VoiceType.values.map((type) {
-                final info = _voiceInfo(type);
-                return _VoiceOptionTile(
-                  icon: info['icon'] as IconData,
-                  label: info['label'] as String,
-                  subtitle: info['subtitle'] as String,
-                  selected: TtsService.voiceType == type,
-                  onTap: () async {
-                    await TtsService.setVoiceType(type);
-                    onChanged();
-                    if (ctx.mounted) Navigator.pop(ctx);
-                    // プレビュー
-                    if (allPhonicsItems.isNotEmpty) {
-                      TtsService.speakSound(allPhonicsItems.first);
-                    }
-                  },
-                );
-              }),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Map<String, dynamic> _voiceInfo(VoiceType type) {
-  switch (type) {
-    case VoiceType.female:
-      return {
-        'icon': Icons.face_3,
-        'label': 'Female (女性)',
-        'subtitle': 'Jenny — 温かみのある声',
-      };
-    case VoiceType.male:
-      return {
-        'icon': Icons.face,
-        'label': 'Male (男性)',
-        'subtitle': 'Guy — クリアな声',
-      };
-    case VoiceType.child:
-      return {
-        'icon': Icons.child_care,
-        'label': 'Child (子供)',
-        'subtitle': 'Ana — かわいい子供の声',
-      };
-  }
-}
-
-// ── 設定タイル ──
 
 class _SettingsTile extends StatelessWidget {
   const _SettingsTile({
@@ -329,34 +216,24 @@ class _SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: AppDecoration.card(),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Row(
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    color: color.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
-                  child: Icon(icon, color: color, size: 22),
+                  child: Icon(icon, color: color, size: 20),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -366,102 +243,26 @@ class _SettingsTile extends StatelessWidget {
                       Text(
                         title,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       Text(
                         subtitle,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 13,
-                          color: Colors.grey.shade500,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.chevron_right_rounded,
-                  color: Colors.grey.shade400,
+                  color: AppColors.textTertiary,
+                  size: 20,
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ── 音声選択オプション ──
-
-class _VoiceOptionTile extends StatelessWidget {
-  const _VoiceOptionTile({
-    required this.icon,
-    required this.label,
-    required this.subtitle,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final String subtitle;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final accentColor = const Color(0xFFFF8E3C);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Material(
-        color: selected ? accentColor.withValues(alpha: 0.08) : Colors.transparent,
-        borderRadius: BorderRadius.circular(14),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: selected ? accentColor : Colors.grey.shade200,
-                width: selected ? 2 : 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  icon,
-                  size: 32,
-                  color: selected ? accentColor : Colors.grey.shade600,
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: selected ? accentColor : Colors.black87,
-                        ),
-                      ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey.shade500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (selected)
-                  Icon(Icons.check_circle_rounded, color: accentColor, size: 24),
               ],
             ),
           ),

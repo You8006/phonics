@@ -60,7 +60,7 @@ const _group1Items = <PhonicsItem>[
 
 const _group2Items = <PhonicsItem>[
   PhonicsItem('ck', 'kuh', ipa: 'k', example: 'sock'),
-  PhonicsItem('e', 'eh', ipa: 'e', example: 'egg'),
+  PhonicsItem('e', 'eh', ipa: 'ɛ', example: 'egg'),
   PhonicsItem('h', 'huh', ipa: 'h', example: 'hat'),
   PhonicsItem('r', 'rrr', ipa: 'r', example: 'rat'),
   PhonicsItem('m', 'mmm', ipa: 'm', example: 'map'),

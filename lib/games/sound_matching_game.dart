@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../screens/result_screen.dart';
+import '../theme/app_theme.dart';
 
 class SoundMatchingGame extends StatefulWidget {
   final List<PhonicsItem> items;
@@ -64,11 +64,27 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
       _target = _queue[_current];
 
+      // 同じ letter / 同じ ipa のアイテムを除外（oo/oo, th/th, ou/ow 等の重複防止）
       final distractors = List<PhonicsItem>.from(widget.items)
-        ..removeWhere((item) => item.progressKey == _target.progressKey)
+        ..removeWhere((item) =>
+            item.progressKey == _target.progressKey ||
+            item.letter == _target.letter ||
+            item.ipa == _target.ipa)
         ..shuffle(_rng);
 
-      _options = [_target, ...distractors.take(widget.numOptions - 1)]
+      final uniqueDistractors = <PhonicsItem>[];
+      final usedLetters = <String>{_target.letter};
+      final usedIpas = <String>{_target.ipa};
+      for (final item in distractors) {
+        if (uniqueDistractors.length >= widget.numOptions - 1) break;
+        if (!usedLetters.contains(item.letter) && !usedIpas.contains(item.ipa)) {
+          uniqueDistractors.add(item);
+          usedLetters.add(item.letter);
+          usedIpas.add(item.ipa);
+        }
+      }
+
+      _options = [_target, ...uniqueDistractors]
         ..shuffle(_rng);
     });
 
@@ -95,11 +111,11 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
     setState(() {
       if (correct) {
-        _feedback[selected.progressKey] = const Color(0xFF4DB6AC);
+        _feedback[selected.progressKey] = AppColors.correct;
         _score++;
       } else {
-        _feedback[selected.progressKey] = const Color(0xFFFF5E5E);
-        _feedback[_target.progressKey] = const Color(0xFF4DB6AC);
+        _feedback[selected.progressKey] = AppColors.wrong;
+        _feedback[_target.progressKey] = AppColors.correct;
       }
     });
 
@@ -132,14 +148,14 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       appBar: AppBar(
-        leading: const CloseButton(color: Colors.black54),
+        leading: const CloseButton(color: AppColors.textSecondary),
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+            color: AppColors.surfaceDim,
+            borderRadius: BorderRadius.circular(AppRadius.xl),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -149,7 +165,7 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
               Text(
                 '$_score / $_total',
                 style: const TextStyle(
-                    color: Colors.black87,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.w800,
                     fontSize: 16),
               ),
@@ -171,9 +187,9 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
                 child: LinearProgressIndicator(
                   value: _total > 0 ? _current / _total : 0,
                   minHeight: 6,
-                  backgroundColor: Colors.grey.shade200,
+                  backgroundColor: AppColors.surfaceDim,
                   valueColor:
-                      const AlwaysStoppedAnimation(Color(0xFF5C6BC0)),
+                      const AlwaysStoppedAnimation(AppColors.accentIndigo),
                 ),
               ),
             ),
@@ -181,9 +197,8 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
             // Sound Button
             Expanded(
               flex: 3,
-              child: FadeInDown(
+              child: Center(
                 key: ValueKey(_current),
-                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -193,25 +208,17 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
                           width: 140,
                           height: 140,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColors.surface,
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: const Color(0xFF5C6BC0)
+                                color: AppColors.accentIndigo
                                     .withValues(alpha: 0.3),
                                 width: 8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF5C6BC0)
-                                    .withValues(alpha: 0.15),
-                                blurRadius: 30,
-                                offset: const Offset(0, 10),
-                              )
-                            ],
                           ),
                           child: const Icon(
                             Icons.volume_up_rounded,
                             size: 64,
-                            color: Color(0xFF5C6BC0),
+                            color: AppColors.accentIndigo,
                           ),
                         ),
                       ),
@@ -220,13 +227,12 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
                         'Listen & Choose',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade500,
+                          color: AppColors.textTertiary,
                           fontSize: 16,
                         ),
                       ),
                     ],
                   ),
-                ),
               ),
             ),
 
@@ -252,17 +258,13 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
                       childAspectRatio: ratio,
                       physics: const NeverScrollableScrollPhysics(),
                       children: _options.asMap().entries.map((entry) {
-                        final idx = entry.key;
                         final item = entry.value;
                         final color = _feedback[item.progressKey];
 
-                        return FadeInUp(
-                          delay: Duration(milliseconds: 80 * idx),
-                          child: _OptionCard(
+                        return _OptionCard(
                             label: item.letter,
                             color: color,
                             onTap: () => _handleAnswer(item),
-                          ),
                         );
                       }).toList(),
                     );
@@ -290,30 +292,22 @@ class _OptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = color ?? Colors.white;
-    final textColor = color != null ? Colors.white : Colors.black87;
-    final borderColor = color ?? Colors.grey.shade200;
+    final bg = color ?? AppColors.surface;
+    final textColor = color != null ? AppColors.onPrimary : AppColors.textPrimary;
+    final borderColor = color ?? AppColors.surfaceDim;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppRadius.xxl),
         border: Border.all(color: borderColor, width: 2),
-        boxShadow: [
-          if (color == null)
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppRadius.xxl),
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,

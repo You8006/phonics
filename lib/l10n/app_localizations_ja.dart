@@ -162,9 +162,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameBingo => 'おとビンゴ';
 
   @override
-  String get gameSpaceShip => 'スペース・シップ';
-
-  @override
   String get gameCapitalMatch => '大文字・小文字';
 
   @override
@@ -187,9 +184,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get gameBingoDesc => 'ビンゴカードを埋めよう！';
-
-  @override
-  String get gameSpaceShipDesc => '宇宙で文字をキャッチ！';
 
   @override
   String get gameCapitalMatchDesc => '大文字と小文字をマッチ';

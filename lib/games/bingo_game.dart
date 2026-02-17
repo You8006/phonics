@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 
 class BingoGame extends StatefulWidget {
   final List<PhonicsItem> items;
@@ -56,10 +56,24 @@ class _BingoGameState extends State<BingoGame> {
     }
     pool.shuffle(_rng);
 
+    // 同じ letter のアイテムをボードに載せない（oo/oo, th/th の視覚重複防止）
     final unique = <String, PhonicsItem>{};
+    final usedLetters = <String>{};
     for (final item in pool) {
       if (unique.length >= totalCells) break;
-      unique.putIfAbsent(item.progressKey, () => item);
+      if (!unique.containsKey(item.progressKey) && !usedLetters.contains(item.letter)) {
+        unique[item.progressKey] = item;
+        usedLetters.add(item.letter);
+      }
+    }
+    // letter重複回避で不足した場合は、progressKey重複のみ回避して埋める
+    if (unique.length < totalCells) {
+      for (final item in pool) {
+        if (unique.length >= totalCells) break;
+        if (!unique.containsKey(item.progressKey)) {
+          unique[item.progressKey] = item;
+        }
+      }
     }
 
     setState(() {
@@ -79,7 +93,7 @@ class _BingoGameState extends State<BingoGame> {
 
     if (availableIndices.isEmpty) {
       setState(() => _bingo = true);
-      TtsService.playCorrect();
+      // _onCellTap で既に playCorrect() 済みなので二重再生しない
       return;
     }
 
@@ -167,17 +181,17 @@ class _BingoGameState extends State<BingoGame> {
 
   @override
   Widget build(BuildContext context) {
-    final accentColor = const Color(0xFFFF8E3C);
+    final accentColor = AppColors.primary;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       appBar: AppBar(
-        leading: const CloseButton(color: Colors.black54),
+        leading: const CloseButton(color: AppColors.textSecondary),
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+            color: AppColors.surfaceDim,
+            borderRadius: BorderRadius.circular(AppRadius.xl),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -187,7 +201,7 @@ class _BingoGameState extends State<BingoGame> {
               Text(
                 '${_markedIndices.length} / ${_boardItems.length}',
                 style: const TextStyle(
-                    color: Colors.black87,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.w800,
                     fontSize: 16),
               ),
@@ -204,21 +218,20 @@ class _BingoGameState extends State<BingoGame> {
             const SizedBox(height: 12),
 
             // Sound prompt
-            FadeInDown(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: _bingo ? null : _playSound,
-                  borderRadius: BorderRadius.circular(24),
-                  splashColor: accentColor.withValues(alpha: 0.2),
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-                    decoration: BoxDecoration(
-                      color: accentColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: accentColor.withValues(alpha: 0.3)),
-                    ),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: _bingo ? null : _playSound,
+                borderRadius: BorderRadius.circular(AppRadius.xxl),
+                splashColor: accentColor.withValues(alpha: 0.2),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: accentColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppRadius.xxl),
+                    border: Border.all(color: accentColor.withValues(alpha: 0.3)),
+                  ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -238,37 +251,27 @@ class _BingoGameState extends State<BingoGame> {
                   ),
                 ),
               ),
-            ),
 
             // Bingo banner
             if (_bingo)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: ElasticIn(
-                  child: Container(
+                child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 40, vertical: 12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFD166),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.amber.withValues(alpha: 0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
+                      color: AppColors.accentAmber,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
                     ),
                     child: const Text(
                       'BINGO!',
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w900,
-                        color: Colors.white,
+                        color: AppColors.onPrimary,
                         letterSpacing: 4,
                       ),
                     ),
-                  ),
                 ),
               ),
 
@@ -301,41 +304,31 @@ class _BingoGameState extends State<BingoGame> {
                           child: InkWell(
                             onTap: () => _onCellTap(index),
                             borderRadius: BorderRadius.circular(16),
-                            splashColor: const Color(0xFF4DB6AC).withValues(alpha: 0.3),
+                            splashColor: AppColors.correct.withValues(alpha: 0.3),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
                               decoration: BoxDecoration(
                                 color: isMarked
-                                    ? const Color(0xFF4DB6AC)
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(16),
+                                    ? AppColors.correct
+                                    : AppColors.surface,
+                                borderRadius: BorderRadius.circular(AppRadius.lg),
                                 border: Border.all(
                                   color: isMarked
-                                      ? const Color(0xFF4DB6AC)
-                                      : Colors.grey.shade200,
+                                      ? AppColors.correct
+                                      : AppColors.surfaceDim,
                                   width: 2,
                                 ),
-                                boxShadow: [
-                                  if (!isMarked)
-                                    BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.04),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                ],
                               ),
                               alignment: Alignment.center,
                               child: isMarked
-                                  ? FadeIn(
-                                      child: const Icon(Icons.check_rounded,
-                                          color: Colors.white, size: 36),
-                                    )
+                                  ? const Icon(Icons.check_rounded,
+                                          color: AppColors.onPrimary, size: 36)
                                   : Text(
                                       item.letter,
                                       style: const TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.w900,
-                                        color: Colors.black87,
+                                        color: AppColors.textPrimary,
                                       ),
                                     ),
                             ),
@@ -352,32 +345,24 @@ class _BingoGameState extends State<BingoGame> {
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
               child: _bingo
-                  ? FadeInUp(
-                      child: SizedBox(
+                  ? SizedBox(
                         width: double.infinity,
                         height: 56,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: _setupBoard,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: accentColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16)),
-                          ),
                           child: const Text(
                             'New Game',
                             style: TextStyle(
                                 fontSize: 20,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white),
+                                fontWeight: FontWeight.w900),
                           ),
                         ),
-                      ),
                     )
                   : Text(
                       'Miss: $_wrongCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.grey.shade400,
+                        color: AppColors.textTertiary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

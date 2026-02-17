@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import '../services/tts_service.dart';
 import '../screens/result_screen.dart';
+import '../theme/app_theme.dart';
 import 'fill_in_blank_data.dart';
 
 class FillInBlankGame extends StatefulWidget {
@@ -52,10 +52,16 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       TweenSequenceItem(tween: Tween(begin: 5, end: -3), weight: 20),
       TweenSequenceItem(tween: Tween(begin: -3, end: 0), weight: 20),
     ]).animate(_shakeCtrl);
+
+    // 最初の問題の単語を自動再生
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) _playWord();
+    });
   }
 
   @override
   void dispose() {
+    TtsService.stop();
     _bounceCtrl.dispose();
     _shakeCtrl.dispose();
     super.dispose();
@@ -66,19 +72,32 @@ class _FillInBlankGameState extends State<FillInBlankGame>
   void _playWord() => TtsService.speakLibraryWord(_q.wordItem.word);
   void _playPhonics(String p) => TtsService.speakPhonicsPattern(p);
 
-  void _check() {
+  bool _attemptRecorded = false; // 同じ問題のリトライ時に二重記録しない
+
+  Future<void> _check() async {
     if (_selected == null) return;
     setState(() {
       _hasChecked = true;
       _isCorrect = _selected == _q.targetPhonics;
     });
+    // 進捗記録（初回のみ）
+    final isFirstAttempt = !_attemptRecorded;
+    if (!_attemptRecorded) {
+      _attemptRecorded = true;
+      ProgressService.recordAttempt('fill:${_q.wordItem.word}:${_q.targetPhonics}');
+      if (_isCorrect) {
+        ProgressService.recordCorrect('fill:${_q.wordItem.word}:${_q.targetPhonics}');
+      } else {
+        ProgressService.recordWrong('fill:${_q.wordItem.word}:${_q.targetPhonics}');
+      }
+    }
     if (_isCorrect) {
-      _correctCount++;
+      if (isFirstAttempt) _correctCount++; // 初回正解のみスコア加算
       _bounceCtrl.forward(from: 0);
       _playCorrectThenWord();
     } else {
       _shakeCtrl.forward(from: 0);
-      TtsService.playWrong();
+      await TtsService.playWrong();
     }
   }
 
@@ -94,6 +113,11 @@ class _FillInBlankGameState extends State<FillInBlankGame>
         _selected = null;
         _hasChecked = false;
         _isCorrect = false;
+        _attemptRecorded = false;
+      });
+      // 次の問題の単語を自動再生
+      Future.delayed(const Duration(milliseconds: 400), () {
+        if (mounted) _playWord();
       });
     } else {
       _showResult();
@@ -132,14 +156,14 @@ class _FillInBlankGameState extends State<FillInBlankGame>
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.surface,
       appBar: AppBar(
-        leading: const CloseButton(color: Colors.black54),
+        leading: const CloseButton(color: AppColors.textSecondary),
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+            color: AppColors.surfaceDim,
+            borderRadius: BorderRadius.circular(AppRadius.xl),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -149,7 +173,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
               Text(
                 '$_correctCount / ${_questions.length}',
                 style: const TextStyle(
-                  color: Colors.black87,
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w800,
                   fontSize: 16,
                 ),
@@ -172,8 +196,8 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                 child: LinearProgressIndicator(
                   value: _questions.isNotEmpty ? _index / _questions.length : 0,
                   minHeight: 6,
-                  backgroundColor: Colors.grey.shade200,
-                  valueColor: const AlwaysStoppedAnimation(Color(0xFF5C6BC0)),
+                  backgroundColor: AppColors.surfaceDim,
+                  valueColor: const AlwaysStoppedAnimation(AppColors.accentIndigo),
                 ),
               ),
             ),
@@ -181,19 +205,18 @@ class _FillInBlankGameState extends State<FillInBlankGame>
             // Word card + play button
             Expanded(
               flex: 4,
-              child: FadeInDown(
+              child: Center(
                 key: ValueKey(_index),
-                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Meaning hint
                       Text(
                         _q.wordItem.meaning,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade500,
+                          color: AppColors.textTertiary,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -221,30 +244,22 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                           width: 64,
                           height: 64,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: AppColors.surface,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF5C6BC0).withValues(alpha: 0.3),
+                              color: AppColors.accentIndigo.withValues(alpha: 0.3),
                               width: 4,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF5C6BC0).withValues(alpha: 0.12),
-                                blurRadius: 16,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
                           ),
                           child: const Icon(
                             Icons.volume_up_rounded,
                             size: 30,
-                            color: Color(0xFF5C6BC0),
+                            color: AppColors.accentIndigo,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
               ),
             ),
 
@@ -259,7 +274,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                       'どれかな？',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade500,
+                        color: AppColors.textTertiary,
                         fontSize: 16,
                       ),
                     ),
@@ -283,10 +298,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                             childAspectRatio: ratio,
                             physics: const NeverScrollableScrollPhysics(),
                             children: _q.choices.asMap().entries.map((e) {
-                              return FadeInUp(
-                                delay: Duration(milliseconds: 60 * e.key),
-                                child: _buildChoiceCard(e.value),
-                              );
+                          return _buildChoiceCard(e.value);
                             }).toList(),
                           );
                         },
@@ -361,9 +373,9 @@ class _FillInBlankGameState extends State<FillInBlankGame>
   }
 
   Widget _phonicsSlot(String text, {required bool filled}) {
-    final bg = filled ? const Color(0xFFE8F5E9) : const Color(0xFFE8EAF6);
-    final border = filled ? const Color(0xFF4DB6AC) : const Color(0xFF5C6BC0);
-    final textColor = filled ? const Color(0xFF2E7D32) : const Color(0xFF5C6BC0);
+    final bg = filled ? const Color(0xFFE8F5E9) : AppColors.accentIndigo.withValues(alpha: 0.08);
+    final border = filled ? AppColors.correct : AppColors.accentIndigo;
+    final textColor = filled ? const Color(0xFF2E7D32) : AppColors.accentIndigo;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
@@ -371,7 +383,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(color: border, width: 2.5),
       ),
       child: Text(
@@ -391,9 +403,9 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       margin: const EdgeInsets.symmetric(horizontal: 2),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300, width: 2.5),
+        color: AppColors.surfaceDim,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: AppColors.surfaceDim, width: 2.5),
       ),
       child: Row(
         children: List.generate(
@@ -404,7 +416,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
               width: 16,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade400,
+                color: AppColors.textTertiary,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -420,24 +432,24 @@ class _FillInBlankGameState extends State<FillInBlankGame>
     final isCorrectAnswer = _hasChecked && _isCorrect && phonics == _q.targetPhonics;
     final isWrongAnswer = _hasChecked && !_isCorrect && phonics == _selected;
 
-    Color bg = Colors.white;
-    Color textColor = Colors.black87;
-    Color borderColor = Colors.grey.shade200;
+    Color bg = AppColors.surface;
+    Color textColor = AppColors.textPrimary;
+    Color borderColor = AppColors.surfaceDim;
 
     if (isSelected && !_hasChecked) {
-      bg = const Color(0xFFE8EAF6);
-      textColor = const Color(0xFF5C6BC0);
-      borderColor = const Color(0xFF5C6BC0);
+      bg = AppColors.accentIndigo.withValues(alpha: 0.08);
+      textColor = AppColors.accentIndigo;
+      borderColor = AppColors.accentIndigo;
     }
     if (isCorrectAnswer) {
-      bg = const Color(0xFF4DB6AC);
-      textColor = Colors.white;
-      borderColor = const Color(0xFF4DB6AC);
+      bg = AppColors.correct;
+      textColor = AppColors.onPrimary;
+      borderColor = AppColors.correct;
     }
     if (isWrongAnswer) {
-      bg = const Color(0xFFFF5E5E);
-      textColor = Colors.white;
-      borderColor = const Color(0xFFFF5E5E);
+      bg = AppColors.wrong;
+      textColor = AppColors.onPrimary;
+      borderColor = AppColors.wrong;
     }
 
     return AnimatedContainer(
@@ -445,20 +457,13 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       decoration: BoxDecoration(
         color: bg,
         border: Border.all(color: borderColor, width: 2),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(AppRadius.xxl),
       ),
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppRadius.xxl),
         child: InkWell(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppRadius.xxl),
           onTap: (_hasChecked && _isCorrect)
               ? null
               : () => setState(() {
@@ -506,32 +511,32 @@ class _FillInBlankGameState extends State<FillInBlankGame>
 
     if (canProceed) {
       label = 'つぎへ';
-      color = const Color(0xFF5C6BC0);
+      color = AppColors.accentIndigo;
       onTap = _next;
     } else if (canCheck) {
       label = 'こたえあわせ';
-      color = const Color(0xFFFF7043);
+      color = AppColors.primary;
       onTap = _check;
     } else if (canRetry) {
       label = 'やりなおす';
-      color = const Color(0xFFEF5350);
+      color = AppColors.wrong;
       onTap = _reset;
     } else {
       label = 'こたえあわせ';
-      color = Colors.grey.shade300;
+      color = AppColors.surfaceDim;
       onTap = null;
     }
 
     return SizedBox(
       width: double.infinity,
       height: 52,
-      child: ElevatedButton(
+      child: FilledButton(
         onPressed: onTap,
-        style: ElevatedButton.styleFrom(
+        style: FilledButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.onPrimary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
+            borderRadius: BorderRadius.circular(AppRadius.xxl),
           ),
           textStyle: const TextStyle(
             fontSize: 18,

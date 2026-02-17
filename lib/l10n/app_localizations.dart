@@ -404,12 +404,6 @@ abstract class AppLocalizations {
   /// **'おとビンゴ'**
   String get gameBingo;
 
-  /// No description provided for @gameSpaceShip.
-  ///
-  /// In ja, this message translates to:
-  /// **'スペース・シップ'**
-  String get gameSpaceShip;
-
   /// No description provided for @gameCapitalMatch.
   ///
   /// In ja, this message translates to:
@@ -457,12 +451,6 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'ビンゴカードを埋めよう！'**
   String get gameBingoDesc;
-
-  /// No description provided for @gameSpaceShipDesc.
-  ///
-  /// In ja, this message translates to:
-  /// **'宇宙で文字をキャッチ！'**
-  String get gameSpaceShipDesc;
 
   /// No description provided for @gameCapitalMatchDesc.
   ///

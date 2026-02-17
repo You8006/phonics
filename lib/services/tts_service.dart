@@ -16,12 +16,14 @@ enum VoiceType { female, male, child }
 class TtsService {
   TtsService._();
   static final FlutterTts _tts = FlutterTts();
-  static final AudioPlayer _player = AudioPlayer();   // 音声再生用
-  static final AudioPlayer _sePlayer = AudioPlayer();  // SE（正解/不正解）専用
+  static final AudioPlayer _player = AudioPlayer()
+    ..setPlayerMode(PlayerMode.lowLatency);   // 短い音声向け低遅延モード
+  static final AudioPlayer _sePlayer = AudioPlayer()
+    ..setPlayerMode(PlayerMode.lowLatency);   // SE も低遅延モード
   static bool _ready = false;
 
   /// 現在選択中の声
-  static VoiceType _voiceType = VoiceType.child;
+  static VoiceType _voiceType = VoiceType.female;
   static VoiceType get voiceType => _voiceType;
 
   /// 声を変更して SharedPreferences に保存
@@ -38,7 +40,7 @@ class TtsService {
     if (saved != null) {
       _voiceType = VoiceType.values.firstWhere(
         (v) => v.name == saved,
-        orElse: () => VoiceType.child,
+        orElse: () => VoiceType.female,
       );
     }
   }
@@ -91,7 +93,7 @@ class TtsService {
     final key = _audioKey(item);
     final prefix = _voicePrefix();
     try {
-      await _player.stop();
+      _player.stop(); // await しない — 即座に次の play へ
       await _player.play(AssetSource('$prefix/sounds/sound_$key.mp3'));
     } catch (e) {
       debugPrint('No audio file for sound $key: $e');
@@ -103,7 +105,7 @@ class TtsService {
     final key = _audioKey(item);
     final prefix = _voicePrefix();
     try {
-      await _player.stop();
+      _player.stop();
       await _player.play(AssetSource('$prefix/words/word_$key.mp3'));
     } catch (e) {
       // フォールバック: TTS で読み上げ
@@ -128,7 +130,7 @@ class TtsService {
     final key = word.toLowerCase().replaceAll(' ', '_');
     final prefix = _voicePrefix();
     try {
-      await _player.stop();
+      _player.stop();
       await _player.play(AssetSource('$prefix/words_library/word_$key.mp3'));
     } catch (e) {
       // フォールバック: TTS で読み上げ（声タイプ反映）
@@ -138,45 +140,21 @@ class TtsService {
     }
   }
 
-  /// 正解時の効果音を再生（SE専用プレイヤーで完了まで待つ）
+  /// 正解時の効果音を即時再生
   static Future<void> playCorrect() async {
     try {
-      await _sePlayer.stop();
-      final completer = Completer<void>();
-      late final StreamSubscription<PlayerState> sub;
-      sub = _sePlayer.onPlayerStateChanged.listen((state) {
-        if (state == PlayerState.completed || state == PlayerState.stopped) {
-          sub.cancel();
-          if (!completer.isCompleted) completer.complete();
-        }
-      });
+      _sePlayer.stop();
       await _sePlayer.play(AssetSource('audio/effects/成功.mp3'));
-      await completer.future.timeout(
-        const Duration(seconds: 3),
-        onTimeout: () { sub.cancel(); },
-      );
     } catch (e) {
       debugPrint('Effect fallback for correct: $e');
     }
   }
 
-  /// 不正解時の効果音を再生（SE専用プレイヤーで完了まで待つ）
+  /// 不正解時の効果音を即時再生
   static Future<void> playWrong() async {
     try {
-      await _sePlayer.stop();
-      final completer = Completer<void>();
-      late final StreamSubscription<PlayerState> sub;
-      sub = _sePlayer.onPlayerStateChanged.listen((state) {
-        if (state == PlayerState.completed || state == PlayerState.stopped) {
-          sub.cancel();
-          if (!completer.isCompleted) completer.complete();
-        }
-      });
+      _sePlayer.stop();
       await _sePlayer.play(AssetSource('audio/effects/失敗.mp3'));
-      await completer.future.timeout(
-        const Duration(seconds: 3),
-        onTimeout: () { sub.cancel(); },
-      );
     } catch (e) {
       debugPrint('Effect fallback for wrong: $e');
     }
@@ -189,9 +167,9 @@ class TtsService {
   }
 
   static Future<void> stop() async {
-    await _player.stop();
-    await _sePlayer.stop();
-    await _tts.stop();
+    _player.stop();
+    _sePlayer.stop();
+    _tts.stop();
   }
 }
 

@@ -23,7 +23,7 @@ class FillInBlankDataManager {
 
   /// phonics_data から2文字以上の letter を抽出（長い順にソート）
   /// → 音声ファイルが確実に存在するパターンだけが対象
-  static late final List<String> _patterns = () {
+  static final List<String> _patterns = () {
     final letters = allPhonicsItems
         .where((i) => i.letter.length >= 2)
         .map((i) => i.letter)
@@ -36,10 +36,10 @@ class FillInBlankDataManager {
 
   /// 同じ「音の種類」で紛らわしい選択肢グループ
   static const _similarGroups = <List<String>>[
-    ['sh', 'ch', 'th', 'ck'],
-    ['ai', 'oa', 'ie', 'ee'],
-    ['or', 'ar', 'er'],
-    ['oo', 'ou', 'ue'],
+    ['sh', 'ch', 'th', 'ck', 'wh'],
+    ['ai', 'oa', 'ie', 'ee', 'ay', 'ea', 'ey'],
+    ['or', 'ar', 'er', 'ir', 'ear'],
+    ['oo', 'ou', 'ue', 'ew', 'ow'],
     ['oi', 'ng', 'qu'],
   ];
 

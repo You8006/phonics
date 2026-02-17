@@ -3,6 +3,7 @@ import '../models/phonics_data.dart';
 import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 
 /// Learn 画面: カードをスワイプして音を聞く + 例単語
 class LearnScreen extends StatefulWidget {
@@ -33,12 +34,10 @@ class _LearnScreenState extends State<LearnScreen> {
 
   List<PhonicsItem> get _items => widget.group.items;
 
-  /// 関連単語の Widget リストを構築
-  List<Widget> _buildRelatedWords(PhonicsItem item, ColorScheme cs) {
+  List<Widget> _buildRelatedWords(PhonicsItem item) {
     final words = _relatedWords(item);
     if (words.isEmpty) return [];
 
-    // wordLibrary から意味を取得
     String meaning(String key) {
       final wi = wordLibrary.cast<WordItem?>().firstWhere(
             (w) => w!.word.toLowerCase() == key,
@@ -48,13 +47,12 @@ class _LearnScreenState extends State<LearnScreen> {
     }
 
     return [
-      const Divider(),
-      const SizedBox(height: 4),
+      const Divider(height: 32, color: AppColors.surfaceDim),
       const Text(
         'Example words',
-        style: TextStyle(fontSize: 13, color: Colors.grey),
+        style: TextStyle(fontSize: 13, color: AppColors.textTertiary),
       ),
-      const SizedBox(height: 4),
+      const SizedBox(height: 8),
       Wrap(
         spacing: 8,
         runSpacing: 4,
@@ -62,10 +60,15 @@ class _LearnScreenState extends State<LearnScreen> {
         children: words.map((w) {
           final m = meaning(w);
           return ActionChip(
-            avatar: Icon(Icons.volume_up, size: 16, color: cs.primary),
+            avatar: const Icon(Icons.volume_up_rounded,
+                size: 16, color: AppColors.primary),
             label: Text(
               m.isNotEmpty ? '$w ($m)' : w,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 14),
+            ),
+            side: BorderSide(color: AppColors.surfaceDim),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.full),
             ),
             onPressed: () => TtsService.speakLibraryWord(w),
           );
@@ -79,7 +82,6 @@ class _LearnScreenState extends State<LearnScreen> {
     TtsService.speakSound(item);
   }
 
-  /// PhonicsItem.letter からマッチする SoundGroup の単語を最大6個取得
   List<String> _relatedWords(PhonicsItem item) {
     final letter = item.letter.toLowerCase();
     for (final sg in soundGroups) {
@@ -87,32 +89,24 @@ class _LearnScreenState extends State<LearnScreen> {
         return sg.spellingWords[letter]!.take(6).toList();
       }
     }
-    // fallback: item.example のみ
     if (item.example.isNotEmpty) return [item.example.toLowerCase()];
     return [];
   }
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.group.name),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text(widget.group.name)),
       body: Column(
         children: [
-          // ── ページインジケーター ──
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
             child: Text(
               '${_current + 1} / ${_items.length}',
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              style: const TextStyle(
+                  fontSize: 13, color: AppColors.textTertiary),
             ),
           ),
-
-          // ── カードビュー ──
           Expanded(
             child: PageView.builder(
               controller: _page,
@@ -121,54 +115,44 @@ class _LearnScreenState extends State<LearnScreen> {
               itemBuilder: (context, index) {
                 final item = _items[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                  child: Container(
+                    decoration: AppDecoration.card(),
                     child: Padding(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(AppSpacing.xxl),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // 文字
                           Text(
                             item.letter,
-                            style: TextStyle(
-                              fontSize: 96,
-                              fontWeight: FontWeight.bold,
-                              color: cs.primary,
+                            style: const TextStyle(
+                              fontSize: 80,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.primary,
                             ),
                           ),
-                          const SizedBox(height: 12),
-
-                          // 発音記号
+                          const SizedBox(height: AppSpacing.sm),
                           Text(
                             '/${item.ipa.isEmpty ? item.sound : item.ipa}/',
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.grey.shade700,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: AppColors.textSecondary,
                             ),
                           ),
-                          const SizedBox(height: 24),
-
-                          // Play Sound
+                          const SizedBox(height: AppSpacing.xl),
                           FilledButton.tonalIcon(
                             onPressed: _speakCurrent,
-                            icon: const Icon(Icons.volume_up, size: 28),
-                            label: const Text(
-                              'Play Sound',
-                              style: TextStyle(fontSize: 18),
-                            ),
+                            icon:
+                                const Icon(Icons.volume_up_rounded, size: 24),
+                            label: const Text('Play Sound',
+                                style: TextStyle(fontSize: 16)),
                             style: FilledButton.styleFrom(
-                              minimumSize: const Size(200, 52),
+                              minimumSize: const Size(180, 48),
                             ),
                           ),
-                          const SizedBox(height: 16),
-
-                          // 関連する単語を複数表示
-                          ..._buildRelatedWords(item, cs),
+                          const SizedBox(height: AppSpacing.lg),
+                          ..._buildRelatedWords(item),
                         ],
                       ),
                     ),
@@ -177,10 +161,9 @@ class _LearnScreenState extends State<LearnScreen> {
               },
             ),
           ),
-
-          // ── ナビゲーション矢印 ──
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xl, vertical: AppSpacing.lg),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -188,22 +171,23 @@ class _LearnScreenState extends State<LearnScreen> {
                   onPressed: _current > 0
                       ? () => _page.previousPage(
                             duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
+                            curve: Curves.easeOut,
                           )
                       : null,
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back_rounded),
                 ),
-                // ドットインジケーター
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: List.generate(_items.length, (i) {
                     return Container(
-                      width: i == _current ? 10 : 6,
-                      height: i == _current ? 10 : 6,
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      width: i == _current ? 8 : 5,
+                      height: i == _current ? 8 : 5,
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: i == _current ? cs.primary : Colors.grey.shade400,
+                        color: i == _current
+                            ? AppColors.primary
+                            : AppColors.surfaceDim,
                       ),
                     );
                   }),
@@ -212,10 +196,10 @@ class _LearnScreenState extends State<LearnScreen> {
                   onPressed: _current < _items.length - 1
                       ? () => _page.nextPage(
                             duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
+                            curve: Curves.easeOut,
                           )
                       : null,
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.arrow_forward_rounded),
                 ),
               ],
             ),

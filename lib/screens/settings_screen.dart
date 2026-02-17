@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
+import '../widgets/voice_picker.dart';
 import 'learn_screen.dart';
 import 'game_screen.dart';
 
@@ -52,31 +54,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Phonics App'),
-        centerTitle: true,
+        title: const Text('Phonics'),
         actions: [
-          // 音声選択
           IconButton(
             icon: Icon(
-              _voiceIcon(TtsService.voiceType),
-              color: Colors.blueGrey,
+              voiceIcon(TtsService.voiceType),
+              color: AppColors.textSecondary,
+              size: 22,
             ),
             tooltip: 'Voice',
-            onPressed: _showVoicePicker,
+            onPressed: () => showVoicePicker(context, () {
+              if (mounted) setState(() {});
+            }),
           ),
-          // ストリーク表示
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 12),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.local_fire_department, color: Colors.orange),
-                const SizedBox(width: 4),
-                Text('$_streak', style: const TextStyle(fontSize: 16)),
+                const Icon(Icons.local_fire_department,
+                    color: AppColors.primary, size: 20),
+                const SizedBox(width: 2),
+                Text(
+                  '$_streak',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
               ],
             ),
           ),
@@ -85,16 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           children: [
             // ── ヒーローバナー ──
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(AppSpacing.xl),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [cs.primary, cs.tertiary],
-                ),
-                borderRadius: BorderRadius.circular(16),
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,82 +108,100 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     'Learn Phonics',
                     style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
                       color: Colors.white,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
                     '42の英語の音をマスターしよう！',
-                    style: TextStyle(fontSize: 14, color: Colors.white70),
+                    style: TextStyle(fontSize: 13, color: Colors.white70),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.xl),
 
-            // ── 2週間ミッション + SRS復習 ──
-            if (_mission != null)
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.event_note),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              _mission!.title,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
+            // ── ミッション + SRS復習 ──
+            if (_mission != null) ...[
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: AppDecoration.card(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.event_note_rounded,
+                            size: 20, color: AppColors.textSecondary),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            _mission!.title,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: cs.primaryContainer,
-                              borderRadius: BorderRadius.circular(999),
-                            ),
-                            child: Text('Phase: ${_mission!.phase}'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      for (final t in _mission!.tasks.take(3))
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Text('• $t'),
                         ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _mission!.tip,
-                        style: TextStyle(color: Colors.grey.shade700),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.08),
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.full),
+                          ),
+                          child: Text(
+                            'Phase ${_mission!.phase}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    for (final t in _mission!.tasks.take(3))
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 3),
+                        child: Text(
+                          '• $t',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 10),
-                      if (_dueItems.isNotEmpty)
-                        FilledButton.icon(
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(
+                      _mission!.tip,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                    if (_dueItems.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.icon(
                           onPressed: _startDueReview,
-                          icon: const Icon(Icons.history),
-                          label: Text('SRS Review を開始 (${_dueItems.length}件)'),
+                          icon: const Icon(Icons.history, size: 18),
+                          label:
+                              Text('SRS Review (${_dueItems.length}件)'),
                         ),
+                      ),
                     ],
-                  ),
+                  ],
                 ),
               ),
-
-            const SizedBox(height: 14),
+              const SizedBox(height: AppSpacing.lg),
+            ],
 
             // ── グループ一覧 ──
             for (final group in phonicsGroups) ...[
@@ -187,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onLearn: () => _goLearn(group),
                 onPlay: () => _goPlay(group),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
             ],
           ],
         ),
@@ -232,88 +256,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ).then((_) => _refresh());
   }
-
-  IconData _voiceIcon(VoiceType type) {
-    switch (type) {
-      case VoiceType.female:
-        return Icons.face_3;
-      case VoiceType.male:
-        return Icons.face;
-      case VoiceType.child:
-        return Icons.child_care;
-    }
-  }
-
-  void _showVoicePicker() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  '音声を選択',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _VoiceOption(
-                  icon: Icons.face_3,
-                  label: 'Female (女性)',
-                  subtitle: 'Jenny — 温かみのある声',
-                  selected: TtsService.voiceType == VoiceType.female,
-                  onTap: () => _selectVoice(VoiceType.female, ctx),
-                ),
-                _VoiceOption(
-                  icon: Icons.face,
-                  label: 'Male (男性)',
-                  subtitle: 'Guy — クリアな声',
-                  selected: TtsService.voiceType == VoiceType.male,
-                  onTap: () => _selectVoice(VoiceType.male, ctx),
-                ),
-                _VoiceOption(
-                  icon: Icons.child_care,
-                  label: 'Child (子供)',
-                  subtitle: 'Ana — かわいい子供の声',
-                  selected: TtsService.voiceType == VoiceType.child,
-                  onTap: () => _selectVoice(VoiceType.child, ctx),
-                ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _selectVoice(VoiceType type, BuildContext ctx) async {
-    await TtsService.setVoiceType(type);
-    if (!mounted) return;
-    setState(() {});
-    if (ctx.mounted) Navigator.pop(ctx);
-    // Play a sample sound to preview the voice
-    if (allPhonicsItems.isNotEmpty) {
-      TtsService.speakSound(allPhonicsItems.first);
-    }
-  }
 }
 
 // ── グループカード ──
@@ -340,159 +282,80 @@ class _GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── タイトル行 ──
-            Row(
-              children: [
-                Icon(Icons.auto_stories, color: cs.primary, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    group.name,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: AppDecoration.card(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_stories_rounded,
+                  color: AppColors.primary, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  group.name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
                   ),
-                ),
-                // スター表示
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(3, (i) {
-                    return Icon(
-                      i < _stars ? Icons.star : Icons.star_border,
-                      size: 20,
-                      color: Colors.amber,
-                    );
-                  }),
-                ),
-              ],
-            ),
-
-            // ── プログレスバー ──
-            const SizedBox(height: 10),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: LinearProgressIndicator(
-                value: mastery,
-                minHeight: 8,
-                backgroundColor: Colors.grey.shade300,
-                valueColor: AlwaysStoppedAnimation(
-                  mastery >= 0.6 ? Colors.green : cs.primary,
                 ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${(mastery * 100).toInt()}% mastered',
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-            ),
-
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: onLearn,
-                    icon: const Icon(Icons.volume_up, size: 18),
-                    label: const Text('Learn'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: onPlay,
-                    icon: const Icon(Icons.play_arrow, size: 18),
-                    label: const Text('Play'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── 音声選択オプション ──
-
-class _VoiceOption extends StatelessWidget {
-  const _VoiceOption({
-    required this.icon,
-    required this.label,
-    required this.subtitle,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final String subtitle;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final accentColor = const Color(0xFFFF8E3C);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Material(
-        color: selected ? accentColor.withValues(alpha: 0.08) : Colors.transparent,
-        borderRadius: BorderRadius.circular(14),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: selected ? accentColor : Colors.grey.shade200,
-                width: selected ? 2 : 1,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(3, (i) {
+                  return Icon(
+                    i < _stars ? Icons.star_rounded : Icons.star_outline_rounded,
+                    size: 18,
+                    color: i < _stars ? AppColors.accentAmber : AppColors.surfaceDim,
+                  );
+                }),
               ),
-            ),
-            child: Row(
-              children: [
-                Icon(icon, size: 32, color: selected ? accentColor : Colors.grey.shade600),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        label,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: selected ? accentColor : Colors.black87,
-                        ),
-                      ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey.shade500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (selected)
-                  Icon(Icons.check_circle_rounded, color: accentColor, size: 24),
-              ],
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.full),
+            child: LinearProgressIndicator(
+              value: mastery,
+              minHeight: 6,
+              backgroundColor: AppColors.surfaceDim,
+              valueColor: AlwaysStoppedAnimation(
+                mastery >= 0.6 ? AppColors.correct : AppColors.primary,
+              ),
             ),
           ),
-        ),
+          const SizedBox(height: 4),
+          Text(
+            '${(mastery * 100).toInt()}% mastered',
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textTertiary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onLearn,
+                  icon: const Icon(Icons.volume_up_rounded, size: 16),
+                  label: const Text('Learn'),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: onPlay,
+                  icon: const Icon(Icons.play_arrow_rounded, size: 16),
+                  label: const Text('Play'),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

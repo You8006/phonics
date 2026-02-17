@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({
@@ -63,154 +63,105 @@ class _ResultScreenState extends State<ResultScreen>
     final isHigh = _accuracy >= 0.8;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              // Trophy / Icon
+
+              // Trophy
               ScaleTransition(
                 scale: _scale,
                 child: Container(
-                  padding: const EdgeInsets.all(32),
+                  padding: const EdgeInsets.all(28),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isHigh ? const Color(0xFFFFD166) : const Color(0xFF4DB6AC),
-                    boxShadow: [
-                      BoxShadow(
-                        color: (isHigh ? Colors.amber : Colors.teal).withValues(alpha: 0.3),
-                        blurRadius: 30,
-                        offset: const Offset(0, 10),
-                      )
-                    ],
+                    color: isHigh ? AppColors.accentAmber : AppColors.accentTeal,
                   ),
                   child: Icon(
-                    isHigh ? Icons.emoji_events_rounded : Icons.thumb_up_rounded,
-                    size: 80,
+                    isHigh
+                        ? Icons.emoji_events_rounded
+                        : Icons.thumb_up_rounded,
+                    size: 64,
                     color: Colors.white,
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
-              
-              // Feedback Text
-              FadeInDown(
-                delay: const Duration(milliseconds: 300),
-                child: Text(
-                  _getFeedback(l10n),
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black87,
-                  ),
+              const SizedBox(height: AppSpacing.xxxl),
+
+              // Feedback
+              Text(
+                _getFeedback(l10n),
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 16),
-              
+              const SizedBox(height: AppSpacing.lg),
+
               // Score
-              FadeInDown(
-                delay: const Duration(milliseconds: 500),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${widget.score}',
-                      style: const TextStyle(
-                        fontSize: 64,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFFFF8E3C),
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${widget.score}',
+                    style: const TextStyle(
+                      fontSize: 56,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.primary,
                     ),
-                    Text(
-                      '/${widget.total}',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade400,
-                      ),
+                  ),
+                  Text(
+                    '/${widget.total}',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textTertiary,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              
-              // Streak Badge
+
+              // Streak
               if (_streak > 1)
-                FadeInUp(
-                  delay: const Duration(milliseconds: 700),
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.orange.shade50,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.orange.shade100),
-                    ),
-                    child: Text(
-                      '${l10n.streak} $_streak!',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange.shade800,
-                      ),
+                Container(
+                  margin: const EdgeInsets.only(top: AppSpacing.lg),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(AppRadius.full),
+                  ),
+                  child: Text(
+                    '${l10n.streak} $_streak!',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
 
               const Spacer(),
 
-              // Action Buttons
+              // Actions
               Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(AppSpacing.xxxl),
                 child: Row(
                   children: [
                     Expanded(
-                      child: FadeInLeft(
-                        delay: const Duration(milliseconds: 900),
-                        child: OutlinedButton(
-                          onPressed: () => Navigator.pop(context),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            side: BorderSide(color: Colors.grey.shade300, width: 2),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            l10n.backToHome,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ),
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(l10n.backToHome),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.lg),
                     Expanded(
-                      child: FadeInRight(
-                        delay: const Duration(milliseconds: 900),
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context, true), // true = restart
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFF8E3C), // Phonics Orange
-                            elevation: 0,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            l10n.playAgainBtn,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                      child: FilledButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: Text(l10n.playAgainBtn),
                       ),
                     ),
                   ],

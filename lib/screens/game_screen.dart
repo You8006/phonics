@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 import 'result_screen.dart';
 
 enum GameMode {
@@ -102,26 +102,38 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     _total = _queue.length;
     _buildChoices();
     
-    // Auto-play sound for sound-based games
-    if (widget.mode == GameMode.soundToLetter || widget.mode == GameMode.ipaToLetter) {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (!mounted) return;
-        _playSound();
-      });
-    }
+    // 全モードで問題開始時に自動で音を再生
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (!mounted) return;
+      _playSound();
+    });
   }
 
   PhonicsItem get _answer => _queue[_current];
 
   void _buildChoices() {
-    final others =
-        widget.items
-            .where((e) => e.progressKey != _answer.progressKey)
-            .toList()
-          ..shuffle(_rng);
+    // 同じ letter / 同じ ipa のアイテムを除外し、
+    // 選択肢に見た目・音が重複するペアが出ないようにする
+    final others = widget.items
+        .where((e) =>
+            e.progressKey != _answer.progressKey &&
+            e.letter != _answer.letter &&
+            e.ipa != _answer.ipa)
+        .toList()
+      ..shuffle(_rng);
 
     final count = min(widget.numOptions, widget.items.length);
-    final picks = others.take(count - 1).toList()..add(_answer);
+    final picks = <PhonicsItem>[_answer];
+    final usedLetters = {_answer.letter};
+    final usedIpas = {_answer.ipa};
+    for (final item in others) {
+      if (picks.length >= count) break;
+      if (!usedLetters.contains(item.letter) && !usedIpas.contains(item.ipa)) {
+        picks.add(item);
+        usedLetters.add(item.letter);
+        usedIpas.add(item.ipa);
+      }
+    }
     picks.shuffle(_rng);
 
     switch (widget.mode) {
@@ -152,7 +164,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
     _feedback = {};
     _answered = false;
-    // _soundPlayed assignment removed
   }
 
   Future<void> _playSound() async {
@@ -176,11 +187,11 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
     setState(() {
       if (correct) {
-        _feedback[item.progressKey] = const Color(0xFF4DB6AC);
+        _feedback[item.progressKey] = AppColors.correct;
         _score++;
       } else {
-        _feedback[item.progressKey] = const Color(0xFFFF5E5E);
-        _feedback[_answer.progressKey] = const Color(0xFF4DB6AC);
+        _feedback[item.progressKey] = AppColors.wrong;
+        _feedback[_answer.progressKey] = AppColors.correct;
       }
     });
 
@@ -215,12 +226,11 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
       _buildChoices();
     });
     
-    if (widget.mode == GameMode.soundToLetter || widget.mode == GameMode.ipaToLetter) {
-        Future.delayed(const Duration(milliseconds: 300), () {
-          if (!mounted) return;
-          _playSound();
-        });
-    }
+    // 次の問題でも自動再生
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
+      _playSound();
+    });
   }
 
   @override
@@ -228,14 +238,13 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.white, // Pure white background
       appBar: AppBar(
-        leading: const CloseButton(color: Colors.black54),
+        leading: CloseButton(color: AppColors.textSecondary),
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(20),
+            color: AppColors.surfaceDim,
+            borderRadius: BorderRadius.circular(AppRadius.xl),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -244,8 +253,8 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                const SizedBox(width: 8),
                Text(
                  '$_score / $_total',
-                 style: const TextStyle(
-                   color: Colors.black87,
+                 style: TextStyle(
+                   color: AppColors.textPrimary,
                    fontWeight: FontWeight.w800,
                    fontSize: 16
                  ),
@@ -263,11 +272,9 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
             // Question Area
             Expanded(
               flex: 3,
-              child: FadeInDown(
+              child: Center(
                 key: ValueKey(_current),
-                child: Center(
-                  child: _buildPrompt(l10n),
-                ),
+                child: _buildPrompt(l10n),
               ),
             ),
             
@@ -282,7 +289,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                     Text(
                       widget.mode.subtitle(l10n),
                       style: TextStyle(
-                        color: Colors.grey.shade500,
+                        color: AppColors.textSecondary,
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
@@ -306,15 +313,11 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                             childAspectRatio: ratio,
                             physics: const NeverScrollableScrollPhysics(),
                             children: _options.asMap().entries.map((entry) {
-                                 final idx = entry.key;
                                  final opt = entry.value;
-                                 return FadeInUp(
-                                   delay: Duration(milliseconds: 100 * idx),
-                                   child: _ChoiceButton(
-                                     label: opt.label,
-                                     color: _feedback[opt.key],
-                                     onTap: () => _onTap(opt.item),
-                                   ),
+                                 return _ChoiceButton(
+                                   label: opt.label,
+                                   color: _feedback[opt.key],
+                                   onTap: () => _onTap(opt.item),
                                  );
                             }).toList(),
                           );
@@ -344,29 +347,29 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.orange.shade100, width: 8),
+                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 8),
                     boxShadow: [
                        BoxShadow(
-                         color: Colors.orange.withValues(alpha: 0.15),
+                         color: AppColors.primary.withValues(alpha: 0.1),
                          blurRadius: 30,
                          offset: const Offset(0, 10),
                        )
                     ],
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.volume_up_rounded,
                     size: 64,
-                    color: Color(0xFFFF8E3C),
+                    color: AppColors.primary,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 24),
-            Text(l10n.listenSound, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black45)),
+            Text(l10n.listenSound, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
             if (widget.mode == GameMode.ipaToLetter)
-               Text('/${_answer.ipa}/', style: const TextStyle(fontSize: 24, color: Colors.black38)),
+               Text('/${_answer.ipa}/', style: TextStyle(fontSize: 24, color: AppColors.textTertiary)),
           ],
         );
     } else {
@@ -376,16 +379,16 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
           children: [
             Text(
               _answer.letter,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 100,
                 fontWeight: FontWeight.w900,
-                color: Color(0xFFFF8E3C),
+                color: AppColors.primary,
               ),
             ),
             const SizedBox(height: 16),
             IconButton(
               onPressed: _playSound, 
-              icon: const Icon(Icons.hearing_rounded, color: Colors.grey),
+              icon: Icon(Icons.hearing_rounded, color: AppColors.textTertiary),
               tooltip: 'Play sound',
             )
           ],
@@ -414,9 +417,9 @@ class _ChoiceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bg = Colors.white;
-    Color border = Colors.grey.shade200;
-    Color text = Colors.black87;
+    Color bg = AppColors.surface;
+    Color border = AppColors.surfaceDim;
+    Color text = AppColors.textPrimary;
 
     if (color != null) {
       bg = color!;
@@ -428,22 +431,14 @@ class _ChoiceButton extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(color: border, width: 2),
-        boxShadow: [
-          if (color == null)
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            )
-        ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,

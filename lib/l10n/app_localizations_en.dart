@@ -162,9 +162,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameBingo => 'Bingo';
 
   @override
-  String get gameSpaceShip => 'Space Ship';
-
-  @override
   String get gameCapitalMatch => 'Cap-Lower';
 
   @override
@@ -187,9 +184,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameBingoDesc => 'Mark your bingo card!';
-
-  @override
-  String get gameSpaceShipDesc => 'Catch letters in space!';
 
   @override
   String get gameCapitalMatchDesc => 'Match upper & lowercase';

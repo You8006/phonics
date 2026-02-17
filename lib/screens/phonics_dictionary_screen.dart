@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
 import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 
 /// フォニックスのおとずかん — スペリングごとに単語を表示
 class PhonicsDictionaryScreen extends StatefulWidget {
@@ -65,8 +65,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-            child: FadeInDown(
-              child: Column(
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -78,40 +77,35 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w900,
-                          color: Color(0xFF2A2A2A),
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFF8E3C)
-                              .withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                        decoration: AppDecoration.chip(AppColors.primary),
                         child: Text(
                           '${soundGroups.length} sounds',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFFFF8E3C),
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  const Text(
                     'つづりをタップして ことばを見てみよう',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.grey.shade500,
+                      color: AppColors.textTertiary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
-              ),
             ),
           ),
         ),
@@ -122,15 +116,13 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: FadeInLeft(
-                child: Text(
+              child: Text(
                   section.key,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF5D4037),
+                    color: AppColors.textPrimary,
                   ),
-                ),
               ),
             ),
           ),
@@ -145,9 +137,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                   final isPlaying = _playingGroupId == group.id;
                   final selectedSpelling = _getSelectedSpelling(group.id);
 
-                  return FadeInUp(
-                    delay: Duration(milliseconds: 50 * (index % 10)),
-                    child: Padding(
+                  return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: _SoundGroupCard(
                         group: group,
@@ -159,7 +149,6 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                             _toggleSpelling(group.id, spelling),
                         onPlayWord: _playWord,
                       ),
-                    ),
                   );
                 },
                 childCount: section.value.length,
@@ -203,19 +192,19 @@ class _SoundGroupCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
+            color: Color(0x08000000),
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
         border: Border.all(
           color: isPlaying
               ? groupColor.withValues(alpha: 0.5)
-              : const Color(0xFFE0D6CC),
+              : AppColors.surfaceDim,
           width: isPlaying ? 2 : 1.5,
         ),
       ),
@@ -225,9 +214,9 @@ class _SoundGroupCard extends StatelessWidget {
           Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Color(0xFF5D4037),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: AppColors.textPrimary,
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(14),
                 topRight: Radius.circular(14),
               ),
@@ -239,7 +228,7 @@ class _SoundGroupCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: Colors.white,
+                    color: AppColors.onPrimary,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -248,8 +237,8 @@ class _SoundGroupCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Text(
                     group.displayName,
@@ -267,7 +256,7 @@ class _SoundGroupCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.8),
+                    color: AppColors.onPrimary.withValues(alpha: 0.8),
                   ),
                 ),
                 const Spacer(),
@@ -303,12 +292,12 @@ class _SoundGroupCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? groupColor.withValues(alpha: 0.08)
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                              : AppColors.surface,
+                          borderRadius: BorderRadius.circular(AppRadius.md),
                           border: Border.all(
                             color: isSelected
                                 ? groupColor
-                                : const Color(0xFFE0D6CC),
+                                : AppColors.surfaceDim,
                             width: isSelected ? 2 : 1.5,
                           ),
                         ),
@@ -333,7 +322,7 @@ class _SoundGroupCard extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? groupColor.withValues(alpha: 0.15)
-                                    : Colors.grey.shade100,
+                                    : AppColors.surfaceDim,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -343,7 +332,7 @@ class _SoundGroupCard extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                   color: isSelected
                                       ? groupColor
-                                      : Colors.grey.shade500,
+                                      : AppColors.textTertiary,
                                 ),
                               ),
                             ),
@@ -355,7 +344,7 @@ class _SoundGroupCard extends StatelessWidget {
                                 Icons.expand_more_rounded,
                                 color: isSelected
                                     ? groupColor
-                                    : Colors.grey.shade400,
+                                    : AppColors.textTertiary,
                                 size: 22,
                               ),
                             ),
@@ -423,14 +412,14 @@ class _SpellingWordList extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.menu_book_rounded,
-                  size: 14, color: Colors.grey.shade500),
+                  size: 14, color: AppColors.textTertiary),
               const SizedBox(width: 4),
               Text(
                 '「$spelling」のつづりを使うことば',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: Colors.grey.shade600,
+                  color: AppColors.textSecondary,
                 ),
               ),
             ],
@@ -450,12 +439,12 @@ class _SpellingWordList extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isPlaying
                         ? groupColor.withValues(alpha: 0.15)
-                        : Colors.grey.shade50,
-                    borderRadius: BorderRadius.circular(12),
+                        : AppColors.surfaceDim,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                     border: Border.all(
                       color: isPlaying
                           ? groupColor
-                          : Colors.grey.shade200,
+                          : AppColors.surfaceDim,
                       width: isPlaying ? 1.5 : 1,
                     ),
                   ),
@@ -468,7 +457,7 @@ class _SpellingWordList extends StatelessWidget {
                             : Icons.play_circle_outline_rounded,
                         size: 16,
                         color:
-                            isPlaying ? groupColor : Colors.grey.shade400,
+                            isPlaying ? groupColor : AppColors.textTertiary,
                       ),
                       const SizedBox(width: 6),
                       Text(
@@ -478,7 +467,7 @@ class _SpellingWordList extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color: isPlaying
                               ? groupColor
-                              : const Color(0xFF2A2A2A),
+                              : AppColors.textPrimary,
                         ),
                       ),
                       const SizedBox(width: 4),
@@ -486,8 +475,7 @@ class _SpellingWordList extends StatelessWidget {
                         word.meaning,
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.grey.shade500,
-                          fontWeight: FontWeight.w500,
+                          color: AppColors.textTertiary,
                         ),
                       ),
                     ],
@@ -527,22 +515,13 @@ class _SpeakerButton extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           color: isPlaying
-              ? const Color(0xFF5D4037)
-              : const Color(0xFF5D4037).withValues(alpha: 0.9),
+              ? AppColors.textPrimary
+              : AppColors.textPrimary.withValues(alpha: 0.9),
           borderRadius: BorderRadius.circular(size / 2),
-          boxShadow: isPlaying
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFF5D4037).withValues(alpha: 0.4),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ]
-              : [],
         ),
         child: Icon(
           Icons.volume_up_rounded,
-          color: Colors.white,
+          color: AppColors.onPrimary,
           size: size * 0.5,
         ),
       ),
