@@ -30,10 +30,18 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
     if (mounted) setState(() => _playingGroupId = null);
   }
 
-  /// 単語を再生
-  Future<void> _playWord(String word) async {
+  /// 単語を再生（ゆっくり）
+  Future<void> _playWordSlow(String word) async {
     setState(() => _playingWord = word);
-    await TtsService.speakLibraryWord(word);
+    await TtsService.speakLibraryWordSlow(word);
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (mounted) setState(() => _playingWord = null);
+  }
+
+  /// 単語を再生（ふつう）
+  Future<void> _playWordNormal(String word) async {
+    setState(() => _playingWord = word);
+    await TtsService.speakLibraryWordNormal(word);
     await Future.delayed(const Duration(milliseconds: 800));
     if (mounted) setState(() => _playingWord = null);
   }
@@ -70,7 +78,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                 children: [
                   Row(
                     children: [
-                      const Text('🔊', style: TextStyle(fontSize: 28)),
+                      Icon(Icons.volume_up_rounded, size: 28, color: AppColors.primary),
                       const SizedBox(width: 10),
                       const Text(
                         'フォニックスのおとずかん',
@@ -147,7 +155,8 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                         onPlaySound: () => _playGroupSound(group),
                         onSelectSpelling: (spelling) =>
                             _toggleSpelling(group.id, spelling),
-                        onPlayWord: _playWord,
+                        onPlayWordSlow: _playWordSlow,
+                        onPlayWordNormal: _playWordNormal,
                       ),
                   );
                 },
@@ -175,7 +184,8 @@ class _SoundGroupCard extends StatelessWidget {
     required this.playingWord,
     required this.onPlaySound,
     required this.onSelectSpelling,
-    required this.onPlayWord,
+    required this.onPlayWordSlow,
+    required this.onPlayWordNormal,
   });
 
   final SoundGroup group;
@@ -184,7 +194,8 @@ class _SoundGroupCard extends StatelessWidget {
   final String? playingWord;
   final VoidCallback onPlaySound;
   final ValueChanged<String> onSelectSpelling;
-  final ValueChanged<String> onPlayWord;
+  final ValueChanged<String> onPlayWordSlow;
+  final ValueChanged<String> onPlayWordNormal;
 
   @override
   Widget build(BuildContext context) {
@@ -362,7 +373,8 @@ class _SoundGroupCard extends StatelessWidget {
                               spelling: spelling,
                               groupColor: groupColor,
                               playingWord: playingWord,
-                              onPlayWord: onPlayWord,
+                              onPlayWordSlow: onPlayWordSlow,
+                              onPlayWordNormal: onPlayWordNormal,
                             )
                           : const SizedBox.shrink(),
                       crossFadeState: isSelected
@@ -392,14 +404,16 @@ class _SpellingWordList extends StatelessWidget {
     required this.spelling,
     required this.groupColor,
     required this.playingWord,
-    required this.onPlayWord,
+    required this.onPlayWordSlow,
+    required this.onPlayWordNormal,
   });
 
   final List<WordItem> words;
   final String spelling;
   final Color groupColor;
   final String? playingWord;
-  final ValueChanged<String> onPlayWord;
+  final ValueChanged<String> onPlayWordSlow;
+  final ValueChanged<String> onPlayWordNormal;
 
   @override
   Widget build(BuildContext context) {
@@ -431,7 +445,8 @@ class _SpellingWordList extends StatelessWidget {
             children: words.map((word) {
               final isPlaying = playingWord == word.word;
               return GestureDetector(
-                onTap: () => onPlayWord(word.word),
+                onTap: () => onPlayWordNormal(word.word),
+                onLongPress: () => onPlayWordSlow(word.word),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding:

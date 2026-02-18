@@ -37,10 +37,16 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     return words;
   }
 
-  Future<void> _playWord(String word) async {
+  Future<void> _playWordSlow(String word) async {
     setState(() => _playingWord = word);
-    await TtsService.speakLibraryWord(word);
-    // 短い待機の後にアニメーションを解除
+    await TtsService.speakLibraryWordSlow(word);
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (mounted) setState(() => _playingWord = null);
+  }
+
+  Future<void> _playWordNormal(String word) async {
+    setState(() => _playingWord = word);
+    await TtsService.speakLibraryWordNormal(word);
     await Future.delayed(const Duration(milliseconds: 800));
     if (mounted) setState(() => _playingWord = null);
   }
@@ -63,7 +69,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 children: [
                   Expanded(
                     child: _ViewModeTab(
-                      label: '📚 ことば',
+                      label: 'Words',
                       selected: _viewMode == LibraryViewMode.words,
                       onTap: () => setState(
                           () => _viewMode = LibraryViewMode.words),
@@ -71,7 +77,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   ),
                   Expanded(
                     child: _ViewModeTab(
-                      label: '🔊 おとずかん',
+                      label: 'Phonics',
                       selected:
                           _viewMode == LibraryViewMode.phonicsDictionary,
                       onTap: () => setState(() =>
@@ -102,56 +108,38 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                    Row(
-                      children: [
-                        const Text(
-                          '📚',
-                          style: TextStyle(fontSize: 28),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Word Library',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            '${wordLibrary.length} words',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'タップして単語の発音を聞いてみよう',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+            child: Row(
+              children: [
+                Text(
+                  'Word Library',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.textPrimary,
+                    letterSpacing: -0.5,
+                  ),
                 ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    '${_filteredWords.length} words',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
 
@@ -198,8 +186,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 itemBuilder: (context, i) {
                   if (i == 0) {
                     return _CategoryChip(
-                      label: 'すべて',
-                      emoji: '🌐',
+                      label: 'All',
                       color: AppColors.primary,
                       selected: _selectedCategory == null,
                       onTap: () =>
@@ -209,7 +196,6 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   final cat = wordCategories[i - 1];
                   return _CategoryChip(
                     label: cat.nameJa,
-                    emoji: cat.icon,
                     color: Color(cat.color),
                     selected: _selectedCategory == cat.id,
                     onTap: () =>
@@ -241,7 +227,8 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                       word: word,
                       category: cat,
                       isPlaying: isPlaying,
-                      onPlay: () => _playWord(word.word),
+                      onPlaySlow: () => _playWordSlow(word.word),
+                      onPlayNormal: () => _playWordNormal(word.word),
                     ),
                   );
                 },
@@ -300,14 +287,12 @@ class _ViewModeTab extends StatelessWidget {
 class _CategoryChip extends StatelessWidget {
   const _CategoryChip({
     required this.label,
-    required this.emoji,
     required this.color,
     required this.selected,
     required this.onTap,
   });
 
   final String label;
-  final String emoji;
   final Color color;
   final bool selected;
   final VoidCallback onTap;
@@ -315,34 +300,27 @@ class _CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.only(right: 6),
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
             color: selected ? color : AppColors.surface,
-            borderRadius: BorderRadius.circular(AppRadius.xxl),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: selected ? color : AppColors.surfaceDim,
-              width: selected ? 2 : 1,
+              width: 1,
             ),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 16)),
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: selected ? AppColors.onPrimary : AppColors.textPrimary,
-                ),
-              ),
-            ],
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: selected ? AppColors.onPrimary : AppColors.textSecondary,
+            ),
           ),
         ),
       ),
@@ -357,13 +335,15 @@ class _WordCard extends StatelessWidget {
     required this.word,
     required this.category,
     required this.isPlaying,
-    required this.onPlay,
+    required this.onPlaySlow,
+    required this.onPlayNormal,
   });
 
   final WordItem word;
   final WordCategory category;
   final bool isPlaying;
-  final VoidCallback onPlay;
+  final VoidCallback onPlaySlow;
+  final VoidCallback onPlayNormal;
 
   @override
   Widget build(BuildContext context) {
@@ -385,35 +365,52 @@ class _WordCard extends StatelessWidget {
           width: isPlaying ? 2 : 1,
         ),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPlay,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          child: Padding(
+      child: Padding(
             padding: const EdgeInsets.all(14),
             child: Row(
               children: [
-                // ── 再生ボタン ──
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: isPlaying
-                        ? catColor
-                        : catColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                  ),
-                  child: Icon(
-                    isPlaying
-                        ? Icons.volume_up_rounded
-                        : Icons.play_arrow_rounded,
-                    color: isPlaying ? AppColors.onPrimary : catColor,
-                    size: 26,
+                // ── 再生ボタン (ゆっくり) ──
+                GestureDetector(
+                  onTap: onPlaySlow,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: isPlaying
+                          ? catColor
+                          : catColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
+                    child: Icon(
+                      Icons.slow_motion_video,
+                      color: isPlaying ? AppColors.onPrimary : catColor,
+                      size: 22,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: 6),
+                // ── 再生ボタン (ふつう) ──
+                GestureDetector(
+                  onTap: onPlayNormal,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 42,
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: isPlaying
+                          ? catColor
+                          : catColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
+                    child: Icon(
+                      Icons.play_arrow_rounded,
+                      color: isPlaying ? AppColors.onPrimary : catColor,
+                      size: 24,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
 
                 // ── 単語情報 ──
                 Expanded(
@@ -458,26 +455,18 @@ class _WordCard extends StatelessWidget {
                   ),
                 ),
 
-                // ── カテゴリバッジ ──
+                // ── カテゴリ表示 ──
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
+                  width: 8,
+                  height: 8,
                   decoration: BoxDecoration(
-                    color: catColor.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
-                  child: Text(
-                    category.icon,
-                    style: const TextStyle(fontSize: 16),
+                    color: catColor,
+                    shape: BoxShape.circle,
                   ),
                 ),
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 }

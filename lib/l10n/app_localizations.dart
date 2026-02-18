@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectGame.
   ///
   /// In ja, this message translates to:
-  /// **'Let\'s Play! 🎮'**
+  /// **'Let\'s Play!'**
   String get selectGame;
 
   /// No description provided for @selectGameSubtitle.
@@ -125,19 +125,19 @@ abstract class AppLocalizations {
   /// No description provided for @beginner.
   ///
   /// In ja, this message translates to:
-  /// **'初級 🌱'**
+  /// **'初級'**
   String get beginner;
 
   /// No description provided for @intermediate.
   ///
   /// In ja, this message translates to:
-  /// **'中級 🌟'**
+  /// **'中級'**
   String get intermediate;
 
   /// No description provided for @advanced.
   ///
   /// In ja, this message translates to:
-  /// **'上級 🚀'**
+  /// **'上級'**
   String get advanced;
 
   /// No description provided for @game2Choice.
@@ -239,31 +239,31 @@ abstract class AppLocalizations {
   /// No description provided for @streak.
   ///
   /// In ja, this message translates to:
-  /// **'連続日数 🔥'**
+  /// **'連続日数'**
   String get streak;
 
   /// No description provided for @resultPerfect.
   ///
   /// In ja, this message translates to:
-  /// **'Perfect! 🎉'**
+  /// **'Perfect!'**
   String get resultPerfect;
 
   /// No description provided for @resultGreat.
   ///
   /// In ja, this message translates to:
-  /// **'Great Job! 🌟'**
+  /// **'Great Job!'**
   String get resultGreat;
 
   /// No description provided for @resultGood.
   ///
   /// In ja, this message translates to:
-  /// **'Good Effort! 👍'**
+  /// **'Good Effort!'**
   String get resultGood;
 
   /// No description provided for @resultKeep.
   ///
   /// In ja, this message translates to:
-  /// **'Keep Going! 💪'**
+  /// **'Keep Going!'**
   String get resultKeep;
 
   /// No description provided for @soundToLetterSubtitle.
@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameNewVariations.
   ///
   /// In ja, this message translates to:
-  /// **'新しいゲーム 🌟'**
+  /// **'新しいゲーム'**
   String get gameNewVariations;
 
   /// No description provided for @gameBingo.

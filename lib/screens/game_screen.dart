@@ -96,12 +96,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     }
     _total = _queue.length;
     _buildChoices();
-    
-    // 全モードで問題開始時に自動で音を再生
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (!mounted) return;
-      _playSound();
-    });
   }
 
   PhonicsItem get _answer => _queue[_current];
@@ -218,12 +212,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     setState(() {
       _current++;
       _buildChoices();
-    });
-    
-    // 次の問題でも自動再生
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (!mounted) return;
-      _playSound();
     });
   }
 

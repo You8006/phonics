@@ -41,19 +41,19 @@ class WordCategory {
 }
 
 const wordCategories = <WordCategory>[
-  WordCategory(id: 'cvc', name: 'CVC Words', nameJa: 'CVC単語', icon: '🔤', color: 0xFFFF6B6B),
-  WordCategory(id: 'cvc_basic', name: 'CVC Basic', nameJa: 'CVC基本', icon: '🔡', color: 0xFFE07C56),
-  WordCategory(id: 'sight', name: 'Sight Words', nameJa: 'サイトワード', icon: '👀', color: 0xFF4ECDC4),
-  WordCategory(id: 'animals', name: 'Animals', nameJa: 'どうぶつ', icon: '🐾', color: 0xFFFFBE0B),
-  WordCategory(id: 'colors', name: 'Colors', nameJa: 'いろ', icon: '🎨', color: 0xFFFF006E),
-  WordCategory(id: 'numbers', name: 'Numbers', nameJa: 'かず', icon: '🔢', color: 0xFF8338EC),
-  WordCategory(id: 'body', name: 'Body', nameJa: 'からだ', icon: '🦵', color: 0xFF3A86FF),
-  WordCategory(id: 'food', name: 'Food', nameJa: 'たべもの', icon: '🍎', color: 0xFFE63946),
-  WordCategory(id: 'family', name: 'Family', nameJa: 'かぞく', icon: '👨‍👩‍👧', color: 0xFF457B9D),
-  WordCategory(id: 'actions', name: 'Actions', nameJa: 'うごき', icon: '🏃', color: 0xFF2A9D8F),
-  WordCategory(id: 'adjectives', name: 'Adjectives', nameJa: 'ようす', icon: '✨', color: 0xFFE9C46A),
-  WordCategory(id: 'nature', name: 'Nature', nameJa: 'しぜん', icon: '🌿', color: 0xFF52B788),
-  WordCategory(id: 'daily', name: 'Daily Life', nameJa: 'せいかつ', icon: '🏠', color: 0xFF8D99AE),
+  WordCategory(id: 'cvc', name: 'CVC Words', nameJa: 'CVC単語', icon: '', color: 0xFFFF6B6B),
+  WordCategory(id: 'cvc_basic', name: 'CVC Basic', nameJa: 'CVC基本', icon: '', color: 0xFFE07C56),
+  WordCategory(id: 'sight', name: 'Sight Words', nameJa: 'サイトワード', icon: '', color: 0xFF4ECDC4),
+  WordCategory(id: 'animals', name: 'Animals', nameJa: 'どうぶつ', icon: '', color: 0xFFFFBE0B),
+  WordCategory(id: 'colors', name: 'Colors', nameJa: 'いろ', icon: '', color: 0xFFFF006E),
+  WordCategory(id: 'numbers', name: 'Numbers', nameJa: 'かず', icon: '', color: 0xFF8338EC),
+  WordCategory(id: 'body', name: 'Body', nameJa: 'からだ', icon: '', color: 0xFF3A86FF),
+  WordCategory(id: 'food', name: 'Food', nameJa: 'たべもの', icon: '', color: 0xFFE63946),
+  WordCategory(id: 'family', name: 'Family', nameJa: 'かぞく', icon: '', color: 0xFF457B9D),
+  WordCategory(id: 'actions', name: 'Actions', nameJa: 'うごき', icon: '', color: 0xFF2A9D8F),
+  WordCategory(id: 'adjectives', name: 'Adjectives', nameJa: 'ようす', icon: '', color: 0xFFE9C46A),
+  WordCategory(id: 'nature', name: 'Nature', nameJa: 'しぜん', icon: '', color: 0xFF52B788),
+  WordCategory(id: 'daily', name: 'Daily Life', nameJa: 'せいかつ', icon: '', color: 0xFF8D99AE),
 ];
 
 /// 100単語のデータ

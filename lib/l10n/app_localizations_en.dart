@@ -15,19 +15,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameSelectTitle => 'Phonics Adventure';
 
   @override
-  String get selectGame => 'Let\'s Play! 🎮';
+  String get selectGame => 'Let\'s Play!';
 
   @override
   String get selectGameSubtitle => 'Let\'s practice sounds and letters';
 
   @override
-  String get beginner => 'Beginner 🌱';
+  String get beginner => 'Beginner';
 
   @override
-  String get intermediate => 'Intermediate 🌟';
+  String get intermediate => 'Intermediate';
 
   @override
-  String get advanced => 'Advanced 🚀';
+  String get advanced => 'Advanced';
 
   @override
   String get game2Choice => '2-Choice';
@@ -78,19 +78,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get correct => 'Correct';
 
   @override
-  String get streak => 'Streak 🔥';
+  String get streak => 'Streak';
 
   @override
-  String get resultPerfect => 'Perfect! 🎉';
+  String get resultPerfect => 'Perfect!';
 
   @override
-  String get resultGreat => 'Great Job! 🌟';
+  String get resultGreat => 'Great Job!';
 
   @override
-  String get resultGood => 'Good Effort! 👍';
+  String get resultGood => 'Good Effort!';
 
   @override
-  String get resultKeep => 'Keep Going! 💪';
+  String get resultKeep => 'Keep Going!';
 
   @override
   String get soundToLetterSubtitle => 'Listen and choose the correct letter';
@@ -147,7 +147,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupTitle5 => 'Step 6: Tricky Sounds';
 
   @override
-  String get gameNewVariations => 'New Variations 🌟';
+  String get gameNewVariations => 'New Variations';
 
   @override
   String get gameBingo => 'Bingo';

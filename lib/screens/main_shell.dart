@@ -156,7 +156,7 @@ class _SettingsPageState extends State<_SettingsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                '⚙️ Settings',
+                'Settings',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w900,

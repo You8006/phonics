@@ -15,19 +15,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameSelectTitle => 'Phonics Adventure';
 
   @override
-  String get selectGame => 'Let\'s Play! 🎮';
+  String get selectGame => 'Let\'s Play!';
 
   @override
   String get selectGameSubtitle => '音と文字の練習をしよう';
 
   @override
-  String get beginner => '初級 🌱';
+  String get beginner => '初級';
 
   @override
-  String get intermediate => '中級 🌟';
+  String get intermediate => '中級';
 
   @override
-  String get advanced => '上級 🚀';
+  String get advanced => '上級';
 
   @override
   String get game2Choice => '2択クイズ';
@@ -78,19 +78,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get correct => '正解';
 
   @override
-  String get streak => '連続日数 🔥';
+  String get streak => '連続日数';
 
   @override
-  String get resultPerfect => 'Perfect! 🎉';
+  String get resultPerfect => 'Perfect!';
 
   @override
-  String get resultGreat => 'Great Job! 🌟';
+  String get resultGreat => 'Great Job!';
 
   @override
-  String get resultGood => 'Good Effort! 👍';
+  String get resultGood => 'Good Effort!';
 
   @override
-  String get resultKeep => 'Keep Going! 💪';
+  String get resultKeep => 'Keep Going!';
 
   @override
   String get soundToLetterSubtitle => '音を聞いて正しい文字を選ぼう';
@@ -147,7 +147,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupTitle5 => 'Step 6: 難しい音';
 
   @override
-  String get gameNewVariations => '新しいゲーム 🌟';
+  String get gameNewVariations => '新しいゲーム';
 
   @override
   String get gameBingo => 'おとビンゴ';

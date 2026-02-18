@@ -70,7 +70,7 @@ class _LearnScreenState extends State<LearnScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppRadius.full),
             ),
-            onPressed: () => TtsService.speakLibraryWord(w),
+            onPressed: () => TtsService.speakLibraryWordNormal(w),
           );
         }).toList(),
       ),

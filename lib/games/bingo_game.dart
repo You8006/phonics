@@ -101,10 +101,6 @@ class _BingoGameState extends State<BingoGame> {
     setState(() {
       _currentTarget = _boardItems[targetIndex];
     });
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (!mounted) return;
-      _playSound();
-    });
   }
 
   Future<void> _playSound() async {

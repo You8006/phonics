@@ -100,20 +100,6 @@ class TtsService {
     }
   }
 
-  /// プリレコードされた例単語を再生
-  static Future<void> speakWord(PhonicsItem item) async {
-    final key = _audioKey(item);
-    final prefix = _voicePrefix();
-    try {
-      _player.stop();
-      await _player.play(AssetSource('$prefix/words/word_$key.mp3'));
-    } catch (e) {
-      // フォールバック: TTS で読み上げ
-      debugPrint('Audio fallback for word $key: $e');
-      await speak(item.example);
-    }
-  }
-
   /// フォニックスパターンの音を再生
   /// phonics_data.dart の PhonicsItem から正確にキーを導出する
   static Future<void> speakPhonicsPattern(String pattern) async {
@@ -125,25 +111,31 @@ class TtsService {
     }
   }
 
-  /// 単語ライブラリーの単語を再生（ゆっくり → 間 → 通常速度）
-  static Future<void> speakLibraryWord(String word) async {
+  /// 単語ライブラリーの単語を再生（ゆっくり）
+  static Future<void> speakLibraryWordSlow(String word) async {
     final key = word.toLowerCase().replaceAll(' ', '_');
     final prefix = _voicePrefix();
     try {
       _player.stop();
-      // 1) ゆっくり再生
-      final slowPath = '$prefix/words_library/word_${key}_slow.mp3';
-      await _player.play(AssetSource(slowPath));
-      // 再生完了を待つ
-      await _player.onPlayerComplete.first;
-      // 2) 少し間を空ける
-      await Future.delayed(const Duration(milliseconds: 150));
-      // 3) 通常速度で再生
+      await _player.play(AssetSource('$prefix/words_library/word_${key}_slow.mp3'));
+    } catch (e) {
+      debugPrint('Audio fallback for library word slow $key: $e');
+      await _init();
+      await _tts.setSpeechRate(0.3);
+      await _tts.speak(word);
+    }
+  }
+
+  /// 単語ライブラリーの単語を再生（通常速度）
+  static Future<void> speakLibraryWordNormal(String word) async {
+    final key = word.toLowerCase().replaceAll(' ', '_');
+    final prefix = _voicePrefix();
+    try {
+      _player.stop();
       await _player.play(AssetSource('$prefix/words_library/word_$key.mp3'));
     } catch (e) {
-      // フォールバック: TTS で読み上げ（声タイプ反映）
       debugPrint('Audio fallback for library word $key: $e');
-      await _init(); // 声タイプを再適用
+      await _init();
       await _tts.speak(word);
     }
   }

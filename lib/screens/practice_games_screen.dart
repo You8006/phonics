@@ -301,10 +301,6 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
     _answered = false;
     _lastCorrect = null;
     setState(() {});
-    // 自動で単語音声を再生
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (mounted) TtsService.speakLibraryWord(_answer);
-    });
   }
 
   Future<void> _check() async {
@@ -350,10 +346,24 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FilledButton.icon(
-              onPressed: () => TtsService.speakLibraryWord(_answer),
-              icon: const Icon(Icons.volume_up),
-              label: const Text('単語を聞く'),
+            Row(
+              children: [
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: () => TtsService.speakLibraryWordSlow(_answer),
+                    icon: const Icon(Icons.slow_motion_video),
+                    label: const Text('ゆっくり'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: () => TtsService.speakLibraryWordNormal(_answer),
+                    icon: const Icon(Icons.play_arrow),
+                    label: const Text('ふつう'),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             Card(
@@ -553,10 +563,6 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
     _choices = [_answer, ...distractors.take(2)]..shuffle(_rng);
     _answered = false;
     setState(() {});
-    // 自動で現在の単語を読み上げ
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (mounted) TtsService.speakLibraryWord(_currentWord);
-    });
   }
 
   Future<void> _tapChoice(String selected) async {
@@ -570,7 +576,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
       _score++;
       await TtsService.playCorrect();
       // 正解単語を読み上げ
-      await TtsService.speakLibraryWord(_answer);
+      await TtsService.speakLibraryWordNormal(_answer);
     } else {
       await ProgressService.recordWrong('mini:chain:$_currentWord>$_answer');
       await TtsService.playWrong();
@@ -616,10 +622,21 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                       style: const TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
-                    OutlinedButton.icon(
-                      onPressed: () => TtsService.speakLibraryWord(_currentWord),
-                      icon: const Icon(Icons.volume_up),
-                      label: const Text('音を聞く'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton.icon(
+                          onPressed: () => TtsService.speakLibraryWordSlow(_currentWord),
+                          icon: const Icon(Icons.slow_motion_video),
+                          label: const Text('ゆっくり'),
+                        ),
+                        const SizedBox(width: 8),
+                        OutlinedButton.icon(
+                          onPressed: () => TtsService.speakLibraryWordNormal(_currentWord),
+                          icon: const Icon(Icons.play_arrow),
+                          label: const Text('ふつう'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -702,10 +719,6 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
     _target = _rng.nextBool() ? _pair.a : _pair.b;
     _answered = false;
     setState(() {});
-    // リスニングゲーム: 自動で音声再生
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (mounted) TtsService.speakLibraryWord(_target);
-    });
   }
 
   Future<void> _choose(String selected) async {
@@ -723,7 +736,7 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
       await ProgressService.recordWrong(key);
       await TtsService.playWrong();
       // 不正解後に正解の単語を再生
-      await TtsService.speakLibraryWord(_target);
+      await TtsService.speakLibraryWordNormal(_target);
     }
 
     setState(() => _selected = selected);
@@ -784,10 +797,21 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
                     const SizedBox(height: 6),
                     Text('Focus: ${_pair.focus}', style: const TextStyle(color: AppColors.textSecondary)),
                     const SizedBox(height: 12),
-                    FilledButton.icon(
-                      onPressed: () => TtsService.speakLibraryWord(_target),
-                      icon: const Icon(Icons.volume_up),
-                      label: const Text('Play Sound'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FilledButton.icon(
+                          onPressed: () => TtsService.speakLibraryWordSlow(_target),
+                          icon: const Icon(Icons.slow_motion_video),
+                          label: const Text('ゆっくり'),
+                        ),
+                        const SizedBox(width: 8),
+                        FilledButton.icon(
+                          onPressed: () => TtsService.speakLibraryWordNormal(_target),
+                          icon: const Icon(Icons.play_arrow),
+                          label: const Text('ふつう'),
+                        ),
+                      ],
                     ),
                   ],
                 ),

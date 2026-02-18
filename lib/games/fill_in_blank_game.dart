@@ -52,11 +52,6 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       TweenSequenceItem(tween: Tween(begin: 5, end: -3), weight: 20),
       TweenSequenceItem(tween: Tween(begin: -3, end: 0), weight: 20),
     ]).animate(_shakeCtrl);
-
-    // 最初の問題の単語を自動再生
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) _playWord();
-    });
   }
 
   @override
@@ -69,7 +64,8 @@ class _FillInBlankGameState extends State<FillInBlankGame>
 
   FillInBlankQuestion get _q => _questions[_index];
 
-  void _playWord() => TtsService.speakLibraryWord(_q.wordItem.word);
+  void _playWordSlow() => TtsService.speakLibraryWordSlow(_q.wordItem.word);
+  void _playWordNormal() => TtsService.speakLibraryWordNormal(_q.wordItem.word);
   void _playPhonics(String p) => TtsService.speakPhonicsPattern(p);
 
   bool _attemptRecorded = false; // 同じ問題のリトライ時に二重記録しない
@@ -103,7 +99,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
 
   Future<void> _playCorrectThenWord() async {
     await TtsService.playCorrect();
-    _playWord();
+    _playWordNormal();
   }
 
   void _next() {
@@ -114,10 +110,6 @@ class _FillInBlankGameState extends State<FillInBlankGame>
         _hasChecked = false;
         _isCorrect = false;
         _attemptRecorded = false;
-      });
-      // 次の問題の単語を自動再生
-      Future.delayed(const Duration(milliseconds: 400), () {
-        if (mounted) _playWord();
       });
     } else {
       _showResult();
@@ -237,26 +229,52 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Play sound button
-                      GestureDetector(
-                        onTap: _playWord,
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.accentIndigo.withValues(alpha: 0.3),
-                              width: 4,
+                      // Play sound buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: _playWordSlow,
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                color: AppColors.surface,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.accentIndigo.withValues(alpha: 0.3),
+                                  width: 3,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.slow_motion_video,
+                                size: 26,
+                                color: AppColors.accentIndigo,
+                              ),
                             ),
                           ),
-                          child: const Icon(
-                            Icons.volume_up_rounded,
-                            size: 30,
-                            color: AppColors.accentIndigo,
+                          const SizedBox(width: 16),
+                          GestureDetector(
+                            onTap: _playWordNormal,
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                color: AppColors.surface,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.accentIndigo.withValues(alpha: 0.3),
+                                  width: 3,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.play_arrow_rounded,
+                                size: 30,
+                                color: AppColors.accentIndigo,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
