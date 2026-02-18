@@ -74,6 +74,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   List<_GameOption> _options = [];
   Map<String, Color?> _feedback = {};
   bool _answered = false;
+  bool _waitingForNext = false;
 
 
   late AnimationController _animController;
@@ -186,16 +187,18 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
     if (correct) {
       await TtsService.playCorrect();
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (!mounted) return;
+      _next();
     } else {
       await TtsService.playWrong();
+      if (!mounted) return;
+      setState(() => _waitingForNext = true);
     }
-
-    await Future.delayed(const Duration(milliseconds: 400));
-    if (!mounted) return;
-    _next();
   }
 
   void _next() {
+    _waitingForNext = false;
     if (_current + 1 >= _total) {
       ProgressService.updateStreak();
       Navigator.pushReplacement(
@@ -251,6 +254,18 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                       ),
                     ),
                     const SizedBox(height: 16),
+                    if (_waitingForNext)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: FilledButton.icon(
+                            onPressed: _next,
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            label: const Text('Next'),
+                          ),
+                        ),
+                      ),
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {

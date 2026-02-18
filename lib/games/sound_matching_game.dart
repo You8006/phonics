@@ -28,6 +28,7 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
   List<PhonicsItem> _options = [];
   Map<String, Color?> _feedback = {};
   bool _answered = false;
+  bool _waitingForNext = false;
   int _score = 0;
   int _current = 0;
   late int _total;
@@ -121,14 +122,15 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
     if (correct) {
       await TtsService.playCorrect();
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (!mounted) return;
+      setState(() => _current++);
+      _loadQuestion();
     } else {
       await TtsService.playWrong();
+      if (!mounted) return;
+      setState(() => _waitingForNext = true);
     }
-
-    await Future.delayed(const Duration(milliseconds: 400));
-    if (!mounted) return;
-    setState(() => _current++);
-    _loadQuestion();
   }
 
   void _showResult() {
@@ -241,34 +243,57 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
               flex: 6,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final cols = _options.length <= 3 ? 1 : 2;
-                    final rows = (_options.length / cols).ceil();
-                    final totalVSpacing = (rows - 1) * 14;
-                    final cellHeight = (constraints.maxHeight - totalVSpacing) / rows;
-                    final totalHSpacing = (cols - 1) * 14;
-                    final cellWidth = (constraints.maxWidth - totalHSpacing) / cols;
-                    final ratio = (cellWidth / cellHeight).clamp(0.5, 4.0);
+                child: Column(
+                  children: [
+                    if (_waitingForNext)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: FilledButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _waitingForNext = false;
+                                _current++;
+                              });
+                              _loadQuestion();
+                            },
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            label: const Text('Next'),
+                          ),
+                        ),
+                      ),
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final cols = _options.length <= 3 ? 1 : 2;
+                          final rows = (_options.length / cols).ceil();
+                          final totalVSpacing = (rows - 1) * 14;
+                          final cellHeight = (constraints.maxHeight - totalVSpacing) / rows;
+                          final totalHSpacing = (cols - 1) * 14;
+                          final cellWidth = (constraints.maxWidth - totalHSpacing) / cols;
+                          final ratio = (cellWidth / cellHeight).clamp(0.5, 4.0);
 
-                    return GridView.count(
-                      crossAxisCount: cols,
-                      mainAxisSpacing: 14,
-                      crossAxisSpacing: 14,
-                      childAspectRatio: ratio,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: _options.asMap().entries.map((entry) {
-                        final item = entry.value;
-                        final color = _feedback[item.progressKey];
-
-                        return _OptionCard(
-                            label: item.letter,
-                            color: color,
-                            onTap: () => _handleAnswer(item),
-                        );
-                      }).toList(),
-                    );
-                  },
+                          return GridView.count(
+                            crossAxisCount: cols,
+                            mainAxisSpacing: 14,
+                            crossAxisSpacing: 14,
+                            childAspectRatio: ratio,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: _options.asMap().entries.map((entry) {
+                              final item = entry.value;
+                              final color = _feedback[item.progressKey];
+                              return _OptionCard(
+                                label: item.letter,
+                                color: color,
+                                onTap: () => _handleAnswer(item),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
