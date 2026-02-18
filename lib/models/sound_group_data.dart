@@ -1,6 +1,25 @@
 import 'phonics_data.dart';
 import 'word_data.dart';
 
+/// IPA 記号が母音かどうかを判定する。
+bool isVowelIpa(String ipa) =>
+    ipa.contains('æ') ||
+    ipa.contains('ɛ') ||
+    ipa.contains('ɪ') ||
+    ipa.contains('ʌ') ||
+    ipa.contains('ɒ') ||
+    ipa.contains('ɑ') ||
+    ipa.contains('eɪ') ||
+    ipa.contains('aɪ') ||
+    ipa.contains('iː') ||
+    ipa.contains('uː') ||
+    ipa.contains('ʊ') ||
+    ipa.contains('ɔː') ||
+    ipa.contains('aʊ') ||
+    ipa.contains('ɔɪ') ||
+    ipa.contains('ɜː') ||
+    ipa == 'e';
+
 /// フォニックスのおとずかん — 同じ音を出す綴りをグループ化
 class SoundGroup {
   const SoundGroup({
@@ -524,10 +543,10 @@ List<SoundGroup> get consonantGroups =>
 
 /// セクション名付きの全グループリスト
 List<MapEntry<String, List<SoundGroup>>> get soundGroupSections => [
-  MapEntry('たんぼいん（みじかい母音）', shortVowelGroups),
-  MapEntry('ちょうぼいん（ながい母音）', longVowelGroups),
-  MapEntry('そのたの母音', otherVowelGroups),
-  MapEntry('しいん（子音）', consonantGroups),
+  MapEntry('Short Vowels', shortVowelGroups),
+  MapEntry('Long Vowels', longVowelGroups),
+  MapEntry('Other Vowels', otherVowelGroups),
+  MapEntry('Consonants', consonantGroups),
 ];
 
 /// SoundGroupからPhonicsItemを検索（音声再生用）
@@ -540,31 +559,6 @@ PhonicsItem? findPhonicsItemForGroup(SoundGroup group) {
     if (item.letter == group.displayName) return item;
   }
   return null;
-}
-
-/// スペリングからPhonicsItemを検索（音声再生用）
-PhonicsItem? findPhonicsItemForSpelling(String spelling) {
-  final items = allPhonicsItems;
-  for (final item in items) {
-    if (item.letter == spelling) return item;
-  }
-  return null;
-}
-
-/// wordKeys から WordItem リストを取得
-List<WordItem> getWordsForGroup(SoundGroup group) {
-  return group.wordKeys
-      .map((key) {
-        try {
-          return wordLibrary.firstWhere(
-            (w) => w.word.toLowerCase() == key.toLowerCase(),
-          );
-        } catch (_) {
-          return null;
-        }
-      })
-      .whereType<WordItem>()
-      .toList();
 }
 
 /// 特定スペリングの WordItem リストを取得

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
+import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
@@ -26,11 +27,11 @@ class PracticeGamesScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
           _Tile(
             title: 'All Sounds Mix (42)',
-            subtitle: '全フォニックス音をランダム出題',
+            subtitle: 'Practice all 42 phonics sounds at random',
             icon: Icons.shuffle,
             color: AppColors.accentTeal,
             onTap: () => Navigator.push(
@@ -49,29 +50,13 @@ class PracticeGamesScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _Tile(
             title: 'Vowel Sound Focus',
-            subtitle: '母音音に絞って練習',
+            subtitle: 'Focus on vowel sounds',
             icon: Icons.music_note,
             color: AppColors.accentPink,
             onTap: () {
-              final vowelLike = allPhonicsItems.where((e) {
-                final ipa = e.ipa;
-                return ipa.contains('æ') ||
-                    ipa.contains('ɛ') ||
-                    ipa.contains('ɪ') ||
-                    ipa.contains('ʌ') ||
-                    ipa.contains('ɒ') ||
-                    ipa.contains('ɑ') ||
-                    ipa.contains('eɪ') ||
-                    ipa.contains('aɪ') ||
-                    ipa.contains('iː') ||
-                    ipa.contains('uː') ||
-                    ipa.contains('ʊ') ||
-                    ipa.contains('ɔː') ||
-                    ipa.contains('aʊ') ||
-                    ipa.contains('ɔɪ') ||
-                    ipa.contains('ɜː') ||
-                    (ipa == 'e');
-              }).toList();
+              final vowelLike = allPhonicsItems
+                  .where((e) => isVowelIpa(e.ipa))
+                  .toList();
 
               if (vowelLike.length >= 2) {
                 Navigator.push(
@@ -92,29 +77,13 @@ class PracticeGamesScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _Tile(
             title: 'Consonant Sound Focus',
-            subtitle: '子音音に絞って練習',
+            subtitle: 'Focus on consonant sounds',
             icon: Icons.graphic_eq,
             color: AppColors.accentCyan,
             onTap: () {
-              final consonantLike = allPhonicsItems.where((e) {
-                final ipa = e.ipa;
-                return !(ipa.contains('æ') ||
-                    ipa.contains('ɛ') ||
-                    ipa.contains('ɪ') ||
-                    ipa.contains('ʌ') ||
-                    ipa.contains('ɒ') ||
-                    ipa.contains('ɑ') ||
-                    ipa.contains('eɪ') ||
-                    ipa.contains('aɪ') ||
-                    ipa.contains('iː') ||
-                    ipa.contains('uː') ||
-                    ipa.contains('ʊ') ||
-                    ipa.contains('ɔː') ||
-                    ipa.contains('aʊ') ||
-                    ipa.contains('ɔɪ') ||
-                    ipa.contains('ɜː') ||
-                    (ipa == 'e'));
-              }).toList();
+              final consonantLike = allPhonicsItems
+                  .where((e) => !isVowelIpa(e.ipa))
+                  .toList();
 
               if (consonantLike.length >= 2) {
                 Navigator.push(
@@ -135,7 +104,7 @@ class PracticeGamesScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _Tile(
             title: 'Blending Builder',
-            subtitle: '聞こえた単語を文字を並べて作る（Blending）',
+            subtitle: 'Build words by arranging letters',
             icon: Icons.extension,
             color: AppColors.accentBlue,
             onTap: () => Navigator.push(
@@ -146,7 +115,7 @@ class PracticeGamesScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _Tile(
             title: 'Word Chaining',
-            subtitle: '1音だけ変えて次の単語を作る（Word Chaining）',
+            subtitle: 'Change one sound to make a new word',
             icon: Icons.swap_horiz,
             color: AppColors.accentGreen,
             onTap: () => Navigator.push(
@@ -157,7 +126,7 @@ class PracticeGamesScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _Tile(
             title: 'Minimal Pair Listening',
-            subtitle: '似た音を聞き分ける（Minimal Pairs）',
+            subtitle: 'Distinguish between similar sounds',
             icon: Icons.hearing,
             color: AppColors.accentPurple,
             onTap: () => Navigator.push(
@@ -166,15 +135,6 @@ class PracticeGamesScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Text(
-                'ゲームは多く、操作はシンプルにしています。研究ベースの練習法（blending・word chaining・minimal pair）も含みます。',
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -198,32 +158,35 @@ class _Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: AppDecoration.accentCard(color),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: color.withAlpha(35),
-                child: Icon(icon, color: color),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 3),
-                    Text(subtitle, style: const TextStyle(color: AppColors.textSecondary)),
-                  ],
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        decoration: AppDecoration.accentCard(color),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: color.withValues(alpha: 0.14),
+                  child: Icon(icon, color: color),
                 ),
-              ),
-              const Icon(Icons.chevron_right, color: AppColors.textTertiary),
-            ],
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: AppTextStyle.cardTitle),
+                      const SizedBox(height: 3),
+                      Text(subtitle, style: AppTextStyle.caption),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+              ],
+            ),
           ),
         ),
       ),
@@ -340,92 +303,127 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Blending Builder  $_round / $_totalRounds')),
+      appBar: AppBar(title: Text('Blending $_round / $_totalRounds')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Play buttons
             Row(
               children: [
                 Expanded(
-                  child: FilledButton.icon(
-                    onPressed: () => TtsService.speakLibraryWordSlow(_answer),
-                    icon: const Icon(Icons.slow_motion_video),
-                    label: const Text('ゆっくり'),
+                  child: _PlayButton(
+                    icon: Icons.slow_motion_video,
+                    label: 'Slow',
+                    color: AppColors.accentBlue,
+                    onTap: () => TtsService.speakLibraryWordSlow(_answer),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: FilledButton.icon(
-                    onPressed: () => TtsService.speakLibraryWordNormal(_answer),
-                    icon: const Icon(Icons.play_arrow),
-                    label: const Text('ふつう'),
+                  child: _PlayButton(
+                    icon: Icons.play_arrow_rounded,
+                    label: 'Normal',
+                    color: AppColors.accentBlue,
+                    onTap: () => TtsService.speakLibraryWordNormal(_answer),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            Card(
-              color: _answered
-                  ? (_lastCorrect == true ? AppColors.correct.withValues(alpha: 0.12) : AppColors.wrong.withValues(alpha: 0.12))
-                  : null,
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  children: [
-                    const Text('聞こえた単語を作ってね'),
-                    const SizedBox(height: 8),
-                    Text(
-                      _answered && _lastCorrect != true
-                          ? _answer.split('').join(' ')
-                          : _typed.padRight(_answer.length, '_').split('').join(' '),
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: _answered
-                            ? (_lastCorrect == true ? AppColors.correct : AppColors.wrong)
-                            : null,
-                      ),
+            const SizedBox(height: 16),
+            // Word display
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: _answered
+                    ? (_lastCorrect == true
+                        ? AppColors.correct.withValues(alpha: 0.08)
+                        : AppColors.wrong.withValues(alpha: 0.08))
+                    : AppColors.surface,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(color: AppColors.surfaceDim),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Build the word you hear',
+                    style: AppTextStyle.caption,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _answered && _lastCorrect != true
+                        ? _answer.split('').join(' ')
+                        : _typed.padRight(_answer.length, '_').split('').join(' '),
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 2,
+                      color: _answered
+                          ? (_lastCorrect == true ? AppColors.correct : AppColors.wrong)
+                          : AppColors.textPrimary,
                     ),
-                    if (_answered && _lastCorrect == true)
-                      const Icon(Icons.check_circle, color: AppColors.correct, size: 32),
-                    if (_answered && _lastCorrect != true)
-                      Text('→ $_answer', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: AppColors.correct)),
-                  ],
-                ),
+                  ),
+                  if (_answered && _lastCorrect == true)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Icon(Icons.check_rounded, color: AppColors.correct, size: 28),
+                    ),
+                  if (_answered && _lastCorrect != true)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(_answer, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.correct)),
+                    ),
+                ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
+            // Letter chips
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: 6,
+              runSpacing: 6,
               children: List.generate(_pool.length, (i) {
                 final ch = _pool[i];
                 final used = _chipUsed[i];
-                return ActionChip(
-                  label: Text(ch, style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: used ? AppColors.textTertiary : null,
-                  )),
-                  onPressed: !used && _typed.length < _answer.length && !_answered
+                return GestureDetector(
+                  onTap: !used && _typed.length < _answer.length && !_answered
                       ? () => setState(() {
                             _typed += ch;
                             _chipUsed[i] = true;
                           })
                       : null,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: used ? AppColors.surfaceDim : AppColors.accentBlue.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                      border: Border.all(
+                        color: used ? AppColors.surfaceDim : AppColors.accentBlue.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      ch,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: used ? AppColors.textTertiary : AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
                 );
               }),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
+            // Undo / Reset
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: OutlinedButton(
                     onPressed: _typed.isNotEmpty && !_answered
                         ? () {
-                            // 最後に使ったチップを復活
                             final lastChar = _typed[_typed.length - 1];
                             for (var j = _pool.length - 1; j >= 0; j--) {
                               if (_pool[j] == lastChar && _chipUsed[j]) {
@@ -436,29 +434,30 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                             setState(() => _typed = _typed.substring(0, _typed.length - 1));
                           }
                         : null,
-                    icon: const Icon(Icons.backspace_outlined),
-                    label: const Text('1文字けす'),
+                    child: const Text('Undo'),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: OutlinedButton(
                     onPressed: _typed.isNotEmpty && !_answered
                         ? () => setState(() {
                               _typed = '';
                               _chipUsed.fillRange(0, _chipUsed.length, false);
                             })
                         : null,
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('リセット'),
+                    child: const Text('Reset'),
                   ),
                 ),
               ],
             ),
             const Spacer(),
-            FilledButton(
-              onPressed: _typed.length == _answer.length && !_answered ? _check : null,
-              child: const Text('Check'),
+            SizedBox(
+              height: 48,
+              child: FilledButton(
+                onPressed: _typed.length == _answer.length && !_answered ? _check : null,
+                child: const Text('Check'),
+              ),
             ),
           ],
         ),
@@ -604,66 +603,100 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Word Chaining  $_round / $_totalRounds')),
+      appBar: AppBar(title: Text('Word Chaining $_round / $_totalRounds')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  children: [
-                    const Text('1音だけ変えて次の単語にしよう'),
-                    const SizedBox(height: 10),
-                    Text(
-                      _currentWord,
-                      style: const TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+            // Current word display
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(color: AppColors.surfaceDim),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Change one sound',
+                    style: AppTextStyle.caption,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    _currentWord,
+                    style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 2,
+                      color: AppColors.textPrimary,
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        OutlinedButton.icon(
-                          onPressed: () => TtsService.speakLibraryWordSlow(_currentWord),
-                          icon: const Icon(Icons.slow_motion_video),
-                          label: const Text('ゆっくり'),
-                        ),
-                        const SizedBox(width: 8),
-                        OutlinedButton.icon(
-                          onPressed: () => TtsService.speakLibraryWordNormal(_currentWord),
-                          icon: const Icon(Icons.play_arrow),
-                          label: const Text('ふつう'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _PlayButton(
+                        icon: Icons.slow_motion_video,
+                        label: 'Slow',
+                        color: AppColors.accentGreen,
+                        onTap: () => TtsService.speakLibraryWordSlow(_currentWord),
+                        compact: true,
+                      ),
+                      const SizedBox(width: 8),
+                      _PlayButton(
+                        icon: Icons.play_arrow_rounded,
+                        label: 'Normal',
+                        color: AppColors.accentGreen,
+                        onTap: () => TtsService.speakLibraryWordNormal(_currentWord),
+                        compact: true,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
+            // Choices
             ..._choices.map(
               (w) {
-                Color? bgColor;
-                Color? fgColor;
+                Color bg = AppColors.surface;
+                Color textColor = AppColors.textPrimary;
+                Color borderColor = AppColors.surfaceDim;
                 if (_answered) {
                   if (w == _answer) {
-                    bgColor = AppColors.correct;
-                    fgColor = Colors.white;
+                    bg = AppColors.correct;
+                    textColor = AppColors.onPrimary;
+                    borderColor = AppColors.correct;
                   } else if (w == _selected) {
-                    bgColor = AppColors.wrong;
-                    fgColor = Colors.white;
+                    bg = AppColors.wrong;
+                    textColor = AppColors.onPrimary;
+                    borderColor = AppColors.wrong;
                   }
                 }
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: FilledButton.tonal(
-                    style: bgColor != null
-                        ? FilledButton.styleFrom(backgroundColor: bgColor, foregroundColor: fgColor)
-                        : null,
-                    onPressed: _answered ? null : () => _tapChoice(w),
-                    child: Text(w, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  child: GestureDetector(
+                    onTap: _answered ? null : () => _tapChoice(w),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(
+                        color: bg,
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        border: Border.all(color: borderColor, width: AppBorder.normal),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        w,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: textColor,
+                        ),
+                      ),
+                    ),
                   ),
                 );
               },
@@ -759,68 +792,154 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
   }
 
   Widget _pairButton(String word) {
-    Color? bgColor;
-    Color? fgColor;
+    Color bg = AppColors.surface;
+    Color textColor = AppColors.textPrimary;
+    Color borderColor = AppColors.surfaceDim;
     if (_answered) {
       if (word == _target) {
-        bgColor = AppColors.correct;
-        fgColor = Colors.white;
+        bg = AppColors.correct;
+        textColor = AppColors.onPrimary;
+        borderColor = AppColors.correct;
       } else if (word == _selected) {
-        bgColor = AppColors.wrong;
-        fgColor = Colors.white;
+        bg = AppColors.wrong;
+        textColor = AppColors.onPrimary;
+        borderColor = AppColors.wrong;
       }
     }
-    return FilledButton.tonal(
-      style: bgColor != null
-          ? FilledButton.styleFrom(backgroundColor: bgColor, foregroundColor: fgColor)
-          : null,
-      onPressed: _answered ? null : () => _choose(word),
-      child: Text(word, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+    return GestureDetector(
+      onTap: _answered ? null : () => _choose(word),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: borderColor, width: 1.5),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          word,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w800,
+            color: textColor,
+          ),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Minimal Pairs  $_round / $_totalRounds')),
+      appBar: AppBar(title: Text('Minimal Pairs $_round / $_totalRounds')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  children: [
-                    const Text('音を聞いて、正しい単語を選ぼう'),
-                    const SizedBox(height: 6),
-                    Text('Focus: ${_pair.focus}', style: const TextStyle(color: AppColors.textSecondary)),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FilledButton.icon(
-                          onPressed: () => TtsService.speakLibraryWordSlow(_target),
-                          icon: const Icon(Icons.slow_motion_video),
-                          label: const Text('ゆっくり'),
-                        ),
-                        const SizedBox(width: 8),
-                        FilledButton.icon(
-                          onPressed: () => TtsService.speakLibraryWordNormal(_target),
-                          icon: const Icon(Icons.play_arrow),
-                          label: const Text('ふつう'),
-                        ),
-                      ],
+            // Prompt
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(color: AppColors.surfaceDim),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Which word do you hear?',
+                    style: AppTextStyle.caption,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Focus: ${_pair.focus}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textTertiary,
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _PlayButton(
+                        icon: Icons.slow_motion_video,
+                        label: 'Slow',
+                        color: AppColors.accentPurple,
+                        onTap: () => TtsService.speakLibraryWordSlow(_target),
+                        compact: true,
+                      ),
+                      const SizedBox(width: 8),
+                      _PlayButton(
+                        icon: Icons.play_arrow_rounded,
+                        label: 'Normal',
+                        color: AppColors.accentPurple,
+                        onTap: () => TtsService.speakLibraryWordNormal(_target),
+                        compact: true,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
+            // Choice buttons
             _pairButton(_pair.a),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             _pairButton(_pair.b),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Shared play button widget ──
+
+class _PlayButton extends StatelessWidget {
+  const _PlayButton({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+    this.compact = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 14 : 16,
+          vertical: compact ? 8 : 10,
+        ),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          border: Border.all(color: color.withValues(alpha: 0.15)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: compact ? 18 : 20, color: color),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: compact ? 13 : 14,
+                fontWeight: FontWeight.w700,
+                color: color,
+              ),
+            ),
           ],
         ),
       ),

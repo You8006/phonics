@@ -70,34 +70,30 @@ class _ResultScreenState extends State<ResultScreen>
             children: [
               const Spacer(),
 
-              // Trophy
+              // Result icon
               ScaleTransition(
                 scale: _scale,
                 child: Container(
-                  padding: const EdgeInsets.all(28),
+                  padding: const EdgeInsets.all(AppSpacing.xxl),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isHigh ? AppColors.accentAmber : AppColors.accentTeal,
+                    color: (isHigh ? AppColors.primary : AppColors.accentTeal).withValues(alpha: 0.1),
                   ),
                   child: Icon(
                     isHigh
                         ? Icons.emoji_events_rounded
                         : Icons.thumb_up_rounded,
-                    size: 64,
-                    color: Colors.white,
+                    size: 48,
+                    color: isHigh ? AppColors.primary : AppColors.accentTeal,
                   ),
                 ),
               ),
-              const SizedBox(height: AppSpacing.xxxl),
+              const SizedBox(height: AppSpacing.xxl),
 
               // Feedback
               Text(
                 _getFeedback(l10n),
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.textPrimary,
-                ),
+                style: AppTextStyle.pageHeading,
               ),
               const SizedBox(height: AppSpacing.lg),
 
@@ -108,16 +104,16 @@ class _ResultScreenState extends State<ResultScreen>
                   Text(
                     '${widget.score}',
                     style: const TextStyle(
-                      fontSize: 56,
-                      fontWeight: FontWeight.w900,
+                      fontSize: 48,
+                      fontWeight: FontWeight.w800,
                       color: AppColors.primary,
                     ),
                   ),
                   Text(
                     '/${widget.total}',
                     style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.textTertiary,
                     ),
                   ),

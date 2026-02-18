@@ -81,7 +81,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                       Icon(Icons.volume_up_rounded, size: 28, color: AppColors.primary),
                       const SizedBox(width: 10),
                       const Text(
-                        'フォニックスのおとずかん',
+                        'Phonics Sound Dictionary',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w900,
@@ -106,7 +106,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                   ),
                   const SizedBox(height: 4),
                   const Text(
-                    'つづりをタップして ことばを見てみよう',
+                    'Tap a spelling to see words',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.textTertiary,
@@ -216,7 +216,7 @@ class _SoundGroupCard extends StatelessWidget {
           color: isPlaying
               ? groupColor.withValues(alpha: 0.5)
               : AppColors.surfaceDim,
-          width: isPlaying ? 2 : 1.5,
+          width: isPlaying ? AppBorder.selected : AppBorder.normal,
         ),
       ),
       child: Column(
@@ -228,14 +228,14 @@ class _SoundGroupCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.textPrimary,
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(14),
-                topRight: Radius.circular(14),
+                topLeft: Radius.circular(AppRadius.lg),
+                topRight: Radius.circular(AppRadius.lg),
               ),
             ),
             child: Row(
               children: [
                 const Text(
-                  'グループ：',
+                  'Group:',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
@@ -309,7 +309,7 @@ class _SoundGroupCard extends StatelessWidget {
                             color: isSelected
                                 ? groupColor
                                 : AppColors.surfaceDim,
-                            width: isSelected ? 2 : 1.5,
+                            width: isSelected ? AppBorder.selected : AppBorder.normal,
                           ),
                         ),
                         child: Row(
@@ -429,7 +429,7 @@ class _SpellingWordList extends StatelessWidget {
                   size: 14, color: AppColors.textTertiary),
               const SizedBox(width: 4),
               Text(
-                '「$spelling」のつづりを使うことば',
+                'Words with "$spelling"',
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
@@ -460,7 +460,7 @@ class _SpellingWordList extends StatelessWidget {
                       color: isPlaying
                           ? groupColor
                           : AppColors.surfaceDim,
-                      width: isPlaying ? 1.5 : 1,
+                      width: isPlaying ? AppBorder.normal : AppBorder.thin,
                     ),
                   ),
                   child: Row(

@@ -50,7 +50,7 @@ class _LearnScreenState extends State<LearnScreen> {
       const Divider(height: 32, color: AppColors.surfaceDim),
       const Text(
         'Example words',
-        style: TextStyle(fontSize: 13, color: AppColors.textTertiary),
+        style: AppTextStyle.caption,
       ),
       const SizedBox(height: 8),
       Wrap(
@@ -103,8 +103,7 @@ class _LearnScreenState extends State<LearnScreen> {
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
             child: Text(
               '${_current + 1} / ${_items.length}',
-              style: const TextStyle(
-                  fontSize: 13, color: AppColors.textTertiary),
+              style: AppTextStyle.caption,
             ),
           ),
           Expanded(

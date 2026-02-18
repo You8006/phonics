@@ -79,11 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(width: 2),
                 Text(
                   '$_streak',
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                  style: AppTextStyle.cardTitle,
                 ),
               ],
             ),
@@ -110,13 +106,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: AppColors.onPrimary,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    '42の英語の音をマスターしよう！',
-                    style: TextStyle(fontSize: 13, color: Colors.white70),
+                    'Master 42 English sounds',
+                    style: TextStyle(fontSize: 13, color: Color(0xB3FFFFFF)),
                   ),
                 ],
               ),
@@ -139,11 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: Text(
                             _mission!.title,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
+                            style: AppTextStyle.cardTitle,
                           ),
                         ),
                         Container(
@@ -193,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: _startDueReview,
                           icon: const Icon(Icons.history, size: 18),
                           label:
-                              Text('SRS Review (${_dueItems.length}件)'),
+                              Text('SRS Review (${_dueItems.length})'),
                         ),
                       ),
                     ],
@@ -296,11 +288,7 @@ class _GroupCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   group.name,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                  style: AppTextStyle.cardTitle,
                 ),
               ),
               Row(

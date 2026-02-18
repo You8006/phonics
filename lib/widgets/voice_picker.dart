@@ -28,12 +28,8 @@ void showVoicePicker(BuildContext context, [VoidCallback? onChanged]) {
               ),
               const SizedBox(height: 16),
               const Text(
-                '音声を選択',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                ),
+                'Select Voice',
+                style: AppTextStyle.sectionHeading,
               ),
               const SizedBox(height: 16),
               ...VoiceType.values.map((type) {
@@ -88,11 +84,11 @@ class _VoiceInfo {
 _VoiceInfo _voiceInfo(VoiceType type) {
   switch (type) {
     case VoiceType.female:
-      return const _VoiceInfo(Icons.face_3, 'Female (女性)', 'Jenny — 温かみのある声');
+      return const _VoiceInfo(Icons.face_3, 'Female', 'Jenny — Warm and clear');
     case VoiceType.male:
-      return const _VoiceInfo(Icons.face, 'Male (男性)', 'Guy — クリアな声');
+      return const _VoiceInfo(Icons.face, 'Male', 'Guy — Clear and steady');
     case VoiceType.child:
-      return const _VoiceInfo(Icons.child_care, 'Child (子供)', 'Ana — かわいい子供の声');
+      return const _VoiceInfo(Icons.child_care, 'Child', 'Ana — Cute child voice');
   }
 }
 
@@ -131,7 +127,7 @@ class _VoiceOptionTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(
                 color: selected ? AppColors.primary : AppColors.surfaceDim,
-                width: selected ? 2 : 1,
+                width: selected ? AppBorder.selected : AppBorder.thin,
               ),
             ),
             child: Row(

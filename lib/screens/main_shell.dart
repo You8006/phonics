@@ -157,15 +157,11 @@ class _SettingsPageState extends State<_SettingsPage> {
             children: [
               const Text(
                 'Settings',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.textPrimary,
-                ),
+                style: AppTextStyle.pageHeading,
               ),
               const SizedBox(height: 4),
               const Text(
-                'アプリの設定を変更できます',
+                'Customize your app preferences',
                 style: TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
@@ -176,7 +172,7 @@ class _SettingsPageState extends State<_SettingsPage> {
               _SettingsTile(
                 icon: Icons.record_voice_over_rounded,
                 title: 'Voice Settings',
-                subtitle: '音声の種類を変更',
+                subtitle: 'Change voice type',
                 color: AppColors.accentBlue,
                 onTap: () => showVoicePicker(context, () {
                   if (mounted) setState(() {});
@@ -242,18 +238,11 @@ class _SettingsTile extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
+                        style: AppTextStyle.cardTitle,
                       ),
                       Text(
                         subtitle,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
-                        ),
+                        style: AppTextStyle.caption.copyWith(color: AppColors.textSecondary),
                       ),
                     ],
                   ),

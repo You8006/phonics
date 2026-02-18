@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/score_app_bar.dart';
 
 class BingoGame extends StatefulWidget {
   final List<PhonicsItem> items;
@@ -180,103 +181,61 @@ class _BingoGameState extends State<BingoGame> {
     final accentColor = AppColors.primary;
 
     return Scaffold(
-      backgroundColor: AppColors.surface,
-      appBar: AppBar(
-        leading: const CloseButton(color: AppColors.textSecondary),
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: AppColors.surfaceDim,
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.grid_on_rounded, color: accentColor, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '${_markedIndices.length} / ${_boardItems.length}',
-                style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16),
-              ),
-            ],
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: scoreAppBar('${_markedIndices.length} / ${_boardItems.length}'),
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 12),
 
             // Sound prompt
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: _bingo ? null : _playSound,
-                borderRadius: BorderRadius.circular(AppRadius.xxl),
-                splashColor: accentColor.withValues(alpha: 0.2),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-                  decoration: BoxDecoration(
-                    color: accentColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(AppRadius.xxl),
-                    border: Border.all(color: accentColor.withValues(alpha: 0.3)),
-                  ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.volume_up_rounded,
-                            size: 32, color: accentColor),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Tap to replay',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: accentColor,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+            GestureDetector(
+              onTap: _bingo ? null : _playSound,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                decoration: BoxDecoration(
+                  color: accentColor.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  border: Border.all(color: accentColor.withValues(alpha: 0.15)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.volume_up_rounded, size: 24, color: accentColor),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Tap to play',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: accentColor,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
+            ),
 
             // Bingo banner
             if (_bingo)
               Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.accentAmber,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                    ),
-                    child: const Text(
-                      'BINGO!',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.onPrimary,
-                        letterSpacing: 4,
-                      ),
-                    ),
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  'BINGO!',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.primary,
+                    letterSpacing: 3,
+                  ),
                 ),
               ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
 
             // Board
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                 child: Center(
                   child: AspectRatio(
                     aspectRatio: 1,
@@ -285,8 +244,8 @@ class _BingoGameState extends State<BingoGame> {
                       itemCount: widget.gridSize * widget.gridSize,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: widget.gridSize,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                        crossAxisSpacing: AppSpacing.md,
+                        mainAxisSpacing: AppSpacing.md,
                       ),
                       itemBuilder: (context, index) {
                         if (index >= _boardItems.length) {
@@ -295,39 +254,30 @@ class _BingoGameState extends State<BingoGame> {
                         final item = _boardItems[index];
                         final isMarked = _markedIndices.contains(index);
 
-                        return Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () => _onCellTap(index),
-                            borderRadius: BorderRadius.circular(16),
-                            splashColor: AppColors.correct.withValues(alpha: 0.3),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              decoration: BoxDecoration(
+                        return GestureDetector(
+                          onTap: () => _onCellTap(index),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            decoration: BoxDecoration(
+                              color: isMarked
+                                  ? AppColors.correct
+                                  : AppColors.surface,
+                              borderRadius: BorderRadius.circular(AppRadius.md),
+                              border: Border.all(
                                 color: isMarked
                                     ? AppColors.correct
-                                    : AppColors.surface,
-                                borderRadius: BorderRadius.circular(AppRadius.lg),
-                                border: Border.all(
-                                  color: isMarked
-                                      ? AppColors.correct
-                                      : AppColors.surfaceDim,
-                                  width: 2,
-                                ),
+                                    : AppColors.surfaceDim,
+                                width: AppBorder.normal,
                               ),
-                              alignment: Alignment.center,
-                              child: isMarked
-                                  ? const Icon(Icons.check_rounded,
-                                          color: AppColors.onPrimary, size: 36)
-                                  : Text(
-                                      item.letter,
-                                      style: const TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w900,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
                             ),
+                            alignment: Alignment.center,
+                            child: isMarked
+                                ? const Icon(Icons.check_rounded,
+                                        color: AppColors.onPrimary, size: 28)
+                                : Text(
+                                    item.letter,
+                                    style: AppTextStyle.pageHeading,
+                                  ),
                           ),
                         );
                       },
@@ -339,28 +289,25 @@ class _BingoGameState extends State<BingoGame> {
 
             // Bottom action
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+              padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.sm, AppSpacing.xxl, AppSpacing.xl),
               child: _bingo
                   ? SizedBox(
                         width: double.infinity,
-                        height: 56,
+                        height: 48,
                         child: FilledButton(
                           onPressed: _setupBoard,
                           child: const Text(
                             'New Game',
                             style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w900),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800),
                           ),
                         ),
                     )
                   : Text(
                       'Miss: $_wrongCount',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textTertiary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTextStyle.caption,
+                      textAlign: TextAlign.center,
                     ),
             ),
           ],

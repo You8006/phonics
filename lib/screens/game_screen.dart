@@ -4,6 +4,7 @@ import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/score_app_bar.dart';
 import 'result_screen.dart';
 
 enum GameMode {
@@ -220,34 +221,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: CloseButton(color: AppColors.textSecondary),
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: AppColors.surfaceDim,
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-               const Icon(Icons.star_rounded, color: Colors.amber, size: 20),
-               const SizedBox(width: 8),
-               Text(
-                 '$_score / $_total',
-                 style: TextStyle(
-                   color: AppColors.textPrimary,
-                   fontWeight: FontWeight.w800,
-                   fontSize: 16
-                 ),
-               ),
-            ],
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: scoreAppBar('$_score / $_total'),
       body: SafeArea(
         child: Column(
           children: [
@@ -265,7 +239,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
               flex: 6,
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(AppSpacing.xxl),
                 child: Column(
                   children: [
                     Text(
@@ -326,30 +300,23 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
           child: GestureDetector(
             onTap: _playSound,
             child: Container(
-              width: 140,
-              height: 140,
+              width: 100,
+              height: 100,
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.primary.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 8),
-                boxShadow: [
-                   BoxShadow(
-                     color: AppColors.primary.withValues(alpha: 0.1),
-                     blurRadius: 30,
-                     offset: const Offset(0, 10),
-                   )
-                ],
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: AppBorder.thick),
               ),
               child: Icon(
                 Icons.volume_up_rounded,
-                size: 64,
+                size: 44,
                 color: AppColors.primary,
               ),
             ),
           ),
         ),
-        const SizedBox(height: 24),
-        Text(l10n.listenSound, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
+        const SizedBox(height: 16),
+        Text(l10n.listenSound, style: AppTextStyle.label.copyWith(color: AppColors.textTertiary)),
       ],
     );
   }
@@ -389,14 +356,14 @@ class _ChoiceButton extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: border, width: 2),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: border, width: AppBorder.normal),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,
@@ -405,9 +372,10 @@ class _ChoiceButton extends StatelessWidget {
                 child: Text(
                   label,
                   style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 42,
+                    fontWeight: FontWeight.w800,
                     color: text,
+                    letterSpacing: -0.5,
                   ),
                 ),
               ),

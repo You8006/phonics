@@ -27,33 +27,29 @@ class WordItem {
 class WordCategory {
   const WordCategory({
     required this.id,
-    required this.name,
     required this.nameJa,
-    required this.icon,
     required this.color,
   });
 
   final String id;
-  final String name;
   final String nameJa;
-  final String icon;
   final int color;
 }
 
 const wordCategories = <WordCategory>[
-  WordCategory(id: 'cvc', name: 'CVC Words', nameJa: 'CVC単語', icon: '', color: 0xFFFF6B6B),
-  WordCategory(id: 'cvc_basic', name: 'CVC Basic', nameJa: 'CVC基本', icon: '', color: 0xFFE07C56),
-  WordCategory(id: 'sight', name: 'Sight Words', nameJa: 'サイトワード', icon: '', color: 0xFF4ECDC4),
-  WordCategory(id: 'animals', name: 'Animals', nameJa: 'どうぶつ', icon: '', color: 0xFFFFBE0B),
-  WordCategory(id: 'colors', name: 'Colors', nameJa: 'いろ', icon: '', color: 0xFFFF006E),
-  WordCategory(id: 'numbers', name: 'Numbers', nameJa: 'かず', icon: '', color: 0xFF8338EC),
-  WordCategory(id: 'body', name: 'Body', nameJa: 'からだ', icon: '', color: 0xFF3A86FF),
-  WordCategory(id: 'food', name: 'Food', nameJa: 'たべもの', icon: '', color: 0xFFE63946),
-  WordCategory(id: 'family', name: 'Family', nameJa: 'かぞく', icon: '', color: 0xFF457B9D),
-  WordCategory(id: 'actions', name: 'Actions', nameJa: 'うごき', icon: '', color: 0xFF2A9D8F),
-  WordCategory(id: 'adjectives', name: 'Adjectives', nameJa: 'ようす', icon: '', color: 0xFFE9C46A),
-  WordCategory(id: 'nature', name: 'Nature', nameJa: 'しぜん', icon: '', color: 0xFF52B788),
-  WordCategory(id: 'daily', name: 'Daily Life', nameJa: 'せいかつ', icon: '', color: 0xFF8D99AE),
+  WordCategory(id: 'cvc', nameJa: 'CVC単語', color: 0xFFFF6B6B),
+  WordCategory(id: 'cvc_basic', nameJa: 'CVC基本', color: 0xFFE07C56),
+  WordCategory(id: 'sight', nameJa: 'サイトワード', color: 0xFF4ECDC4),
+  WordCategory(id: 'animals', nameJa: 'どうぶつ', color: 0xFFFFBE0B),
+  WordCategory(id: 'colors', nameJa: 'いろ', color: 0xFFFF006E),
+  WordCategory(id: 'numbers', nameJa: 'かず', color: 0xFF8338EC),
+  WordCategory(id: 'body', nameJa: 'からだ', color: 0xFF3A86FF),
+  WordCategory(id: 'food', nameJa: 'たべもの', color: 0xFFE63946),
+  WordCategory(id: 'family', nameJa: 'かぞく', color: 0xFF457B9D),
+  WordCategory(id: 'actions', nameJa: 'うごき', color: 0xFF2A9D8F),
+  WordCategory(id: 'adjectives', nameJa: 'ようす', color: 0xFFE9C46A),
+  WordCategory(id: 'nature', nameJa: 'しぜん', color: 0xFF52B788),
+  WordCategory(id: 'daily', nameJa: 'せいかつ', color: 0xFF8D99AE),
 ];
 
 /// 100単語のデータ
@@ -413,10 +409,4 @@ const wordLibrary = <WordItem>[
 /// カテゴリごとの単語を取得
 List<WordItem> getWordsByCategory(String categoryId) {
   return wordLibrary.where((w) => w.category == categoryId).toList();
-}
-
-/// 全カテゴリを取得（単語がある順番に）
-List<WordCategory> get activeCategories {
-  final usedIds = wordLibrary.map((w) => w.category).toSet();
-  return wordCategories.where((c) => usedIds.contains(c.id)).toList();
 }

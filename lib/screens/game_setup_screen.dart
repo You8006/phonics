@@ -298,11 +298,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
       children: [
         Row(
           children: [
-            Text(title,
-                style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary)),
+            Text(title, style: AppTextStyle.cardTitle),
             const SizedBox(width: 10),
             GestureDetector(
               onTap: () => _toggleAll(items),
@@ -366,10 +362,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(l10n.settingsLabel,
-            style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary)),
+            style: AppTextStyle.sectionHeading),
         const SizedBox(height: AppSpacing.lg),
 
         if (widget.gameType == GameType.soundQuiz ||
@@ -391,10 +384,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         Center(
           child: Text(
             '${_items.length} / ${allPhonicsItems.length}',
-            style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textTertiary,
-                fontWeight: FontWeight.w700),
+            style: AppTextStyle.label.copyWith(color: AppColors.textTertiary),
           ),
         ),
       ],
@@ -425,7 +415,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                   border: Border.all(
                     color: sel ? _accent : AppColors.surfaceDim,
-                    width: sel ? 2 : 1,
+                    width: sel ? AppBorder.selected : AppBorder.thin,
                   ),
                 ),
                 child: Text(

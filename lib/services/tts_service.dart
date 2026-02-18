@@ -366,12 +366,6 @@ class ProgressService {
     return scored.take(limit).map((e) => e.item).toList();
   }
 
-  /// 苦手候補の件数
-  static Future<int> weakItemCountForGroup(PhonicsGroup group) async {
-    final items = await weakItemsForGroup(group, limit: group.items.length);
-    return items.length;
-  }
-
   /// グループが解放済みか (前グループ 60%以上 or Group 1)
   static Future<bool> isGroupUnlocked(int groupId) async {
     if (groupId == 0) return true;
@@ -443,45 +437,45 @@ class ProgressService {
 
     final tasks = <String>[];
     if (day <= 3) {
-      tasks.add('Sound → Letter を2回プレイ');
-      tasks.add('Learn を5分（音の確認）');
+      tasks.add('Play Sound → Letter twice');
+      tasks.add('Learn for 5 min (review sounds)');
     } else if (day <= 6) {
-      tasks.add('Letter → Sound を2回プレイ');
-      tasks.add('Blending Builder を1回プレイ');
+      tasks.add('Play Letter → Sound twice');
+      tasks.add('Play Blending Builder once');
     } else if (day <= 9) {
-      tasks.add('IPA → Letter を2回プレイ');
-      tasks.add('Word Chaining を1回プレイ');
+      tasks.add('Play IPA → Letter twice');
+      tasks.add('Play Word Chaining once');
     } else if (day <= 12) {
-      tasks.add('Minimal Pair Listening を2回プレイ');
-      tasks.add('Weakness Drill を1回プレイ');
+      tasks.add('Play Minimal Pair Listening twice');
+      tasks.add('Play Weakness Drill once');
     } else {
-      tasks.add('全モードから3ゲームを自由に選んでプレイ');
-      tasks.add('間違えた音を Learn で復習');
+      tasks.add('Pick 3 games from any mode');
+      tasks.add('Review missed sounds in Learn');
     }
 
     if (dueCount > 0) {
-      tasks.insert(0, 'SRS復習: 期限到来 $dueCount 件を処理');
+      tasks.insert(0, 'SRS Review: $dueCount items due');
     }
     if (streak < 3) {
-      tasks.add('連続学習を維持（今日1セッション完了）');
+      tasks.add('Keep your streak (finish 1 session today)');
     }
 
     final phase = day <= 4
-        ? '基礎'
+        ? 'Foundation'
         : day <= 9
-            ? '定着'
-            : '応用';
+            ? 'Practice'
+            : 'Challenge';
 
     final tip = mastery < 0.4
-        ? '音を先に聞いてから選ぶと定着しやすいです。'
+        ? 'Listen to the sound first, then choose — it helps retention.'
         : mastery < 0.7
-            ? '苦手音の復習を先にすると正答率が上がります。'
-            : '応用モード（IPA/Minimal Pair）中心に進めましょう。';
+            ? 'Review weak sounds first to boost accuracy.'
+            : 'Focus on advanced modes (IPA / Minimal Pairs).';
 
     return DailyMission(
       day: day,
       phase: phase,
-      title: 'Day $day / 14 ミッション',
+      title: 'Day $day / 14 Mission',
       tasks: tasks,
       tip: tip,
     );
@@ -502,95 +496,4 @@ class DailyMission {
   final String title;
   final List<String> tasks;
   final String tip;
-}
-
-class AdaptivePlan {
-  const AdaptivePlan({
-    required this.level,
-    required this.numOptions,
-    required this.questionCount,
-  });
-
-  final String level;
-  final int numOptions;
-  final int questionCount;
-}
-
-extension ProgressAdaptive on ProgressService {
-  static Future<AdaptivePlan> getAdaptivePlanForGroup(PhonicsGroup group) async {
-    final mastery = await ProgressService.groupMastery(group);
-    final weak = await ProgressService.weakItemCountForGroup(group);
-
-    if (mastery < 0.35 || weak >= 6) {
-      return AdaptivePlan(
-        level: 'Starter',
-        numOptions: group.items.length >= 2 ? 2 : 1,
-        questionCount: 8,
-      );
-    }
-
-    if (mastery < 0.7 || weak >= 3) {
-      return AdaptivePlan(
-        level: 'Core',
-        numOptions: group.items.length >= 3 ? 3 : group.items.length,
-        questionCount: 10,
-      );
-    }
-
-    return AdaptivePlan(
-      level: 'Challenge',
-      numOptions: group.items.length >= 4 ? 4 : group.items.length,
-      questionCount: 12,
-    );
-  }
-}
-
-// ═══════════════════════════════════════════
-//  Letter Card Widget
-// ═══════════════════════════════════════════
-
-class LetterCard extends StatelessWidget {
-  const LetterCard({
-    super.key,
-    required this.letter,
-    required this.onTap,
-    this.color,
-    this.size = 32,
-  });
-
-  final String letter;
-  final VoidCallback onTap;
-  final Color? color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    final bg = color ?? Theme.of(context).colorScheme.surfaceContainerHighest;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(25),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          letter,
-          style: TextStyle(
-            fontSize: size,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-      ),
-    );
-  }
 }

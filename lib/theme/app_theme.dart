@@ -25,6 +25,8 @@ abstract final class AppColors {
   // ── Semantic ──
   static const correct = Color(0xFF34D399);
   static const wrong = Color(0xFFF87171);
+  static const correctBg = Color(0xFFE8F5E9);
+  static const correctDark = Color(0xFF2E7D32);
 
   // ── Game Accent Colors (統一パレット) ──
   static const accentBlue = Color(0xFF3B82F6);
@@ -45,7 +47,6 @@ abstract final class AppColors {
 
 /// アプリ共通の spacing
 abstract final class AppSpacing {
-  static const xs = 4.0;
   static const sm = 8.0;
   static const md = 12.0;
   static const lg = 16.0;
@@ -62,6 +63,48 @@ abstract final class AppRadius {
   static const xl = 20.0;
   static const xxl = 24.0;
   static const full = 999.0;
+}
+
+/// アプリ共通の border width
+abstract final class AppBorder {
+  static const thin = 1.0;
+  static const normal = 1.5;
+  static const selected = 2.0;
+  static const thick = 2.5;
+}
+
+/// アプリ共通のテキストスタイル
+abstract final class AppTextStyle {
+  static const pageHeading = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w800,
+    color: AppColors.textPrimary,
+    letterSpacing: -0.5,
+  );
+
+  static const sectionHeading = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w800,
+    color: AppColors.textPrimary,
+  );
+
+  static const cardTitle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
+  );
+
+  static const caption = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textTertiary,
+  );
+
+  static const label = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textSecondary,
+  );
 }
 
 /// よく使うボックスデコレーション
@@ -99,6 +142,7 @@ abstract final class AppDecoration {
         color: selected ? color : color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(AppRadius.full),
       );
+
 }
 
 /// アプリのテーマを構築

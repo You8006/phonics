@@ -110,14 +110,9 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
             child: Row(
               children: [
-                Text(
+                const Text(
                   'Word Library',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.5,
-                  ),
+                  style: AppTextStyle.pageHeading,
                 ),
                 const Spacer(),
                 Container(
@@ -127,7 +122,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
                   child: Text(
                     '${_filteredWords.length} words',
@@ -308,10 +303,10 @@ class _CategoryChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
             color: selected ? color : AppColors.surface,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppRadius.xl),
             border: Border.all(
               color: selected ? color : AppColors.surfaceDim,
-              width: 1,
+              width: AppBorder.thin,
             ),
           ),
           child: Text(
@@ -362,7 +357,7 @@ class _WordCard extends StatelessWidget {
         ],
         border: Border.all(
           color: isPlaying ? catColor.withValues(alpha: 0.5) : AppColors.surfaceDim,
-          width: isPlaying ? 2 : 1,
+          width: isPlaying ? AppBorder.selected : AppBorder.thin,
         ),
       ),
       child: Padding(
@@ -430,11 +425,7 @@ class _WordCard extends StatelessWidget {
                           const SizedBox(width: 10),
                           Text(
                             word.meaning,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTextStyle.label,
                           ),
                         ],
                       ),

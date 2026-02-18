@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/tts_service.dart';
 import '../screens/result_screen.dart';
 import '../theme/app_theme.dart';
+import '../widgets/score_app_bar.dart';
 import 'fill_in_blank_data.dart';
 
 class FillInBlankGame extends StatefulWidget {
@@ -143,46 +144,18 @@ class _FillInBlankGameState extends State<FillInBlankGame>
     if (_questions.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: const Text('Fill in the Blank')),
-        body: const Center(child: Text('問題データがありません')),
+        body: const Center(child: Text('No questions available')),
       );
     }
 
     return Scaffold(
-      backgroundColor: AppColors.surface,
-      appBar: AppBar(
-        leading: const CloseButton(color: AppColors.textSecondary),
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: AppColors.surfaceDim,
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.star_rounded, color: Colors.amber, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                '$_correctCount / ${_questions.length}',
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: scoreAppBar('$_correctCount / ${_questions.length}'),
       body: SafeArea(
         child: Column(
           children: [
             // Progress bar
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
                 child: LinearProgressIndicator(
@@ -205,11 +178,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                       // Meaning hint
                       Text(
                         _q.wordItem.meaning,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textTertiary,
-                        ),
+                        style: AppTextStyle.label.copyWith(color: AppColors.textTertiary),
                       ),
                       const SizedBox(height: 12),
                       // Word puzzle with shake/bounce
@@ -236,40 +205,32 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                           GestureDetector(
                             onTap: _playWordSlow,
                             child: Container(
-                              width: 56,
-                              height: 56,
+                              width: 48,
+                              height: 48,
                               decoration: BoxDecoration(
-                                color: AppColors.surface,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppColors.accentIndigo.withValues(alpha: 0.3),
-                                  width: 3,
-                                ),
+                                color: AppColors.accentIndigo.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(AppRadius.md),
                               ),
                               child: const Icon(
                                 Icons.slow_motion_video,
-                                size: 26,
+                                size: 22,
                                 color: AppColors.accentIndigo,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          const SizedBox(width: 10),
                           GestureDetector(
                             onTap: _playWordNormal,
                             child: Container(
-                              width: 56,
-                              height: 56,
+                              width: 48,
+                              height: 48,
                               decoration: BoxDecoration(
-                                color: AppColors.surface,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppColors.accentIndigo.withValues(alpha: 0.3),
-                                  width: 3,
-                                ),
+                                color: AppColors.accentIndigo.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(AppRadius.md),
                               ),
                               child: const Icon(
                                 Icons.play_arrow_rounded,
-                                size: 30,
+                                size: 26,
                                 color: AppColors.accentIndigo,
                               ),
                             ),
@@ -285,16 +246,12 @@ class _FillInBlankGameState extends State<FillInBlankGame>
             Expanded(
               flex: 5,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
                 child: Column(
                   children: [
                     Text(
-                      'どれかな？',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textTertiary,
-                        fontSize: 16,
-                      ),
+                      'Choose the correct spelling',
+                      style: AppTextStyle.label.copyWith(color: AppColors.textTertiary),
                     ),
                     const SizedBox(height: 12),
                     // Choice cards
@@ -384,7 +341,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
         style: const TextStyle(
           fontSize: 48,
           fontWeight: FontWeight.w900,
-          color: Colors.black87,
+          color: AppColors.textPrimary,
           height: 1.1,
         ),
       ),
@@ -392,9 +349,9 @@ class _FillInBlankGameState extends State<FillInBlankGame>
   }
 
   Widget _phonicsSlot(String text, {required bool filled}) {
-    final bg = filled ? const Color(0xFFE8F5E9) : AppColors.accentIndigo.withValues(alpha: 0.08);
+    final bg = filled ? AppColors.correctBg : AppColors.accentIndigo.withValues(alpha: 0.08);
     final border = filled ? AppColors.correct : AppColors.accentIndigo;
-    final textColor = filled ? const Color(0xFF2E7D32) : AppColors.accentIndigo;
+    final textColor = filled ? AppColors.correctDark : AppColors.accentIndigo;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
@@ -403,7 +360,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: border, width: 2.5),
+        border: Border.all(color: border, width: AppBorder.thick),
       ),
       child: Text(
         text,
@@ -424,7 +381,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       decoration: BoxDecoration(
         color: AppColors.surfaceDim,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: AppColors.surfaceDim, width: 2.5),
+        border: Border.all(color: AppColors.surfaceDim, width: AppBorder.thick),
       ),
       child: Row(
         children: List.generate(
@@ -475,14 +432,14 @@ class _FillInBlankGameState extends State<FillInBlankGame>
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: bg,
-        border: Border.all(color: borderColor, width: 2),
-        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        border: Border.all(color: borderColor, width: AppBorder.normal),
+        borderRadius: BorderRadius.circular(AppRadius.md),
       ),
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         child: InkWell(
-          borderRadius: BorderRadius.circular(AppRadius.xxl),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           onTap: (_hasChecked && _isCorrect)
               ? null
               : () => setState(() {
@@ -496,8 +453,8 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                 Text(
                   phonics,
                   style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
                     color: textColor,
                   ),
                 ),
@@ -529,58 +486,42 @@ class _FillInBlankGameState extends State<FillInBlankGame>
     final VoidCallback? onTap;
 
     if (canProceed) {
-      label = 'つぎへ';
+      label = 'Next';
       color = AppColors.accentIndigo;
       onTap = _next;
     } else if (canCheck) {
-      label = 'こたえあわせ';
+      label = 'Check';
       color = AppColors.primary;
       onTap = _check;
     } else if (canRetry) {
-      label = 'やりなおす';
+      label = 'Try Again';
       color = AppColors.wrong;
       onTap = _reset;
     } else {
-      label = 'こたえあわせ';
+      label = 'Check';
       color = AppColors.surfaceDim;
       onTap = null;
     }
 
     return SizedBox(
       width: double.infinity,
-      height: 52,
+      height: 48,
       child: FilledButton(
         onPressed: onTap,
         style: FilledButton.styleFrom(
           backgroundColor: color,
           foregroundColor: AppColors.onPrimary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.xxl),
+            borderRadius: BorderRadius.circular(AppRadius.md),
           ),
           textStyle: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w800,
           ),
-          elevation: 2,
+          elevation: 0,
         ),
         child: Text(label),
       ),
     );
   }
-}
-
-// AnimatedBuilder — lightweight wrapper around AnimatedWidget
-class AnimatedBuilder extends AnimatedWidget {
-  final Widget Function(BuildContext, Widget?) builder;
-  final Widget? child;
-
-  const AnimatedBuilder({
-    super.key,
-    required Animation<dynamic> animation,
-    required this.builder,
-    this.child,
-  }) : super(listenable: animation);
-
-  @override
-  Widget build(BuildContext context) => builder(context, child);
 }

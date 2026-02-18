@@ -131,7 +131,7 @@ class _GameTypeCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(AppSpacing.lg),
                   decoration: BoxDecoration(
                     color: def.color.withValues(alpha: 0.08),
                     shape: BoxShape.circle,
@@ -141,11 +141,7 @@ class _GameTypeCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   def.title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                  ),
+                  style: AppTextStyle.cardTitle,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 2),
