@@ -10,8 +10,8 @@ import '../models/phonics_data.dart';
 //  TTS Service
 // ═══════════════════════════════════════════
 
-/// 音声タイプ: female(既存), male, child
-enum VoiceType { female, male, child }
+/// 音声タイプ: female(既存), male(Guy), male2(Andrew), child
+enum VoiceType { female, male, male2, child }
 
 class TtsService {
   TtsService._();
@@ -61,6 +61,10 @@ class TtsService {
           await _tts.setPitch(0.8);
           await _tts.setSpeechRate(0.42);
           break;
+        case VoiceType.male2:
+          await _tts.setPitch(0.75);
+          await _tts.setSpeechRate(0.42);
+          break;
         case VoiceType.child:
           await _tts.setPitch(1.4);
           await _tts.setSpeechRate(0.5);
@@ -78,6 +82,8 @@ class TtsService {
         return 'audio'; // 既存: audio/sounds/, audio/words/
       case VoiceType.male:
         return 'audio/male'; // audio/male/sounds/, audio/male/words/
+      case VoiceType.male2:
+        return 'audio/male2'; // audio/male2/sounds/, audio/male2/words/
       case VoiceType.child:
         return 'audio/child'; // audio/child/sounds/, audio/child/words/
     }

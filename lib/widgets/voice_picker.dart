@@ -67,6 +67,8 @@ IconData voiceIcon(VoiceType type) {
       return Icons.face_3;
     case VoiceType.male:
       return Icons.face;
+    case VoiceType.male2:
+      return Icons.face_6;
     case VoiceType.child:
       return Icons.child_care;
   }
@@ -86,7 +88,9 @@ _VoiceInfo _voiceInfo(VoiceType type) {
     case VoiceType.female:
       return const _VoiceInfo(Icons.face_3, 'Female', 'Jenny — Warm and clear');
     case VoiceType.male:
-      return const _VoiceInfo(Icons.face, 'Male', 'Guy — Clear and steady');
+      return const _VoiceInfo(Icons.face, 'Male 1', 'Guy — Clear and steady');
+    case VoiceType.male2:
+      return const _VoiceInfo(Icons.face_6, 'Male 2', 'Andrew — Deep and natural');
     case VoiceType.child:
       return const _VoiceInfo(Icons.child_care, 'Child', 'Ana — Cute child voice');
   }
