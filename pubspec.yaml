@@ -68,14 +68,17 @@ flutter:
     - assets/audio/sounds/
     - assets/audio/words/
     - assets/audio/effects/
-    - assets/audio/male/sounds/
-    - assets/audio/male/words/
+    - assets/audio/feedback/
+    - assets/audio/sample_phrase.mp3
     - assets/audio/male2/sounds/
     - assets/audio/male2/words/
+    - assets/audio/male2/feedback/
+    - assets/audio/male2/sample_phrase.mp3
     - assets/audio/child/sounds/
     - assets/audio/child/words/
+    - assets/audio/child/feedback/
+    - assets/audio/child/sample_phrase.mp3
     - assets/audio/words_library/
-    - assets/audio/male/words_library/
     - assets/audio/male2/words_library/
     - assets/audio/child/words_library/
 
