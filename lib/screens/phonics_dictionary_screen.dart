@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
@@ -68,6 +69,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final sections = soundGroupSections;
 
     return CustomScrollView(
@@ -76,7 +78,8 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
         // ── ヘッダー ──
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+            padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.md),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,13 +87,9 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                     children: [
                       Icon(Icons.volume_up_rounded, size: 28, color: AppColors.primary),
                       const SizedBox(width: 10),
-                      const Text(
-                        'Phonics Sound Dictionary',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.textPrimary,
-                        ),
+                      Text(
+                        l10n.phonicsSoundDict,
+                        style: AppTextStyle.pageHeading,
                       ),
                       const Spacer(),
                       Container(
@@ -98,7 +97,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                             horizontal: 12, vertical: 6),
                         decoration: AppDecoration.chip(AppColors.primary),
                         child: Text(
-                          '${soundGroups.length} sounds',
+                          l10n.nSounds(soundGroups.length),
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -109,9 +108,9 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Tap a spelling to see words',
-                    style: TextStyle(
+                  Text(
+                    l10n.tapSpellingToSeeWords,
+                    style: const TextStyle(
                       fontSize: 14,
                       color: AppColors.textTertiary,
                       fontWeight: FontWeight.w600,
@@ -127,14 +126,11 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
           // セクションヘッダー
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.sm),
               child: Text(
                   section.key,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                  ),
+                  style: AppTextStyle.sectionHeading,
               ),
             ),
           ),
@@ -344,7 +340,7 @@ class _SoundGroupCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
-                                '${words.length} words',
+                                AppLocalizations.of(context)?.nWords(words.length) ?? '${words.length} words',
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
@@ -439,7 +435,7 @@ class _SpellingWordList extends StatelessWidget {
                   size: 14, color: AppColors.textTertiary),
               const SizedBox(width: 4),
               Text(
-                'Words with "$spelling"',
+                AppLocalizations.of(context)?.wordsWithSpelling(spelling) ?? 'Words with "$spelling"',
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,

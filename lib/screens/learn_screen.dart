@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
@@ -48,8 +49,8 @@ class _LearnScreenState extends State<LearnScreen> {
 
     return [
       const Divider(height: 32, color: AppColors.surfaceDim),
-      const Text(
-        'Example words',
+      Text(
+        AppLocalizations.of(context)?.exampleWords ?? 'Example words',
         style: AppTextStyle.caption,
       ),
       const SizedBox(height: 8),
@@ -95,6 +96,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(widget.group.name)),
       body: Column(
@@ -144,8 +146,8 @@ class _LearnScreenState extends State<LearnScreen> {
                             onPressed: _speakCurrent,
                             icon:
                                 const Icon(Icons.volume_up_rounded, size: 24),
-                            label: const Text('Play Sound',
-                                style: TextStyle(fontSize: 16)),
+                            label: Text(l10n.playSound,
+                                style: const TextStyle(fontSize: 16)),
                             style: FilledButton.styleFrom(
                               minimumSize: const Size(180, 48),
                             ),

@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// No description provided for @practiceLab.
   ///
   /// In ja, this message translates to:
-  /// **'Practice Lab (ミニゲーム)'**
+  /// **'プラクティスラボ'**
   String get practiceLab;
 
   /// No description provided for @backToHome.
@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @playAgain.
   ///
   /// In ja, this message translates to:
-  /// **'もう一度遊ぶ'**
+  /// **'もう一度プレイ'**
   String get playAgain;
 
   /// No description provided for @score.
@@ -239,31 +239,31 @@ abstract class AppLocalizations {
   /// No description provided for @streak.
   ///
   /// In ja, this message translates to:
-  /// **'連続日数'**
+  /// **'連続記録'**
   String get streak;
 
   /// No description provided for @resultPerfect.
   ///
   /// In ja, this message translates to:
-  /// **'Perfect!'**
+  /// **'パーフェクト'**
   String get resultPerfect;
 
   /// No description provided for @resultGreat.
   ///
   /// In ja, this message translates to:
-  /// **'Great Job!'**
+  /// **'素晴らしい'**
   String get resultGreat;
 
   /// No description provided for @resultGood.
   ///
   /// In ja, this message translates to:
-  /// **'Good Effort!'**
+  /// **'よくできました'**
   String get resultGood;
 
   /// No description provided for @resultKeep.
   ///
   /// In ja, this message translates to:
-  /// **'Keep Going!'**
+  /// **'続けてみましょう'**
   String get resultKeep;
 
   /// No description provided for @soundToLetterSubtitle.
@@ -299,7 +299,7 @@ abstract class AppLocalizations {
   /// No description provided for @playAgainBtn.
   ///
   /// In ja, this message translates to:
-  /// **'もう一度聞く'**
+  /// **'もう一度プレイ'**
   String get playAgainBtn;
 
   /// No description provided for @listenSound.
@@ -374,24 +374,6 @@ abstract class AppLocalizations {
   /// **'Step 6: 難しい音'**
   String get groupTitle5;
 
-  /// No description provided for @gameNewVariations.
-  ///
-  /// In ja, this message translates to:
-  /// **'新しいゲーム'**
-  String get gameNewVariations;
-
-  /// No description provided for @gameBingo.
-  ///
-  /// In ja, this message translates to:
-  /// **'サウンドビンゴ'**
-  String get gameBingo;
-
-  /// No description provided for @gameCapitalMatch.
-  ///
-  /// In ja, this message translates to:
-  /// **'大文字・小文字'**
-  String get gameCapitalMatch;
-
   /// No description provided for @groupDesc5.
   ///
   /// In ja, this message translates to:
@@ -410,6 +392,24 @@ abstract class AppLocalizations {
   /// **'queen, car などの単語を学習'**
   String get groupDesc6;
 
+  /// No description provided for @gameNewVariations.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいゲーム'**
+  String get gameNewVariations;
+
+  /// No description provided for @gameBingo.
+  ///
+  /// In ja, this message translates to:
+  /// **'サウンドビンゴ'**
+  String get gameBingo;
+
+  /// No description provided for @gameCapitalMatch.
+  ///
+  /// In ja, this message translates to:
+  /// **'大文字・小文字'**
+  String get gameCapitalMatch;
+
   /// No description provided for @gameSoundQuiz.
   ///
   /// In ja, this message translates to:
@@ -425,7 +425,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameBingoDesc.
   ///
   /// In ja, this message translates to:
-  /// **'ビンゴカードを完成させましょう'**
+  /// **'ビンゴカードを完成させる'**
   String get gameBingoDesc;
 
   /// No description provided for @gameCapitalMatchDesc.
@@ -497,7 +497,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameBlendingDesc.
   ///
   /// In ja, this message translates to:
-  /// **'音をつなげて単語を作ろう'**
+  /// **'音をつなげて単語を構成'**
   String get gameBlendingDesc;
 
   /// No description provided for @gameWordChaining.
@@ -509,7 +509,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameWordChainingDesc.
   ///
   /// In ja, this message translates to:
-  /// **'1音だけ変えて次の単語へ'**
+  /// **'1音を変えて次の単語を作成'**
   String get gameWordChainingDesc;
 
   /// No description provided for @gameMinimalPairs.
@@ -521,7 +521,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameMinimalPairsDesc.
   ///
   /// In ja, this message translates to:
-  /// **'似た音を聞き分けよう'**
+  /// **'似た音の聞き分け練習'**
   String get gameMinimalPairsDesc;
 
   /// No description provided for @gameFillInBlank.
@@ -589,6 +589,408 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'タップして発音を確認'**
   String get tapToListen;
+
+  /// No description provided for @masterSounds.
+  ///
+  /// In ja, this message translates to:
+  /// **'42の英語の音をマスター'**
+  String get masterSounds;
+
+  /// No description provided for @phaseLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'フェーズ {phase}'**
+  String phaseLabel(String phase);
+
+  /// No description provided for @srsReview.
+  ///
+  /// In ja, this message translates to:
+  /// **'復習 ({count})'**
+  String srsReview(int count);
+
+  /// No description provided for @customizePrefs.
+  ///
+  /// In ja, this message translates to:
+  /// **'アプリの設定をカスタマイズ'**
+  String get customizePrefs;
+
+  /// No description provided for @voiceSettings.
+  ///
+  /// In ja, this message translates to:
+  /// **'音声設定'**
+  String get voiceSettings;
+
+  /// No description provided for @changeVoiceType.
+  ///
+  /// In ja, this message translates to:
+  /// **'音声タイプを変更'**
+  String get changeVoiceType;
+
+  /// No description provided for @about.
+  ///
+  /// In ja, this message translates to:
+  /// **'アプリ情報'**
+  String get about;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In ja, this message translates to:
+  /// **'Phonics Sense v1.0.0'**
+  String get appVersion;
+
+  /// No description provided for @masteredPercent.
+  ///
+  /// In ja, this message translates to:
+  /// **'{percent}% 習得済み'**
+  String masteredPercent(int percent);
+
+  /// No description provided for @learn.
+  ///
+  /// In ja, this message translates to:
+  /// **'学習'**
+  String get learn;
+
+  /// No description provided for @exampleWords.
+  ///
+  /// In ja, this message translates to:
+  /// **'例文'**
+  String get exampleWords;
+
+  /// No description provided for @playSound.
+  ///
+  /// In ja, this message translates to:
+  /// **'音を再生'**
+  String get playSound;
+
+  /// No description provided for @wordsTab.
+  ///
+  /// In ja, this message translates to:
+  /// **'単語'**
+  String get wordsTab;
+
+  /// No description provided for @phonicsTab.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォニックス'**
+  String get phonicsTab;
+
+  /// No description provided for @wordLibrary.
+  ///
+  /// In ja, this message translates to:
+  /// **'単語ライブラリー'**
+  String get wordLibrary;
+
+  /// No description provided for @nWords.
+  ///
+  /// In ja, this message translates to:
+  /// **'{count} 語'**
+  String nWords(int count);
+
+  /// No description provided for @phonicsSoundDict.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォニックス音辞典'**
+  String get phonicsSoundDict;
+
+  /// No description provided for @nSounds.
+  ///
+  /// In ja, this message translates to:
+  /// **'{count} 音'**
+  String nSounds(int count);
+
+  /// No description provided for @tapSpellingToSeeWords.
+  ///
+  /// In ja, this message translates to:
+  /// **'スペリングをタップして単語を表示'**
+  String get tapSpellingToSeeWords;
+
+  /// No description provided for @groupLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'グループ:'**
+  String get groupLabel;
+
+  /// No description provided for @wordsWithSpelling.
+  ///
+  /// In ja, this message translates to:
+  /// **'「{spelling}」の単語'**
+  String wordsWithSpelling(String spelling);
+
+  /// No description provided for @practiceLabTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'{group} — プラクティスラボ'**
+  String practiceLabTitle(String group);
+
+  /// No description provided for @practiceLabTitleDefault.
+  ///
+  /// In ja, this message translates to:
+  /// **'プラクティスラボ'**
+  String get practiceLabTitleDefault;
+
+  /// No description provided for @allSoundsMix.
+  ///
+  /// In ja, this message translates to:
+  /// **'全サウンドミックス (42)'**
+  String get allSoundsMix;
+
+  /// No description provided for @practiceAllSounds.
+  ///
+  /// In ja, this message translates to:
+  /// **'42のフォニックス音をランダムに練習'**
+  String get practiceAllSounds;
+
+  /// No description provided for @vowelSoundFocus.
+  ///
+  /// In ja, this message translates to:
+  /// **'母音フォーカス'**
+  String get vowelSoundFocus;
+
+  /// No description provided for @focusOnVowels.
+  ///
+  /// In ja, this message translates to:
+  /// **'母音に集中して練習'**
+  String get focusOnVowels;
+
+  /// No description provided for @consonantSoundFocus.
+  ///
+  /// In ja, this message translates to:
+  /// **'子音フォーカス'**
+  String get consonantSoundFocus;
+
+  /// No description provided for @focusOnConsonants.
+  ///
+  /// In ja, this message translates to:
+  /// **'子音に集中して練習'**
+  String get focusOnConsonants;
+
+  /// No description provided for @blendingBuilder.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブレンディングビルダー'**
+  String get blendingBuilder;
+
+  /// No description provided for @buildWordsByArranging.
+  ///
+  /// In ja, this message translates to:
+  /// **'文字を並べて単語を構築'**
+  String get buildWordsByArranging;
+
+  /// No description provided for @wordChainingTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'ワードチェイン'**
+  String get wordChainingTitle;
+
+  /// No description provided for @changeOneSoundNewWord.
+  ///
+  /// In ja, this message translates to:
+  /// **'1音変えて新しい単語を作成'**
+  String get changeOneSoundNewWord;
+
+  /// No description provided for @minimalPairListening.
+  ///
+  /// In ja, this message translates to:
+  /// **'ミニマルペアリスニング'**
+  String get minimalPairListening;
+
+  /// No description provided for @distinguishSounds.
+  ///
+  /// In ja, this message translates to:
+  /// **'似た音を聞き分ける'**
+  String get distinguishSounds;
+
+  /// No description provided for @blendingRound.
+  ///
+  /// In ja, this message translates to:
+  /// **'ブレンディング {round} / {total}'**
+  String blendingRound(int round, int total);
+
+  /// No description provided for @slow.
+  ///
+  /// In ja, this message translates to:
+  /// **'ゆっくり'**
+  String get slow;
+
+  /// No description provided for @normal.
+  ///
+  /// In ja, this message translates to:
+  /// **'通常'**
+  String get normal;
+
+  /// No description provided for @buildWordYouHear.
+  ///
+  /// In ja, this message translates to:
+  /// **'聞こえた単語を組み立てる'**
+  String get buildWordYouHear;
+
+  /// No description provided for @undo.
+  ///
+  /// In ja, this message translates to:
+  /// **'元に戻す'**
+  String get undo;
+
+  /// No description provided for @reset.
+  ///
+  /// In ja, this message translates to:
+  /// **'リセット'**
+  String get reset;
+
+  /// No description provided for @check.
+  ///
+  /// In ja, this message translates to:
+  /// **'確認'**
+  String get check;
+
+  /// No description provided for @wordChainingRound.
+  ///
+  /// In ja, this message translates to:
+  /// **'ワードチェイン {round} / {total}'**
+  String wordChainingRound(int round, int total);
+
+  /// No description provided for @changeOneSound.
+  ///
+  /// In ja, this message translates to:
+  /// **'1音を変更'**
+  String get changeOneSound;
+
+  /// No description provided for @minimalPairsRound.
+  ///
+  /// In ja, this message translates to:
+  /// **'ミニマルペア {round} / {total}'**
+  String minimalPairsRound(int round, int total);
+
+  /// No description provided for @whichWordDoYouHear.
+  ///
+  /// In ja, this message translates to:
+  /// **'どちらの単語が聞こえますか？'**
+  String get whichWordDoYouHear;
+
+  /// No description provided for @focusOn.
+  ///
+  /// In ja, this message translates to:
+  /// **'フォーカス: {focus}'**
+  String focusOn(String focus);
+
+  /// No description provided for @tapToPlay.
+  ///
+  /// In ja, this message translates to:
+  /// **'タップして再生'**
+  String get tapToPlay;
+
+  /// No description provided for @bingoWin.
+  ///
+  /// In ja, this message translates to:
+  /// **'ビンゴ'**
+  String get bingoWin;
+
+  /// No description provided for @newGame.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいゲーム'**
+  String get newGame;
+
+  /// No description provided for @missCount.
+  ///
+  /// In ja, this message translates to:
+  /// **'ミス: {count}'**
+  String missCount(int count);
+
+  /// No description provided for @fillInBlankTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'穴うめ問題'**
+  String get fillInBlankTitle;
+
+  /// No description provided for @noQuestionsAvailable.
+  ///
+  /// In ja, this message translates to:
+  /// **'問題がありません'**
+  String get noQuestionsAvailable;
+
+  /// No description provided for @chooseCorrectSpelling.
+  ///
+  /// In ja, this message translates to:
+  /// **'正しいスペリングを選択'**
+  String get chooseCorrectSpelling;
+
+  /// No description provided for @next.
+  ///
+  /// In ja, this message translates to:
+  /// **'次へ'**
+  String get next;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In ja, this message translates to:
+  /// **'もう一度'**
+  String get tryAgain;
+
+  /// No description provided for @selectAtLeastSounds.
+  ///
+  /// In ja, this message translates to:
+  /// **'{count}個以上の音を選択してください'**
+  String selectAtLeastSounds(int count);
+
+  /// No description provided for @playBtn.
+  ///
+  /// In ja, this message translates to:
+  /// **'プレイ'**
+  String get playBtn;
+
+  /// No description provided for @allLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'すべて'**
+  String get allLabel;
+
+  /// No description provided for @listenAndChoose.
+  ///
+  /// In ja, this message translates to:
+  /// **'聞いて選ぶ'**
+  String get listenAndChoose;
+
+  /// No description provided for @selectVoice.
+  ///
+  /// In ja, this message translates to:
+  /// **'音声を選択'**
+  String get selectVoice;
+
+  /// No description provided for @voiceFemale.
+  ///
+  /// In ja, this message translates to:
+  /// **'女性'**
+  String get voiceFemale;
+
+  /// No description provided for @voiceFemaleDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'Jenny — 温かく明瞭な声'**
+  String get voiceFemaleDesc;
+
+  /// No description provided for @voiceMale.
+  ///
+  /// In ja, this message translates to:
+  /// **'男性'**
+  String get voiceMale;
+
+  /// No description provided for @voiceMaleDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'Andrew — 深く自然な声'**
+  String get voiceMaleDesc;
+
+  /// No description provided for @voiceYoung.
+  ///
+  /// In ja, this message translates to:
+  /// **'ヤングスピーカー'**
+  String get voiceYoung;
+
+  /// No description provided for @voiceYoungDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'Ana — 若い声'**
+  String get voiceYoungDesc;
 }
 
 class _AppLocalizationsDelegate

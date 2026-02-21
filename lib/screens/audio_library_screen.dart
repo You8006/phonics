@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
@@ -50,12 +51,14 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Column(
         children: [
           // ── 表示モード切替 ──
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xl, AppSpacing.md, AppSpacing.xl, 0),
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.surfaceDim,
@@ -66,7 +69,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 children: [
                   Expanded(
                     child: _ViewModeTab(
-                      label: 'Words',
+                      label: l10n.wordsTab,
                       selected: _viewMode == LibraryViewMode.words,
                       onTap: () => setState(
                           () => _viewMode = LibraryViewMode.words),
@@ -74,7 +77,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   ),
                   Expanded(
                     child: _ViewModeTab(
-                      label: 'Phonics',
+                      label: l10n.phonicsTab,
                       selected:
                           _viewMode == LibraryViewMode.phonicsDictionary,
                       onTap: () => setState(() =>
@@ -98,17 +101,19 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   }
 
   Widget _buildWordLibrary() {
+    final l10n = AppLocalizations.of(context)!;
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
         // ── ヘッダー ──
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+            padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xl, AppSpacing.lg, AppSpacing.xl, AppSpacing.sm),
             child: Row(
               children: [
-                const Text(
-                  'Word Library',
+                Text(
+                  l10n.wordLibrary,
                   style: AppTextStyle.pageHeading,
                 ),
                 const Spacer(),
@@ -122,8 +127,8 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
                   child: Text(
-                    '${_filteredWords.length} words',
-                    style: TextStyle(
+                    l10n.nWords(_filteredWords.length),
+                    style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primary,
@@ -138,7 +143,8 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
           // ── 検索バー ──
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl, AppSpacing.sm, AppSpacing.xl, AppSpacing.md),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppColors.surface,
@@ -147,7 +153,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                 child: TextField(
                   onChanged: (v) => setState(() => _searchQuery = v),
                   decoration: InputDecoration(
-                    hintText: 'Search words...',
+                    hintText: l10n.searchWords,
                     hintStyle: TextStyle(
                       color: AppColors.textTertiary,
                       fontWeight: FontWeight.w500,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 
@@ -10,6 +11,7 @@ void showVoicePicker(BuildContext context, [VoidCallback? onChanged]) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
     ),
     builder: (ctx) {
+      final l10n = AppLocalizations.of(ctx)!;
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
@@ -26,13 +28,13 @@ void showVoicePicker(BuildContext context, [VoidCallback? onChanged]) {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Select Voice',
+              Text(
+                l10n.selectVoice,
                 style: AppTextStyle.sectionHeading,
               ),
               const SizedBox(height: 16),
               ...VoiceType.values.map((type) {
-                final info = _voiceInfo(type);
+                final info = _voiceInfo(l10n, type);
                 return _VoiceOptionTile(
                   icon: info.icon,
                   label: info.label,
@@ -63,7 +65,7 @@ IconData voiceIcon(VoiceType type) {
     case VoiceType.male2:
       return Icons.face;
     case VoiceType.child:
-      return Icons.child_care;
+      return Icons.record_voice_over;
   }
 }
 
@@ -76,14 +78,14 @@ class _VoiceInfo {
   final String subtitle;
 }
 
-_VoiceInfo _voiceInfo(VoiceType type) {
+_VoiceInfo _voiceInfo(AppLocalizations l10n, VoiceType type) {
   switch (type) {
     case VoiceType.female:
-      return const _VoiceInfo(Icons.face_3, 'Female', 'Jenny — Warm and clear');
+      return _VoiceInfo(Icons.face_3, l10n.voiceFemale, l10n.voiceFemaleDesc);
     case VoiceType.male2:
-      return const _VoiceInfo(Icons.face, 'Male', 'Andrew — Deep and natural');
+      return _VoiceInfo(Icons.face, l10n.voiceMale, l10n.voiceMaleDesc);
     case VoiceType.child:
-      return const _VoiceInfo(Icons.child_care, 'Child', 'Ana — Cute child voice');
+      return _VoiceInfo(Icons.record_voice_over, l10n.voiceYoung, l10n.voiceYoungDesc);
   }
 }
 

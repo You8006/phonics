@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/voice_picker.dart';
@@ -15,7 +16,7 @@ class MainShell extends StatefulWidget {
 }
 
 class _MainShellState extends State<MainShell> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   final _pages = const <Widget>[
     HomeScreen(),
@@ -24,13 +25,14 @@ class _MainShellState extends State<MainShell> {
     _SettingsPage(),
   ];
 
-  static const _titles = ['Lessons', 'Games', 'Library', 'Settings'];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final titles = [l10n.lessons, l10n.games, l10n.library, l10n.settings];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_currentIndex]),
+        title: Text(titles[_currentIndex]),
         actions: [
           IconButton(
             icon: Icon(
@@ -66,28 +68,28 @@ class _MainShellState extends State<MainShell> {
               children: [
                 _NavItem(
                   icon: Icons.auto_stories_rounded,
-                  label: 'Lessons',
+                  label: l10n.lessons,
                   isSelected: _currentIndex == 0,
                   color: AppColors.navLessons,
                   onTap: () => setState(() => _currentIndex = 0),
                 ),
                 _NavItem(
                   icon: Icons.quiz_rounded,
-                  label: 'Games',
+                  label: l10n.games,
                   isSelected: _currentIndex == 1,
                   color: AppColors.navGames,
                   onTap: () => setState(() => _currentIndex = 1),
                 ),
                 _NavItem(
                   icon: Icons.music_note_rounded,
-                  label: 'Library',
+                  label: l10n.library,
                   isSelected: _currentIndex == 2,
                   color: AppColors.navLibrary,
                   onTap: () => setState(() => _currentIndex = 2),
                 ),
                 _NavItem(
                   icon: Icons.tune_rounded,
-                  label: 'Settings',
+                  label: l10n.settings,
                   isSelected: _currentIndex == 3,
                   color: AppColors.navSettings,
                   onTap: () => setState(() => _currentIndex = 3),
@@ -168,6 +170,7 @@ class _SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<_SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -175,14 +178,14 @@ class _SettingsPageState extends State<_SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Settings',
+              Text(
+                l10n.settings,
                 style: AppTextStyle.pageHeading,
               ),
               const SizedBox(height: 4),
-              const Text(
-                'Customize your app preferences',
-                style: TextStyle(
+              Text(
+                l10n.customizePrefs,
+                style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
                 ),
@@ -191,8 +194,8 @@ class _SettingsPageState extends State<_SettingsPage> {
 
               _SettingsTile(
                 icon: Icons.record_voice_over_rounded,
-                title: 'Voice Settings',
-                subtitle: 'Change voice type',
+                title: l10n.voiceSettings,
+                subtitle: l10n.changeVoiceType,
                 color: AppColors.accentBlue,
                 onTap: () => showVoicePicker(context, () {
                   if (mounted) setState(() {});
@@ -201,8 +204,8 @@ class _SettingsPageState extends State<_SettingsPage> {
               const SizedBox(height: AppSpacing.md),
               _SettingsTile(
                 icon: Icons.info_outline_rounded,
-                title: 'About',
-                subtitle: 'Phonics Sense v1.0.0',
+                title: l10n.about,
+                subtitle: l10n.appVersion,
                 color: AppColors.accentPurple,
                 onTap: () {},
               ),
@@ -251,7 +254,7 @@ class _SettingsTile extends StatelessWidget {
                   ),
                   child: Icon(icon, color: color, size: 20),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

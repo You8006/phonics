@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../screens/result_screen.dart';
@@ -149,6 +150,8 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
@@ -207,28 +210,28 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
                       GestureDetector(
                         onTap: _playSound,
                         child: Container(
-                          width: 140,
-                          height: 140,
+                          width: 100,
+                          height: 100,
                           decoration: BoxDecoration(
                             color: AppColors.surface,
                             shape: BoxShape.circle,
                             border: Border.all(
                                 color: AppColors.accentIndigo
                                     .withValues(alpha: 0.3),
-                                width: 8),
+                                width: 4),
                           ),
                           child: const Icon(
                             Icons.volume_up_rounded,
-                            size: 64,
+                            size: 44,
                             color: AppColors.accentIndigo,
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Listen & Choose',
+                        l10n.listenAndChoose,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w700,
                           color: AppColors.textTertiary,
                           fontSize: 16,
                         ),
@@ -259,7 +262,7 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
                               _loadQuestion();
                             },
                             icon: const Icon(Icons.arrow_forward_rounded),
-                            label: const Text('Next'),
+                            label: Text(l10n.next),
                           ),
                         ),
                       ),
@@ -325,14 +328,14 @@ class _OptionCard extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(color: borderColor, width: 2),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadius.xxl),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,

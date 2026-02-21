@@ -5,6 +5,7 @@ import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import 'game_screen.dart';
 import 'result_screen.dart';
 
@@ -21,17 +22,18 @@ class PracticeGamesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(group != null ? '${group!.name} - Practice Lab' : 'Practice Lab'),
+        title: Text(group != null ? l10n.practiceLabTitle(group!.name) : l10n.practiceLabTitleDefault),
         centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
           _Tile(
-            title: 'All Sounds Mix (42)',
-            subtitle: 'Practice all 42 phonics sounds at random',
+            title: l10n.allSoundsMix,
+            subtitle: l10n.practiceAllSounds,
             icon: Icons.shuffle,
             color: AppColors.accentTeal,
             onTap: () => Navigator.push(
@@ -49,8 +51,8 @@ class PracticeGamesScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _Tile(
-            title: 'Vowel Sound Focus',
-            subtitle: 'Focus on vowel sounds',
+            title: l10n.vowelSoundFocus,
+            subtitle: l10n.focusOnVowels,
             icon: Icons.music_note,
             color: AppColors.accentPink,
             onTap: () {
@@ -76,8 +78,8 @@ class PracticeGamesScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _Tile(
-            title: 'Consonant Sound Focus',
-            subtitle: 'Focus on consonant sounds',
+            title: l10n.consonantSoundFocus,
+            subtitle: l10n.focusOnConsonants,
             icon: Icons.graphic_eq,
             color: AppColors.accentCyan,
             onTap: () {
@@ -103,8 +105,8 @@ class PracticeGamesScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _Tile(
-            title: 'Blending Builder',
-            subtitle: 'Build words by arranging letters',
+            title: l10n.blendingBuilder,
+            subtitle: l10n.buildWordsByArranging,
             icon: Icons.extension,
             color: AppColors.accentBlue,
             onTap: () => Navigator.push(
@@ -114,8 +116,8 @@ class PracticeGamesScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _Tile(
-            title: 'Word Chaining',
-            subtitle: 'Change one sound to make a new word',
+            title: l10n.wordChainingTitle,
+            subtitle: l10n.changeOneSoundNewWord,
             icon: Icons.swap_horiz,
             color: AppColors.accentGreen,
             onTap: () => Navigator.push(
@@ -125,8 +127,8 @@ class PracticeGamesScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _Tile(
-            title: 'Minimal Pair Listening',
-            subtitle: 'Distinguish between similar sounds',
+            title: l10n.minimalPairListening,
+            subtitle: l10n.distinguishSounds,
             icon: Icons.hearing,
             color: AppColors.accentPurple,
             onTap: () => Navigator.push(
@@ -302,8 +304,9 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text('Blending $_round / $_totalRounds')),
+      appBar: AppBar(title: Text(l10n.blendingRound(_round, _totalRounds))),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
@@ -315,7 +318,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                 Expanded(
                   child: _PlayButton(
                     icon: Icons.slow_motion_video,
-                    label: 'Slow',
+                    label: l10n.slow,
                     color: AppColors.accentBlue,
                     onTap: () => TtsService.speakLibraryWordSlow(_answer),
                   ),
@@ -324,7 +327,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                 Expanded(
                   child: _PlayButton(
                     icon: Icons.play_arrow_rounded,
-                    label: 'Normal',
+                    label: l10n.normal,
                     color: AppColors.accentBlue,
                     onTap: () => TtsService.speakLibraryWordNormal(_answer),
                   ),
@@ -347,7 +350,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Build the word you hear',
+                    l10n.buildWordYouHear,
                     style: AppTextStyle.caption,
                   ),
                   const SizedBox(height: 10),
@@ -434,7 +437,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                             setState(() => _typed = _typed.substring(0, _typed.length - 1));
                           }
                         : null,
-                    child: const Text('Undo'),
+                    child: Text(l10n.undo),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -446,7 +449,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                               _chipUsed.fillRange(0, _chipUsed.length, false);
                             })
                         : null,
-                    child: const Text('Reset'),
+                    child: Text(l10n.reset),
                   ),
                 ),
               ],
@@ -456,7 +459,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
               height: 48,
               child: FilledButton(
                 onPressed: _typed.length == _answer.length && !_answered ? _check : null,
-                child: const Text('Check'),
+                child: Text(l10n.check),
               ),
             ),
           ],
@@ -602,8 +605,9 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text('Word Chaining $_round / $_totalRounds')),
+      appBar: AppBar(title: Text(l10n.wordChainingRound(_round, _totalRounds))),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
@@ -620,7 +624,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Change one sound',
+                    l10n.changeOneSound,
                     style: AppTextStyle.caption,
                   ),
                   const SizedBox(height: 12),
@@ -639,7 +643,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                     children: [
                       _PlayButton(
                         icon: Icons.slow_motion_video,
-                        label: 'Slow',
+                        label: l10n.slow,
                         color: AppColors.accentGreen,
                         onTap: () => TtsService.speakLibraryWordSlow(_currentWord),
                         compact: true,
@@ -647,7 +651,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                       const SizedBox(width: 8),
                       _PlayButton(
                         icon: Icons.play_arrow_rounded,
-                        label: 'Normal',
+                        label: l10n.normal,
                         color: AppColors.accentGreen,
                         onTap: () => TtsService.speakLibraryWordNormal(_currentWord),
                         compact: true,
@@ -831,8 +835,9 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text('Minimal Pairs $_round / $_totalRounds')),
+      appBar: AppBar(title: Text(l10n.minimalPairsRound(_round, _totalRounds))),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
@@ -849,12 +854,12 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Which word do you hear?',
+                    l10n.whichWordDoYouHear,
                     style: AppTextStyle.caption,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Focus: ${_pair.focus}',
+                    l10n.focusOn(_pair.focus),
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.textTertiary,
@@ -866,7 +871,7 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
                     children: [
                       _PlayButton(
                         icon: Icons.slow_motion_video,
-                        label: 'Slow',
+                        label: l10n.slow,
                         color: AppColors.accentPurple,
                         onTap: () => TtsService.speakLibraryWordSlow(_target),
                         compact: true,
@@ -874,7 +879,7 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
                       const SizedBox(width: 8),
                       _PlayButton(
                         icon: Icons.play_arrow_rounded,
-                        label: 'Normal',
+                        label: l10n.normal,
                         color: AppColors.accentPurple,
                         onTap: () => TtsService.speakLibraryWordNormal(_target),
                         compact: true,

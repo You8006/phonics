@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
@@ -178,6 +179,7 @@ class _BingoGameState extends State<BingoGame> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final accentColor = AppColors.primary;
 
     return Scaffold(
@@ -203,7 +205,7 @@ class _BingoGameState extends State<BingoGame> {
                     Icon(Icons.volume_up_rounded, size: 24, color: accentColor),
                     const SizedBox(width: 10),
                     Text(
-                      'Tap to play',
+                      l10n.tapToPlay,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: accentColor,
@@ -220,12 +222,12 @@ class _BingoGameState extends State<BingoGame> {
               Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(
-                  'BINGO!',
+                  l10n.bingoWin,
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 24,
                     fontWeight: FontWeight.w900,
                     color: AppColors.primary,
-                    letterSpacing: 3,
+                    letterSpacing: 1,
                   ),
                 ),
               ),
@@ -296,16 +298,16 @@ class _BingoGameState extends State<BingoGame> {
                         height: 48,
                         child: FilledButton(
                           onPressed: _setupBoard,
-                          child: const Text(
-                            'New Game',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.newGame,
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
                     )
                   : Text(
-                      'Miss: $_wrongCount',
+                      l10n.missCount(_wrongCount),
                       style: AppTextStyle.caption,
                       textAlign: TextAlign.center,
                     ),

@@ -262,7 +262,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                           child: FilledButton.icon(
                             onPressed: _next,
                             icon: const Icon(Icons.arrow_forward_rounded),
-                            label: const Text('Next'),
+                            label: Text(l10n.next),
                           ),
                         ),
                       ),

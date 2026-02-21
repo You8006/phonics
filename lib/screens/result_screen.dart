@@ -37,11 +37,27 @@ class _ResultScreenState extends State<ResultScreen>
     _scale = CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut);
     _ctrl.forward();
     _loadStreak();
+    // アニメーション完了後にフィードバックを英語音声で読み上げ
+    Future.delayed(const Duration(milliseconds: 900), _speakFeedback);
   }
 
   Future<void> _loadStreak() async {
     final s = await ProgressService.getStreak();
     if (mounted) setState(() => _streak = s);
+  }
+
+  /// 結果に応じたフィードバック音声を再生（事前生成済みアセット）
+  Future<void> _speakFeedback() async {
+    if (!mounted) return;
+    await TtsService.speakFeedback(_feedbackKey);
+  }
+
+  /// 正答率に対応するフィードバック音声キー
+  String get _feedbackKey {
+    if (_accuracy == 1.0) return 'excellent';
+    if (_accuracy >= 0.8) return 'well_done';
+    if (_accuracy >= 0.5) return 'solid';
+    return 'keep';
   }
 
   @override
@@ -81,7 +97,7 @@ class _ResultScreenState extends State<ResultScreen>
                   ),
                   child: Icon(
                     isHigh
-                        ? Icons.emoji_events_rounded
+                        ? Icons.workspace_premium_rounded
                         : Icons.thumb_up_rounded,
                     size: 48,
                     color: isHigh ? AppColors.primary : AppColors.accentTeal,
@@ -131,7 +147,7 @@ class _ResultScreenState extends State<ResultScreen>
                     borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
                   child: Text(
-                    '${l10n.streak} $_streak!',
+                    '${l10n.streak} $_streak',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../services/tts_service.dart';
 import '../screens/result_screen.dart';
 import '../theme/app_theme.dart';
@@ -141,10 +142,12 @@ class _FillInBlankGameState extends State<FillInBlankGame>
   // ── Build ──
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Fill in the Blank')),
-        body: const Center(child: Text('No questions available')),
+        appBar: AppBar(title: Text(l10n.fillInBlankTitle)),
+        body: Center(child: Text(l10n.noQuestionsAvailable)),
       );
     }
 
@@ -250,7 +253,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                 child: Column(
                   children: [
                     Text(
-                      'Choose the correct spelling',
+                      l10n.chooseCorrectSpelling,
                       style: AppTextStyle.label.copyWith(color: AppColors.textTertiary),
                     ),
                     const SizedBox(height: 12),
@@ -477,6 +480,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
 
   // ── Action Button ──
   Widget _buildActionButton() {
+    final l10n = AppLocalizations.of(context)!;
     final canProceed = _hasChecked && _isCorrect;
     final canCheck = _selected != null && !_hasChecked;
     final canRetry = _hasChecked && !_isCorrect;
@@ -486,19 +490,19 @@ class _FillInBlankGameState extends State<FillInBlankGame>
     final VoidCallback? onTap;
 
     if (canProceed) {
-      label = 'Next';
+      label = l10n.next;
       color = AppColors.accentIndigo;
       onTap = _next;
     } else if (canCheck) {
-      label = 'Check';
+      label = l10n.check;
       color = AppColors.primary;
       onTap = _check;
     } else if (canRetry) {
-      label = 'Try Again';
+      label = l10n.tryAgain;
       color = AppColors.wrong;
       onTap = _reset;
     } else {
-      label = 'Check';
+      label = l10n.check;
       color = AppColors.surfaceDim;
       onTap = null;
     }

@@ -101,6 +101,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
   }
 
   void _play() {
+    final l10n = AppLocalizations.of(context)!;
     final items = _items;
 
     if (widget.gameType == GameType.blending) {
@@ -131,7 +132,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
     if (items.length < minNeeded) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Select at least $minNeeded sounds!'),
+          content: Text(l10n.selectAtLeastSounds(minNeeded)),
           backgroundColor: AppColors.wrong,
         ),
       );
@@ -144,7 +145,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         game = GameScreen(
           items: items,
           numOptions: _choices.clamp(2, items.length),
-          groupName: 'Sound Quiz',
+          groupName: l10n.gameSoundQuiz,
           mode: GameMode.soundToLetter,
           maxQuestions: _questions,
         );
@@ -152,7 +153,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         game = GameScreen(
           items: items,
           numOptions: _choices.clamp(2, items.length),
-          groupName: 'IPA Quiz',
+          groupName: l10n.gameIpaQuiz,
           mode: GameMode.soundToIpa,
           maxQuestions: _questions,
         );
@@ -292,6 +293,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
   }
 
   Widget _categoryChips(String title, List<PhonicsItem> items, Color color) {
+    final l10n = AppLocalizations.of(context)!;
     final allSelected = _allSel(items);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +311,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
                   color: allSelected ? color : AppColors.surfaceDim,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
-                child: Text('All',
+                child: Text(l10n.allLabel,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -435,14 +437,15 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
   }
 
   Widget _playButton() {
+    final l10n = AppLocalizations.of(context)!;
     return SizedBox(
       width: double.infinity,
       height: 56,
       child: FilledButton.icon(
         onPressed: _play,
         icon: const Icon(Icons.play_arrow_rounded, size: 28),
-        label: const Text('Play',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
+        label: Text(l10n.playBtn,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900)),
       ),
     );
   }

@@ -63,13 +63,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameMarathon => 'マラソン';
 
   @override
-  String get practiceLab => 'Practice Lab (ミニゲーム)';
+  String get practiceLab => 'プラクティスラボ';
 
   @override
   String get backToHome => 'ホームに戻る';
 
   @override
-  String get playAgain => 'もう一度遊ぶ';
+  String get playAgain => 'もう一度プレイ';
 
   @override
   String get score => '得点';
@@ -78,19 +78,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get correct => '正解';
 
   @override
-  String get streak => '連続日数';
+  String get streak => '連続記録';
 
   @override
-  String get resultPerfect => 'Perfect!';
+  String get resultPerfect => 'パーフェクト';
 
   @override
-  String get resultGreat => 'Great Job!';
+  String get resultGreat => '素晴らしい';
 
   @override
-  String get resultGood => 'Good Effort!';
+  String get resultGood => 'よくできました';
 
   @override
-  String get resultKeep => 'Keep Going!';
+  String get resultKeep => '続けてみましょう';
 
   @override
   String get soundToLetterSubtitle => '音を聞いて正しい文字を選択してください';
@@ -108,7 +108,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get play => '再生';
 
   @override
-  String get playAgainBtn => 'もう一度聞く';
+  String get playAgainBtn => 'もう一度プレイ';
 
   @override
   String get listenSound => '音を聞く';
@@ -147,15 +147,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupTitle5 => 'Step 6: 難しい音';
 
   @override
-  String get gameNewVariations => '新しいゲーム';
-
-  @override
-  String get gameBingo => 'サウンドビンゴ';
-
-  @override
-  String get gameCapitalMatch => '大文字・小文字';
-
-  @override
   String get groupDesc5 => 'ship, thin などの単語を学習';
 
   @override
@@ -165,13 +156,22 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupDesc6 => 'queen, car などの単語を学習';
 
   @override
+  String get gameNewVariations => '新しいゲーム';
+
+  @override
+  String get gameBingo => 'サウンドビンゴ';
+
+  @override
+  String get gameCapitalMatch => '大文字・小文字';
+
+  @override
   String get gameSoundQuiz => 'サウンドクイズ';
 
   @override
   String get gameSoundQuizDesc => '音を聞いて正しい文字を選択';
 
   @override
-  String get gameBingoDesc => 'ビンゴカードを完成させましょう';
+  String get gameBingoDesc => 'ビンゴカードを完成させる';
 
   @override
   String get gameCapitalMatchDesc => '大文字と小文字をマッチ';
@@ -207,19 +207,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameBlending => 'ブレンディング';
 
   @override
-  String get gameBlendingDesc => '音をつなげて単語を作ろう';
+  String get gameBlendingDesc => '音をつなげて単語を構成';
 
   @override
   String get gameWordChaining => 'ワードチェイン';
 
   @override
-  String get gameWordChainingDesc => '1音だけ変えて次の単語へ';
+  String get gameWordChainingDesc => '1音を変えて次の単語を作成';
 
   @override
   String get gameMinimalPairs => 'リスニング';
 
   @override
-  String get gameMinimalPairsDesc => '似た音を聞き分けよう';
+  String get gameMinimalPairsDesc => '似た音の聞き分け練習';
 
   @override
   String get gameFillInBlank => '穴うめクイズ';
@@ -253,4 +253,231 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tapToListen => 'タップして発音を確認';
+
+  @override
+  String get masterSounds => '42の英語の音をマスター';
+
+  @override
+  String phaseLabel(String phase) {
+    return 'フェーズ $phase';
+  }
+
+  @override
+  String srsReview(int count) {
+    return '復習 ($count)';
+  }
+
+  @override
+  String get customizePrefs => 'アプリの設定をカスタマイズ';
+
+  @override
+  String get voiceSettings => '音声設定';
+
+  @override
+  String get changeVoiceType => '音声タイプを変更';
+
+  @override
+  String get about => 'アプリ情報';
+
+  @override
+  String get appVersion => 'Phonics Sense v1.0.0';
+
+  @override
+  String masteredPercent(int percent) {
+    return '$percent% 習得済み';
+  }
+
+  @override
+  String get learn => '学習';
+
+  @override
+  String get exampleWords => '例文';
+
+  @override
+  String get playSound => '音を再生';
+
+  @override
+  String get wordsTab => '単語';
+
+  @override
+  String get phonicsTab => 'フォニックス';
+
+  @override
+  String get wordLibrary => '単語ライブラリー';
+
+  @override
+  String nWords(int count) {
+    return '$count 語';
+  }
+
+  @override
+  String get phonicsSoundDict => 'フォニックス音辞典';
+
+  @override
+  String nSounds(int count) {
+    return '$count 音';
+  }
+
+  @override
+  String get tapSpellingToSeeWords => 'スペリングをタップして単語を表示';
+
+  @override
+  String get groupLabel => 'グループ:';
+
+  @override
+  String wordsWithSpelling(String spelling) {
+    return '「$spelling」の単語';
+  }
+
+  @override
+  String practiceLabTitle(String group) {
+    return '$group — プラクティスラボ';
+  }
+
+  @override
+  String get practiceLabTitleDefault => 'プラクティスラボ';
+
+  @override
+  String get allSoundsMix => '全サウンドミックス (42)';
+
+  @override
+  String get practiceAllSounds => '42のフォニックス音をランダムに練習';
+
+  @override
+  String get vowelSoundFocus => '母音フォーカス';
+
+  @override
+  String get focusOnVowels => '母音に集中して練習';
+
+  @override
+  String get consonantSoundFocus => '子音フォーカス';
+
+  @override
+  String get focusOnConsonants => '子音に集中して練習';
+
+  @override
+  String get blendingBuilder => 'ブレンディングビルダー';
+
+  @override
+  String get buildWordsByArranging => '文字を並べて単語を構築';
+
+  @override
+  String get wordChainingTitle => 'ワードチェイン';
+
+  @override
+  String get changeOneSoundNewWord => '1音変えて新しい単語を作成';
+
+  @override
+  String get minimalPairListening => 'ミニマルペアリスニング';
+
+  @override
+  String get distinguishSounds => '似た音を聞き分ける';
+
+  @override
+  String blendingRound(int round, int total) {
+    return 'ブレンディング $round / $total';
+  }
+
+  @override
+  String get slow => 'ゆっくり';
+
+  @override
+  String get normal => '通常';
+
+  @override
+  String get buildWordYouHear => '聞こえた単語を組み立てる';
+
+  @override
+  String get undo => '元に戻す';
+
+  @override
+  String get reset => 'リセット';
+
+  @override
+  String get check => '確認';
+
+  @override
+  String wordChainingRound(int round, int total) {
+    return 'ワードチェイン $round / $total';
+  }
+
+  @override
+  String get changeOneSound => '1音を変更';
+
+  @override
+  String minimalPairsRound(int round, int total) {
+    return 'ミニマルペア $round / $total';
+  }
+
+  @override
+  String get whichWordDoYouHear => 'どちらの単語が聞こえますか？';
+
+  @override
+  String focusOn(String focus) {
+    return 'フォーカス: $focus';
+  }
+
+  @override
+  String get tapToPlay => 'タップして再生';
+
+  @override
+  String get bingoWin => 'ビンゴ';
+
+  @override
+  String get newGame => '新しいゲーム';
+
+  @override
+  String missCount(int count) {
+    return 'ミス: $count';
+  }
+
+  @override
+  String get fillInBlankTitle => '穴うめ問題';
+
+  @override
+  String get noQuestionsAvailable => '問題がありません';
+
+  @override
+  String get chooseCorrectSpelling => '正しいスペリングを選択';
+
+  @override
+  String get next => '次へ';
+
+  @override
+  String get tryAgain => 'もう一度';
+
+  @override
+  String selectAtLeastSounds(int count) {
+    return '$count個以上の音を選択してください';
+  }
+
+  @override
+  String get playBtn => 'プレイ';
+
+  @override
+  String get allLabel => 'すべて';
+
+  @override
+  String get listenAndChoose => '聞いて選ぶ';
+
+  @override
+  String get selectVoice => '音声を選択';
+
+  @override
+  String get voiceFemale => '女性';
+
+  @override
+  String get voiceFemaleDesc => 'Jenny — 温かく明瞭な声';
+
+  @override
+  String get voiceMale => '男性';
+
+  @override
+  String get voiceMaleDesc => 'Andrew — 深く自然な声';
+
+  @override
+  String get voiceYoung => 'ヤングスピーカー';
+
+  @override
+  String get voiceYoungDesc => 'Ana — 若い声';
 }

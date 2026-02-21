@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -15,12 +14,10 @@ enum VoiceType { female, male2, child }
 
 class TtsService {
   TtsService._();
-  static final FlutterTts _tts = FlutterTts();
   static final AudioPlayer _player = AudioPlayer()
     ..setPlayerMode(PlayerMode.lowLatency);   // 短い音声向け低遅延モード
   static final AudioPlayer _sePlayer = AudioPlayer()
     ..setPlayerMode(PlayerMode.lowLatency);   // SE も低遅延モード
-  static bool _ready = false;
 
   /// 現在選択中の声
   static VoiceType _voiceType = VoiceType.female;
@@ -43,32 +40,6 @@ class TtsService {
         orElse: () => VoiceType.female,
       );
     }
-  }
-
-  static VoiceType? _lastAppliedVoice;
-
-  static Future<void> _init() async {
-    await _tts.setLanguage('en-US');
-
-    // 声タイプに応じて pitch / rate / voice を調整
-    if (!_ready || _lastAppliedVoice != _voiceType) {
-      switch (_voiceType) {
-        case VoiceType.female:
-          await _tts.setPitch(1.1);
-          await _tts.setSpeechRate(0.45);
-          break;
-        case VoiceType.male2:
-          await _tts.setPitch(0.75);
-          await _tts.setSpeechRate(0.42);
-          break;
-        case VoiceType.child:
-          await _tts.setPitch(1.4);
-          await _tts.setSpeechRate(0.5);
-          break;
-      }
-      _lastAppliedVoice = _voiceType;
-    }
-    _ready = true;
   }
 
   /// 声タイプに応じたオーディオパスのプレフィックスを返す
@@ -131,10 +102,7 @@ class TtsService {
       _player.stop();
       await _player.play(AssetSource('$prefix/words_library/word_${key}_slow.mp3'));
     } catch (e) {
-      debugPrint('Audio fallback for library word slow $key: $e');
-      await _init();
-      await _tts.setSpeechRate(0.3);
-      await _tts.speak(word);
+      debugPrint('No pre-generated audio for library word slow: $key ($e)');
     }
   }
 
@@ -146,9 +114,7 @@ class TtsService {
       _player.stop();
       await _player.play(AssetSource('$prefix/words_library/word_$key.mp3'));
     } catch (e) {
-      debugPrint('Audio fallback for library word $key: $e');
-      await _init();
-      await _tts.speak(word);
+      debugPrint('No pre-generated audio for library word: $key ($e)');
     }
   }
 
@@ -172,28 +138,42 @@ class TtsService {
     }
   }
 
-  /// 汎用テキスト読み上げ（TTS フォールバック用）
-  static Future<void> speak(String text) async {
-    await _init();
-    await _tts.speak(text);
+  /// ゲーム結果フィードバック音声を再生（事前生成済みアセット）
+  /// [feedbackKey] は 'excellent', 'well_done', 'solid', 'keep' のいずれか
+  static Future<void> speakFeedback(String feedbackKey) async {
+    final prefix = _voicePrefix();
+    try {
+      _player.stop();
+      await _player.play(
+        AssetSource('$prefix/feedback/feedback_$feedbackKey.mp3'),
+      );
+    } catch (e) {
+      debugPrint('No pre-generated feedback audio for $feedbackKey: $e');
+    }
   }
 
-  /// 指定ボイスでサンプルフレーズを読み上げ (Voice Picker プレビュー用)
+  /// 指定ボイスでサンプルフレーズを再生 (Voice Picker プレビュー用)
   static Future<void> speakSample(VoiceType type) async {
-    final prev = _voiceType;
-    _voiceType = type;
-    _lastAppliedVoice = null; // 強制再初期化
-    await _init();
-    await _tts.speak("Let's practice phonics!");
-    // 元のボイスに戻す
-    _voiceType = prev;
-    _lastAppliedVoice = null;
+    String prefix;
+    switch (type) {
+      case VoiceType.female:
+        prefix = 'audio';
+      case VoiceType.male2:
+        prefix = 'audio/male2';
+      case VoiceType.child:
+        prefix = 'audio/child';
+    }
+    try {
+      _player.stop();
+      await _player.play(AssetSource('$prefix/sample_phrase.mp3'));
+    } catch (e) {
+      debugPrint('No pre-generated sample phrase for $type: $e');
+    }
   }
 
   static Future<void> stop() async {
     _player.stop();
     _sePlayer.stop();
-    _tts.stop();
   }
 }
 

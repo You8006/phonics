@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
@@ -14,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _streak = 0;
   final Map<int, double> _masteryCache = {};
   List<PhonicsItem> _dueItems = [];
   DailyMission? _mission;
@@ -44,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (!mounted) return;
     setState(() {
-      _streak = streak;
       _masteryCache.addAll(mastery);
       _dueItems = dueItems;
       _mission = mission;
@@ -53,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _refresh,
@@ -66,21 +66,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: AppColors.primary,
                 borderRadius: BorderRadius.circular(AppRadius.lg),
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Phonics Sense',
-                    style: TextStyle(
-                      fontSize: 22,
+                    l10n.appTitle,
+                    style: const TextStyle(
+                      fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: AppColors.onPrimary,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    'Master 42 English sounds',
-                    style: TextStyle(fontSize: 13, color: Color(0xB3FFFFFF)),
+                    l10n.masterSounds,
+                    style: const TextStyle(fontSize: 13, color: Color(0xB3FFFFFF)),
                   ),
                 ],
               ),
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 BorderRadius.circular(AppRadius.full),
                           ),
                           child: Text(
-                            'Phase ${_mission!.phase}',
+                            l10n.phaseLabel(_mission!.phase),
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: _startDueReview,
                           icon: const Icon(Icons.history, size: 18),
                           label:
-                              Text('SRS Review (${_dueItems.length})'),
+                              Text(l10n.srsReview(_dueItems.length)),
                         ),
                       ),
                     ],
@@ -233,15 +233,9 @@ class _GroupCard extends StatelessWidget {
   final VoidCallback onLearn;
   final VoidCallback onPlay;
 
-  int get _stars {
-    if (mastery >= 0.9) return 3;
-    if (mastery >= 0.6) return 2;
-    if (mastery >= 0.3) return 1;
-    return 0;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: AppDecoration.card(),
@@ -259,15 +253,20 @@ class _GroupCard extends StatelessWidget {
                   style: AppTextStyle.cardTitle,
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(3, (i) {
-                  return Icon(
-                    i < _stars ? Icons.star_rounded : Icons.star_outline_rounded,
-                    size: 18,
-                    color: i < _stars ? AppColors.accentAmber : AppColors.surfaceDim,
-                  );
-                }),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(AppRadius.full),
+                ),
+                child: Text(
+                  l10n.masteredPercent((mastery * 100).toInt()),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ),
               ),
             ],
           ),
@@ -283,14 +282,6 @@ class _GroupCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            '${(mastery * 100).toInt()}% mastered',
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.textTertiary,
-            ),
-          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
@@ -298,7 +289,7 @@ class _GroupCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onLearn,
                   icon: const Icon(Icons.volume_up_rounded, size: 16),
-                  label: const Text('Learn'),
+                  label: Text(l10n.learn),
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),
@@ -306,7 +297,7 @@ class _GroupCard extends StatelessWidget {
                 child: FilledButton.icon(
                   onPressed: onPlay,
                   icon: const Icon(Icons.play_arrow_rounded, size: 16),
-                  label: const Text('Play'),
+                  label: Text(l10n.playBtn),
                 ),
               ),
             ],

@@ -53,11 +53,7 @@ class GameSelectScreen extends StatelessWidget {
                 children: [
                   Text(
                     l10n.selectGame,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
+                    style: AppTextStyle.pageHeading,
                   ),
                   const SizedBox(height: 2),
                   Text(

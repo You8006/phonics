@@ -81,16 +81,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get streak => 'Streak';
 
   @override
-  String get resultPerfect => 'Perfect!';
+  String get resultPerfect => 'Excellent';
 
   @override
-  String get resultGreat => 'Great Job!';
+  String get resultGreat => 'Well Done';
 
   @override
-  String get resultGood => 'Good Effort!';
+  String get resultGood => 'Solid Effort';
 
   @override
-  String get resultKeep => 'Keep Going!';
+  String get resultKeep => 'Keep Practicing';
 
   @override
   String get soundToLetterSubtitle => 'Listen and choose the correct letter';
@@ -147,15 +147,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupTitle5 => 'Step 6: Tricky Sounds';
 
   @override
-  String get gameNewVariations => 'New Variations';
-
-  @override
-  String get gameBingo => 'Bingo';
-
-  @override
-  String get gameCapitalMatch => 'Cap-Lower';
-
-  @override
   String get groupDesc5 => 'Learn to read: ship, thin, and more';
 
   @override
@@ -163,6 +154,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupDesc6 => 'Learn to read: queen, car, and more';
+
+  @override
+  String get gameNewVariations => 'New Variations';
+
+  @override
+  String get gameBingo => 'Bingo';
+
+  @override
+  String get gameCapitalMatch => 'Cap-Lower';
 
   @override
   String get gameSoundQuiz => 'Sound Quiz';
@@ -253,4 +253,231 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapToListen => 'Tap a word to hear its pronunciation';
+
+  @override
+  String get masterSounds => 'Master 42 English sounds';
+
+  @override
+  String phaseLabel(String phase) {
+    return 'Phase $phase';
+  }
+
+  @override
+  String srsReview(int count) {
+    return 'SRS Review ($count)';
+  }
+
+  @override
+  String get customizePrefs => 'Customize your app preferences';
+
+  @override
+  String get voiceSettings => 'Voice Settings';
+
+  @override
+  String get changeVoiceType => 'Change voice type';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get appVersion => 'Phonics Sense v1.0.0';
+
+  @override
+  String masteredPercent(int percent) {
+    return '$percent% mastered';
+  }
+
+  @override
+  String get learn => 'Learn';
+
+  @override
+  String get exampleWords => 'Example words';
+
+  @override
+  String get playSound => 'Play Sound';
+
+  @override
+  String get wordsTab => 'Words';
+
+  @override
+  String get phonicsTab => 'Phonics';
+
+  @override
+  String get wordLibrary => 'Word Library';
+
+  @override
+  String nWords(int count) {
+    return '$count words';
+  }
+
+  @override
+  String get phonicsSoundDict => 'Phonics Sound Dictionary';
+
+  @override
+  String nSounds(int count) {
+    return '$count sounds';
+  }
+
+  @override
+  String get tapSpellingToSeeWords => 'Tap a spelling to see words';
+
+  @override
+  String get groupLabel => 'Group:';
+
+  @override
+  String wordsWithSpelling(String spelling) {
+    return 'Words with \"$spelling\"';
+  }
+
+  @override
+  String practiceLabTitle(String group) {
+    return '$group — Practice Lab';
+  }
+
+  @override
+  String get practiceLabTitleDefault => 'Practice Lab';
+
+  @override
+  String get allSoundsMix => 'All Sounds Mix (42)';
+
+  @override
+  String get practiceAllSounds => 'Practice all 42 phonics sounds at random';
+
+  @override
+  String get vowelSoundFocus => 'Vowel Sound Focus';
+
+  @override
+  String get focusOnVowels => 'Focus on vowel sounds';
+
+  @override
+  String get consonantSoundFocus => 'Consonant Sound Focus';
+
+  @override
+  String get focusOnConsonants => 'Focus on consonant sounds';
+
+  @override
+  String get blendingBuilder => 'Blending Builder';
+
+  @override
+  String get buildWordsByArranging => 'Build words by arranging letters';
+
+  @override
+  String get wordChainingTitle => 'Word Chaining';
+
+  @override
+  String get changeOneSoundNewWord => 'Change one sound to make a new word';
+
+  @override
+  String get minimalPairListening => 'Minimal Pair Listening';
+
+  @override
+  String get distinguishSounds => 'Distinguish between similar sounds';
+
+  @override
+  String blendingRound(int round, int total) {
+    return 'Blending $round / $total';
+  }
+
+  @override
+  String get slow => 'Slow';
+
+  @override
+  String get normal => 'Normal';
+
+  @override
+  String get buildWordYouHear => 'Build the word you hear';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get check => 'Check';
+
+  @override
+  String wordChainingRound(int round, int total) {
+    return 'Word Chaining $round / $total';
+  }
+
+  @override
+  String get changeOneSound => 'Change one sound';
+
+  @override
+  String minimalPairsRound(int round, int total) {
+    return 'Minimal Pairs $round / $total';
+  }
+
+  @override
+  String get whichWordDoYouHear => 'Which word do you hear?';
+
+  @override
+  String focusOn(String focus) {
+    return 'Focus: $focus';
+  }
+
+  @override
+  String get tapToPlay => 'Tap to play';
+
+  @override
+  String get bingoWin => 'BINGO';
+
+  @override
+  String get newGame => 'New Game';
+
+  @override
+  String missCount(int count) {
+    return 'Miss: $count';
+  }
+
+  @override
+  String get fillInBlankTitle => 'Fill in the Blank';
+
+  @override
+  String get noQuestionsAvailable => 'No questions available';
+
+  @override
+  String get chooseCorrectSpelling => 'Choose the correct spelling';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String selectAtLeastSounds(int count) {
+    return 'Select at least $count sounds';
+  }
+
+  @override
+  String get playBtn => 'Play';
+
+  @override
+  String get allLabel => 'All';
+
+  @override
+  String get listenAndChoose => 'Listen & Choose';
+
+  @override
+  String get selectVoice => 'Select Voice';
+
+  @override
+  String get voiceFemale => 'Female';
+
+  @override
+  String get voiceFemaleDesc => 'Jenny — Warm and clear';
+
+  @override
+  String get voiceMale => 'Male';
+
+  @override
+  String get voiceMaleDesc => 'Andrew — Deep and natural';
+
+  @override
+  String get voiceYoung => 'Young Speaker';
+
+  @override
+  String get voiceYoungDesc => 'Ana — Young speaker';
 }
