@@ -5,6 +5,9 @@ import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 
 /// フォニックスのおとずかん — スペリングごとに単語を表示
+
+enum _PlayMode { slow, normal }
+
 class PhonicsDictionaryScreen extends StatefulWidget {
   const PhonicsDictionaryScreen({super.key});
 
@@ -18,6 +21,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
   /// 選択されたスペリング ("groupId::spelling" 形式)
   String? _selectedSpellingKey;
   String? _playingWord;
+  _PlayMode? _playMode;
 
   /// グループの音を再生
   Future<void> _playGroupSound(SoundGroup group) async {
@@ -32,18 +36,18 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
 
   /// 単語を再生（ゆっくり）
   Future<void> _playWordSlow(String word) async {
-    setState(() => _playingWord = word);
+    setState(() { _playingWord = word; _playMode = _PlayMode.slow; });
     await TtsService.speakLibraryWordSlow(word);
     await Future.delayed(const Duration(milliseconds: 800));
-    if (mounted) setState(() => _playingWord = null);
+    if (mounted) setState(() { _playingWord = null; _playMode = null; });
   }
 
   /// 単語を再生（ふつう）
   Future<void> _playWordNormal(String word) async {
-    setState(() => _playingWord = word);
+    setState(() { _playingWord = word; _playMode = _PlayMode.normal; });
     await TtsService.speakLibraryWordNormal(word);
     await Future.delayed(const Duration(milliseconds: 800));
-    if (mounted) setState(() => _playingWord = null);
+    if (mounted) setState(() { _playingWord = null; _playMode = null; });
   }
 
   /// スペリングの展開/折りたたみ
@@ -152,6 +156,7 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
                         isPlaying: isPlaying,
                         selectedSpelling: selectedSpelling,
                         playingWord: _playingWord,
+                        playMode: _playMode,
                         onPlaySound: () => _playGroupSound(group),
                         onSelectSpelling: (spelling) =>
                             _toggleSpelling(group.id, spelling),
@@ -182,6 +187,7 @@ class _SoundGroupCard extends StatelessWidget {
     required this.isPlaying,
     required this.selectedSpelling,
     required this.playingWord,
+    required this.playMode,
     required this.onPlaySound,
     required this.onSelectSpelling,
     required this.onPlayWordSlow,
@@ -192,6 +198,7 @@ class _SoundGroupCard extends StatelessWidget {
   final bool isPlaying;
   final String? selectedSpelling;
   final String? playingWord;
+  final _PlayMode? playMode;
   final VoidCallback onPlaySound;
   final ValueChanged<String> onSelectSpelling;
   final ValueChanged<String> onPlayWordSlow;
@@ -373,6 +380,7 @@ class _SoundGroupCard extends StatelessWidget {
                               spelling: spelling,
                               groupColor: groupColor,
                               playingWord: playingWord,
+                              playMode: playMode,
                               onPlayWordSlow: onPlayWordSlow,
                               onPlayWordNormal: onPlayWordNormal,
                             )
@@ -404,6 +412,7 @@ class _SpellingWordList extends StatelessWidget {
     required this.spelling,
     required this.groupColor,
     required this.playingWord,
+    required this.playMode,
     required this.onPlayWordSlow,
     required this.onPlayWordNormal,
   });
@@ -412,6 +421,7 @@ class _SpellingWordList extends StatelessWidget {
   final String spelling;
   final Color groupColor;
   final String? playingWord;
+  final _PlayMode? playMode;
   final ValueChanged<String> onPlayWordSlow;
   final ValueChanged<String> onPlayWordNormal;
 
@@ -443,58 +453,90 @@ class _SpellingWordList extends StatelessWidget {
             spacing: 6,
             runSpacing: 6,
             children: words.map((word) {
-              final isPlaying = playingWord == word.word;
-              return GestureDetector(
-                onTap: () => onPlayWordNormal(word.word),
-                onLongPress: () => onPlayWordSlow(word.word),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isPlaying
-                        ? groupColor.withValues(alpha: 0.15)
+              final isWordPlaying = playingWord == word.word;
+              final isPlayingSlow = isWordPlaying && playMode == _PlayMode.slow;
+              final isPlayingNormal = isWordPlaying && playMode == _PlayMode.normal;
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                decoration: BoxDecoration(
+                  color: isWordPlaying
+                      ? groupColor.withValues(alpha: 0.15)
+                      : AppColors.surfaceDim,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  border: Border.all(
+                    color: isWordPlaying
+                        ? groupColor
                         : AppColors.surfaceDim,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    border: Border.all(
-                      color: isPlaying
-                          ? groupColor
-                          : AppColors.surfaceDim,
-                      width: isPlaying ? AppBorder.normal : AppBorder.thin,
-                    ),
+                    width: isWordPlaying ? AppBorder.normal : AppBorder.thin,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        isPlaying
-                            ? Icons.volume_up_rounded
-                            : Icons.play_circle_outline_rounded,
-                        size: 16,
-                        color:
-                            isPlaying ? groupColor : AppColors.textTertiary,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        word.word,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: isPlaying
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // 🐢 ゆっくりボタン
+                    GestureDetector(
+                      onTap: () => onPlayWordSlow(word.word),
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: isPlayingSlow
                               ? groupColor
-                              : AppColors.textPrimary,
+                              : groupColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.slow_motion_video,
+                          size: 15,
+                          color: isPlayingSlow
+                              ? AppColors.onPrimary
+                              : groupColor,
                         ),
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        word.meaning,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: AppColors.textTertiary,
+                    ),
+                    const SizedBox(width: 4),
+                    // ▶ ふつうボタン
+                    GestureDetector(
+                      onTap: () => onPlayWordNormal(word.word),
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: isPlayingNormal
+                              ? groupColor
+                              : groupColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.play_arrow_rounded,
+                          size: 17,
+                          color: isPlayingNormal
+                              ? AppColors.onPrimary
+                              : groupColor,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      word.word,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: isWordPlaying
+                            ? groupColor
+                            : AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      word.meaning,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                  ],
                 ),
               );
             }).toList(),

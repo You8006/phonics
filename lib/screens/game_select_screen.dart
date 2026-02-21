@@ -40,7 +40,6 @@ class GameSelectScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.gameSelectTitle)),
       body: Padding(
         padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.xl, vertical: AppSpacing.sm),

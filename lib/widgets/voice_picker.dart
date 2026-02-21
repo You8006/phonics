@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 
@@ -43,12 +42,8 @@ void showVoicePicker(BuildContext context, [VoidCallback? onChanged]) {
                     await TtsService.setVoiceType(type);
                     onChanged?.call();
                     if (ctx.mounted) Navigator.pop(ctx);
-                    // ボトムシート閉じアニメーション後に確認音を再生
-                    await Future.delayed(const Duration(milliseconds: 350));
-                    if (allPhonicsItems.isNotEmpty) {
-                      TtsService.speakSound(allPhonicsItems.first);
-                    }
                   },
+                  onPlaySample: () => TtsService.speakSample(type),
                 );
               }),
               const SizedBox(height: 4),
@@ -65,10 +60,8 @@ IconData voiceIcon(VoiceType type) {
   switch (type) {
     case VoiceType.female:
       return Icons.face_3;
-    case VoiceType.male:
-      return Icons.face;
     case VoiceType.male2:
-      return Icons.face_6;
+      return Icons.face;
     case VoiceType.child:
       return Icons.child_care;
   }
@@ -87,10 +80,8 @@ _VoiceInfo _voiceInfo(VoiceType type) {
   switch (type) {
     case VoiceType.female:
       return const _VoiceInfo(Icons.face_3, 'Female', 'Jenny — Warm and clear');
-    case VoiceType.male:
-      return const _VoiceInfo(Icons.face, 'Male 1', 'Guy — Clear and steady');
     case VoiceType.male2:
-      return const _VoiceInfo(Icons.face_6, 'Male 2', 'Andrew — Deep and natural');
+      return const _VoiceInfo(Icons.face, 'Male', 'Andrew — Deep and natural');
     case VoiceType.child:
       return const _VoiceInfo(Icons.child_care, 'Child', 'Ana — Cute child voice');
   }
@@ -105,6 +96,7 @@ class _VoiceOptionTile extends StatelessWidget {
     required this.subtitle,
     required this.selected,
     required this.onTap,
+    required this.onPlaySample,
   });
 
   final IconData icon;
@@ -112,6 +104,7 @@ class _VoiceOptionTile extends StatelessWidget {
   final String subtitle;
   final bool selected;
   final VoidCallback onTap;
+  final VoidCallback onPlaySample;
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +162,15 @@ class _VoiceOptionTile extends StatelessWidget {
                 if (selected)
                   const Icon(Icons.check_circle_rounded,
                       color: AppColors.primary, size: 22),
+                IconButton(
+                  icon: const Icon(Icons.play_circle_outline_rounded),
+                  iconSize: 28,
+                  color: AppColors.primary,
+                  tooltip: 'Play sample',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                  onPressed: onPlaySample,
+                ),
               ],
             ),
           ),

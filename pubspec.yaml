@@ -71,10 +71,13 @@ flutter:
     - assets/audio/effects/
     - assets/audio/male/sounds/
     - assets/audio/male/words/
+    - assets/audio/male2/sounds/
+    - assets/audio/male2/words/
     - assets/audio/child/sounds/
     - assets/audio/child/words/
     - assets/audio/words_library/
     - assets/audio/male/words_library/
+    - assets/audio/male2/words_library/
     - assets/audio/child/words_library/
 
   # An image asset can refer to one or more resolution-specific "variants", see

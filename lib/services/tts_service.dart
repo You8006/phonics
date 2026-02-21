@@ -10,8 +10,8 @@ import '../models/phonics_data.dart';
 //  TTS Service
 // ═══════════════════════════════════════════
 
-/// 音声タイプ: female(既存), male(Guy), male2(Andrew), child
-enum VoiceType { female, male, male2, child }
+/// 音声タイプ: female(Jenny), male2(Andrew), child(Ana)
+enum VoiceType { female, male2, child }
 
 class TtsService {
   TtsService._();
@@ -57,10 +57,6 @@ class TtsService {
           await _tts.setPitch(1.1);
           await _tts.setSpeechRate(0.45);
           break;
-        case VoiceType.male:
-          await _tts.setPitch(0.8);
-          await _tts.setSpeechRate(0.42);
-          break;
         case VoiceType.male2:
           await _tts.setPitch(0.75);
           await _tts.setSpeechRate(0.42);
@@ -80,8 +76,6 @@ class TtsService {
     switch (_voiceType) {
       case VoiceType.female:
         return 'audio'; // 既存: audio/sounds/, audio/words/
-      case VoiceType.male:
-        return 'audio/male'; // audio/male/sounds/, audio/male/words/
       case VoiceType.male2:
         return 'audio/male2'; // audio/male2/sounds/, audio/male2/words/
       case VoiceType.child:
@@ -94,12 +88,24 @@ class TtsService {
     return '${item.letter}_${item.sound}'.replaceAll('-', '_');
   }
 
+  /// 音量が小さくなりがちな音のキー一覧（TH, 鼻音 など）
+  static const _quietSoundKeys = {
+    'th_thh', 'th_th_voiced', // TH 系
+    'm_mmm', 'n_nnn', 'ng_nng', // 鼻音
+  };
+
   /// プリレコードされたフォニックス音を再生
   static Future<void> speakSound(PhonicsItem item) async {
     final key = _audioKey(item);
     final prefix = _voicePrefix();
     try {
       _player.stop(); // await しない — 即座に次の play へ
+      // 音量が小さい音はブーストする
+      if (_quietSoundKeys.contains(key)) {
+        await _player.setVolume(1.5);
+      } else {
+        await _player.setVolume(1.0);
+      }
       await _player.play(AssetSource('$prefix/sounds/sound_$key.mp3'));
     } catch (e) {
       debugPrint('No audio file for sound $key: $e');
@@ -170,6 +176,18 @@ class TtsService {
   static Future<void> speak(String text) async {
     await _init();
     await _tts.speak(text);
+  }
+
+  /// 指定ボイスでサンプルフレーズを読み上げ (Voice Picker プレビュー用)
+  static Future<void> speakSample(VoiceType type) async {
+    final prev = _voiceType;
+    _voiceType = type;
+    _lastAppliedVoice = null; // 強制再初期化
+    await _init();
+    await _tts.speak("Let's practice phonics!");
+    // 元のボイスに戻す
+    _voiceType = prev;
+    _lastAppliedVoice = null;
   }
 
   static Future<void> stop() async {

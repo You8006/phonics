@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/voice_picker.dart';
 import 'game_select_screen.dart';
@@ -23,9 +24,28 @@ class _MainShellState extends State<MainShell> {
     _SettingsPage(),
   ];
 
+  static const _titles = ['Lessons', 'Games', 'Library', 'Settings'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_titles[_currentIndex]),
+        actions: [
+          IconButton(
+            icon: Icon(
+              voiceIcon(TtsService.voiceType),
+              color: AppColors.textSecondary,
+              size: 22,
+            ),
+            tooltip: 'Voice',
+            onPressed: () => showVoicePicker(context, () {
+              if (mounted) setState(() {});
+            }),
+          ),
+          const SizedBox(width: 4),
+        ],
+      ),
       body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(

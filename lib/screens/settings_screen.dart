@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
-import '../widgets/voice_picker.dart';
 import 'learn_screen.dart';
 import 'game_screen.dart';
 
@@ -55,37 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Phonics'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              voiceIcon(TtsService.voiceType),
-              color: AppColors.textSecondary,
-              size: 22,
-            ),
-            tooltip: 'Voice',
-            onPressed: () => showVoicePicker(context, () {
-              if (mounted) setState(() {});
-            }),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.local_fire_department,
-                    color: AppColors.primary, size: 20),
-                const SizedBox(width: 2),
-                Text(
-                  '$_streak',
-                  style: AppTextStyle.cardTitle,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: ListView(

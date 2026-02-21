@@ -7,6 +7,9 @@ import 'phonics_dictionary_screen.dart';
 /// 表示モード
 enum LibraryViewMode { words, phonicsDictionary }
 
+/// 再生速度
+enum _PlayMode { slow, normal }
+
 /// 音声ライブラリー画面: カテゴリ別に100単語を表示し、3種の音声で聞ける
 class AudioLibraryScreen extends StatefulWidget {
   const AudioLibraryScreen({super.key});
@@ -16,39 +19,33 @@ class AudioLibraryScreen extends StatefulWidget {
 }
 
 class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
-  String? _selectedCategory;
   String _searchQuery = '';
   String? _playingWord;
+  _PlayMode? _playMode;
   LibraryViewMode _viewMode = LibraryViewMode.words;
 
   List<WordItem> get _filteredWords {
-    var words = _selectedCategory != null
-        ? getWordsByCategory(_selectedCategory!)
-        : wordLibrary;
-
-    if (_searchQuery.isNotEmpty) {
-      final q = _searchQuery.toLowerCase();
-      words = words
-          .where((w) =>
-              w.word.toLowerCase().contains(q) ||
-              w.meaning.contains(q))
-          .toList();
-    }
-    return words;
+    if (_searchQuery.isEmpty) return wordLibrary;
+    final q = _searchQuery.toLowerCase();
+    return wordLibrary
+        .where((w) =>
+            w.word.toLowerCase().contains(q) ||
+            w.meaning.contains(q))
+        .toList();
   }
 
   Future<void> _playWordSlow(String word) async {
-    setState(() => _playingWord = word);
+    setState(() { _playingWord = word; _playMode = _PlayMode.slow; });
     await TtsService.speakLibraryWordSlow(word);
     await Future.delayed(const Duration(milliseconds: 800));
-    if (mounted) setState(() => _playingWord = null);
+    if (mounted) setState(() { _playingWord = null; _playMode = null; });
   }
 
   Future<void> _playWordNormal(String word) async {
-    setState(() => _playingWord = word);
+    setState(() { _playingWord = word; _playMode = _PlayMode.normal; });
     await TtsService.speakLibraryWordNormal(word);
     await Future.delayed(const Duration(milliseconds: 800));
-    if (mounted) setState(() => _playingWord = null);
+    if (mounted) setState(() { _playingWord = null; _playMode = null; });
   }
 
   @override
@@ -170,39 +167,6 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             ),
           ),
 
-          // ── カテゴリチップ ──
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 48,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: wordCategories.length + 1, // +1 for "All"
-                itemBuilder: (context, i) {
-                  if (i == 0) {
-                    return _CategoryChip(
-                      label: 'All',
-                      color: AppColors.primary,
-                      selected: _selectedCategory == null,
-                      onTap: () =>
-                          setState(() => _selectedCategory = null),
-                    );
-                  }
-                  final cat = wordCategories[i - 1];
-                  return _CategoryChip(
-                    label: cat.nameJa,
-                    color: Color(cat.color),
-                    selected: _selectedCategory == cat.id,
-                    onTap: () =>
-                        setState(() => _selectedCategory = cat.id),
-                  );
-                },
-              ),
-            ),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 12)),
-
           // ── 単語リスト ──
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -215,6 +179,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     orElse: () => wordCategories.first,
                   );
                   final isPlaying = _playingWord == word.word;
+                  final playMode = isPlaying ? _playMode : null;
 
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8),
@@ -222,6 +187,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                       word: word,
                       category: cat,
                       isPlaying: isPlaying,
+                      playMode: playMode,
                       onPlaySlow: () => _playWordSlow(word.word),
                       onPlayNormal: () => _playWordNormal(word.word),
                     ),
@@ -277,52 +243,6 @@ class _ViewModeTab extends StatelessWidget {
   }
 }
 
-// ── カテゴリフィルターチップ ──
-
-class _CategoryChip extends StatelessWidget {
-  const _CategoryChip({
-    required this.label,
-    required this.color,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final Color color;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 6),
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-          decoration: BoxDecoration(
-            color: selected ? color : AppColors.surface,
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            border: Border.all(
-              color: selected ? color : AppColors.surfaceDim,
-              width: AppBorder.thin,
-            ),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: selected ? AppColors.onPrimary : AppColors.textSecondary,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 // ── 単語カード ──
 
 class _WordCard extends StatelessWidget {
@@ -330,6 +250,7 @@ class _WordCard extends StatelessWidget {
     required this.word,
     required this.category,
     required this.isPlaying,
+    required this.playMode,
     required this.onPlaySlow,
     required this.onPlayNormal,
   });
@@ -337,6 +258,7 @@ class _WordCard extends StatelessWidget {
   final WordItem word;
   final WordCategory category;
   final bool isPlaying;
+  final _PlayMode? playMode;
   final VoidCallback onPlaySlow;
   final VoidCallback onPlayNormal;
 
@@ -372,14 +294,14 @@ class _WordCard extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: isPlaying
+                      color: playMode == _PlayMode.slow
                           ? catColor
                           : catColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
                     child: Icon(
                       Icons.slow_motion_video,
-                      color: isPlaying ? AppColors.onPrimary : catColor,
+                      color: playMode == _PlayMode.slow ? AppColors.onPrimary : catColor,
                       size: 22,
                     ),
                   ),
@@ -393,14 +315,14 @@ class _WordCard extends StatelessWidget {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: isPlaying
+                      color: playMode == _PlayMode.normal
                           ? catColor
                           : catColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
                     child: Icon(
                       Icons.play_arrow_rounded,
-                      color: isPlaying ? AppColors.onPrimary : catColor,
+                      color: playMode == _PlayMode.normal ? AppColors.onPrimary : catColor,
                       size: 24,
                     ),
                   ),
