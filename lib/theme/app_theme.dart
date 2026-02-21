@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ═══════════════════════════════════════════════════════════════
-//  Pop Phonics — Design Tokens
+//  Phonics Sense — Design Tokens
 //  洗練された統一的なデザインシステム
 // ═══════════════════════════════════════════════════════════════
 

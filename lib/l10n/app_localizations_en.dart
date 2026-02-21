@@ -9,16 +9,16 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Pop Phonics';
+  String get appTitle => 'Phonics Sense';
 
   @override
-  String get gameSelectTitle => 'Phonics Adventure';
+  String get gameSelectTitle => 'Exercises';
 
   @override
-  String get selectGame => 'Let\'s Play!';
+  String get selectGame => 'Exercises';
 
   @override
-  String get selectGameSubtitle => 'Let\'s practice sounds and letters';
+  String get selectGameSubtitle => 'Choose an exercise to practice';
 
   @override
   String get beginner => 'Beginner';
@@ -117,31 +117,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupTitle0 => 'Step 1: First Sounds';
 
   @override
-  String get groupDesc0 => 'Read \'sat\', \'pin\', and more!';
+  String get groupDesc0 => 'Learn to read: sat, pin, and more';
 
   @override
   String get groupTitle1 => 'Step 2: Useful Consonants';
 
   @override
-  String get groupDesc1 => 'Read \'hen\', \'red\', and more!';
+  String get groupDesc1 => 'Learn to read: hen, red, and more';
 
   @override
   String get groupTitle2 => 'Step 3: Everyday Words';
 
   @override
-  String get groupDesc2 => 'Read \'dog\', \'bus\', and more!';
+  String get groupDesc2 => 'Learn to read: dog, bus, and more';
 
   @override
   String get groupTitle3 => 'Step 4: Long Vowels 1';
 
   @override
-  String get groupDesc3 => 'Read \'rain\', \'boat\', and more!';
+  String get groupDesc3 => 'Learn to read: rain, boat, and more';
 
   @override
   String get groupTitle4 => 'Step 5: Long Vowels 2';
 
   @override
-  String get groupDesc4 => 'Read \'book\', \'moon\', and more!';
+  String get groupDesc4 => 'Learn to read: book, moon, and more';
 
   @override
   String get groupTitle5 => 'Step 6: Tricky Sounds';
@@ -156,13 +156,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameCapitalMatch => 'Cap-Lower';
 
   @override
-  String get groupDesc5 => 'Read \'ship\', \'thin\', and more!';
+  String get groupDesc5 => 'Learn to read: ship, thin, and more';
 
   @override
   String get groupTitle6 => 'Step 7: Final Steps';
 
   @override
-  String get groupDesc6 => 'Read \'queen\', \'car\', and more!';
+  String get groupDesc6 => 'Learn to read: queen, car, and more';
 
   @override
   String get gameSoundQuiz => 'Sound Quiz';
@@ -171,7 +171,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameSoundQuizDesc => 'Listen and pick the right letter';
 
   @override
-  String get gameBingoDesc => 'Mark your bingo card!';
+  String get gameBingoDesc => 'Complete the bingo grid';
 
   @override
   String get gameCapitalMatchDesc => 'Match upper & lowercase';
@@ -201,7 +201,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modeLabel => 'Mode';
 
   @override
-  String get selectSoundsHint => 'Select sounds, then hit Play!';
+  String get selectSoundsHint => 'Select sounds, then start';
 
   @override
   String get gameBlending => 'Blending';
@@ -231,7 +231,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioLibrary => 'Word Library';
 
   @override
-  String get audioLibraryDesc => 'Listen to 100 essential words';
+  String get audioLibraryDesc => 'Browse and listen to 100 essential words';
 
   @override
   String get lessons => 'Lessons';

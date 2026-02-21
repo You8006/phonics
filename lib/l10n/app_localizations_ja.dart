@@ -9,16 +9,16 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appTitle => 'Pop Phonics';
+  String get appTitle => 'Phonics Sense';
 
   @override
-  String get gameSelectTitle => 'Phonics Adventure';
+  String get gameSelectTitle => 'エクササイズ';
 
   @override
-  String get selectGame => 'Let\'s Play!';
+  String get selectGame => 'エクササイズ';
 
   @override
-  String get selectGameSubtitle => '音と文字の練習をしよう';
+  String get selectGameSubtitle => '練習したいエクササイズを選択';
 
   @override
   String get beginner => '初級';
@@ -51,7 +51,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameIpaQuiz => 'IPAクイズ';
 
   @override
-  String get gameIpaQuizDesc => '音を聞いて正しい発音記号を選ぼう';
+  String get gameIpaQuizDesc => '音を聞いて正しい発音記号を選択';
 
   @override
   String get gameIpaSprint => 'IPAスプリント';
@@ -93,10 +93,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resultKeep => 'Keep Going!';
 
   @override
-  String get soundToLetterSubtitle => '音を聞いて正しい文字を選ぼう';
+  String get soundToLetterSubtitle => '音を聞いて正しい文字を選択してください';
 
   @override
-  String get soundToIpaSubtitle => '音を聞いて正しい発音記号を選ぼう';
+  String get soundToIpaSubtitle => '音を聞いて正しい発音記号を選択してください';
 
   @override
   String get soundToLetterTitle => 'Sound Game';
@@ -117,31 +117,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String get groupTitle0 => 'Step 1: はじめての音';
 
   @override
-  String get groupDesc0 => '\'sat\', \'pin\' などが読めるようになるよ！';
+  String get groupDesc0 => 'sat, pin などの単語を学習';
 
   @override
   String get groupTitle1 => 'Step 2: 便利な子音';
 
   @override
-  String get groupDesc1 => '\'hen\', \'red\' などが読めるようになるよ！';
+  String get groupDesc1 => 'hen, red などの単語を学習';
 
   @override
   String get groupTitle2 => 'Step 3: 身近な単語';
 
   @override
-  String get groupDesc2 => '\'dog\', \'bus\' などが読めるようになるよ！';
+  String get groupDesc2 => 'dog, bus などの単語を学習';
 
   @override
   String get groupTitle3 => 'Step 4: 長い母音 1';
 
   @override
-  String get groupDesc3 => '\'rain\', \'boat\' などが読めるようになるよ！';
+  String get groupDesc3 => 'rain, boat などの単語を学習';
 
   @override
   String get groupTitle4 => 'Step 5: 長い母音 2';
 
   @override
-  String get groupDesc4 => '\'book\', \'moon\' などが読めるようになるよ！';
+  String get groupDesc4 => 'book, moon などの単語を学習';
 
   @override
   String get groupTitle5 => 'Step 6: 難しい音';
@@ -150,28 +150,28 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameNewVariations => '新しいゲーム';
 
   @override
-  String get gameBingo => 'おとビンゴ';
+  String get gameBingo => 'サウンドビンゴ';
 
   @override
   String get gameCapitalMatch => '大文字・小文字';
 
   @override
-  String get groupDesc5 => '\'ship\', \'thin\' などが読めるようになるよ！';
+  String get groupDesc5 => 'ship, thin などの単語を学習';
 
   @override
   String get groupTitle6 => 'Step 7: 最後の仕上げ';
 
   @override
-  String get groupDesc6 => '\'queen\', \'car\' などが読めるようになるよ！';
+  String get groupDesc6 => 'queen, car などの単語を学習';
 
   @override
   String get gameSoundQuiz => 'サウンドクイズ';
 
   @override
-  String get gameSoundQuizDesc => '音を聞いて正しい文字を選ぼう';
+  String get gameSoundQuizDesc => '音を聞いて正しい文字を選択';
 
   @override
-  String get gameBingoDesc => 'ビンゴカードを埋めよう！';
+  String get gameBingoDesc => 'ビンゴカードを完成させましょう';
 
   @override
   String get gameCapitalMatchDesc => '大文字と小文字をマッチ';
@@ -201,7 +201,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get modeLabel => 'モード';
 
   @override
-  String get selectSoundsHint => '音を選んでPlayを押そう！';
+  String get selectSoundsHint => '音を選択して開始';
 
   @override
   String get gameBlending => 'ブレンディング';
@@ -225,13 +225,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameFillInBlank => '穴うめクイズ';
 
   @override
-  String get gameFillInBlankDesc => '音を聞いて、空白のフォニックスを選ぼう';
+  String get gameFillInBlankDesc => '音を聞いて空白のフォニックスを選択';
 
   @override
   String get audioLibrary => '単語ライブラリー';
 
   @override
-  String get audioLibraryDesc => '100の基本単語を聞こう';
+  String get audioLibraryDesc => '100の基本単語を確認';
 
   @override
   String get lessons => 'レッスン';
@@ -252,5 +252,5 @@ class AppLocalizationsJa extends AppLocalizations {
   String get allCategories => 'すべて';
 
   @override
-  String get tapToListen => 'タップして発音を聞こう';
+  String get tapToListen => 'タップして発音を確認';
 }

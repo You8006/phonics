@@ -101,25 +101,25 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In ja, this message translates to:
-  /// **'Pop Phonics'**
+  /// **'Phonics Sense'**
   String get appTitle;
 
   /// No description provided for @gameSelectTitle.
   ///
   /// In ja, this message translates to:
-  /// **'Phonics Adventure'**
+  /// **'エクササイズ'**
   String get gameSelectTitle;
 
   /// No description provided for @selectGame.
   ///
   /// In ja, this message translates to:
-  /// **'Let\'s Play!'**
+  /// **'エクササイズ'**
   String get selectGame;
 
   /// No description provided for @selectGameSubtitle.
   ///
   /// In ja, this message translates to:
-  /// **'音と文字の練習をしよう'**
+  /// **'練習したいエクササイズを選択'**
   String get selectGameSubtitle;
 
   /// No description provided for @beginner.
@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameIpaQuizDesc.
   ///
   /// In ja, this message translates to:
-  /// **'音を聞いて正しい発音記号を選ぼう'**
+  /// **'音を聞いて正しい発音記号を選択'**
   String get gameIpaQuizDesc;
 
   /// No description provided for @gameIpaSprint.
@@ -269,13 +269,13 @@ abstract class AppLocalizations {
   /// No description provided for @soundToLetterSubtitle.
   ///
   /// In ja, this message translates to:
-  /// **'音を聞いて正しい文字を選ぼう'**
+  /// **'音を聞いて正しい文字を選択してください'**
   String get soundToLetterSubtitle;
 
   /// No description provided for @soundToIpaSubtitle.
   ///
   /// In ja, this message translates to:
-  /// **'音を聞いて正しい発音記号を選ぼう'**
+  /// **'音を聞いて正しい発音記号を選択してください'**
   String get soundToIpaSubtitle;
 
   /// No description provided for @soundToLetterTitle.
@@ -317,7 +317,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc0.
   ///
   /// In ja, this message translates to:
-  /// **'\'sat\', \'pin\' などが読めるようになるよ！'**
+  /// **'sat, pin などの単語を学習'**
   String get groupDesc0;
 
   /// No description provided for @groupTitle1.
@@ -329,7 +329,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc1.
   ///
   /// In ja, this message translates to:
-  /// **'\'hen\', \'red\' などが読めるようになるよ！'**
+  /// **'hen, red などの単語を学習'**
   String get groupDesc1;
 
   /// No description provided for @groupTitle2.
@@ -341,7 +341,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc2.
   ///
   /// In ja, this message translates to:
-  /// **'\'dog\', \'bus\' などが読めるようになるよ！'**
+  /// **'dog, bus などの単語を学習'**
   String get groupDesc2;
 
   /// No description provided for @groupTitle3.
@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc3.
   ///
   /// In ja, this message translates to:
-  /// **'\'rain\', \'boat\' などが読めるようになるよ！'**
+  /// **'rain, boat などの単語を学習'**
   String get groupDesc3;
 
   /// No description provided for @groupTitle4.
@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc4.
   ///
   /// In ja, this message translates to:
-  /// **'\'book\', \'moon\' などが読めるようになるよ！'**
+  /// **'book, moon などの単語を学習'**
   String get groupDesc4;
 
   /// No description provided for @groupTitle5.
@@ -383,7 +383,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameBingo.
   ///
   /// In ja, this message translates to:
-  /// **'おとビンゴ'**
+  /// **'サウンドビンゴ'**
   String get gameBingo;
 
   /// No description provided for @gameCapitalMatch.
@@ -395,7 +395,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc5.
   ///
   /// In ja, this message translates to:
-  /// **'\'ship\', \'thin\' などが読めるようになるよ！'**
+  /// **'ship, thin などの単語を学習'**
   String get groupDesc5;
 
   /// No description provided for @groupTitle6.
@@ -407,7 +407,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDesc6.
   ///
   /// In ja, this message translates to:
-  /// **'\'queen\', \'car\' などが読めるようになるよ！'**
+  /// **'queen, car などの単語を学習'**
   String get groupDesc6;
 
   /// No description provided for @gameSoundQuiz.
@@ -419,13 +419,13 @@ abstract class AppLocalizations {
   /// No description provided for @gameSoundQuizDesc.
   ///
   /// In ja, this message translates to:
-  /// **'音を聞いて正しい文字を選ぼう'**
+  /// **'音を聞いて正しい文字を選択'**
   String get gameSoundQuizDesc;
 
   /// No description provided for @gameBingoDesc.
   ///
   /// In ja, this message translates to:
-  /// **'ビンゴカードを埋めよう！'**
+  /// **'ビンゴカードを完成させましょう'**
   String get gameBingoDesc;
 
   /// No description provided for @gameCapitalMatchDesc.
@@ -485,7 +485,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectSoundsHint.
   ///
   /// In ja, this message translates to:
-  /// **'音を選んでPlayを押そう！'**
+  /// **'音を選択して開始'**
   String get selectSoundsHint;
 
   /// No description provided for @gameBlending.
@@ -533,7 +533,7 @@ abstract class AppLocalizations {
   /// No description provided for @gameFillInBlankDesc.
   ///
   /// In ja, this message translates to:
-  /// **'音を聞いて、空白のフォニックスを選ぼう'**
+  /// **'音を聞いて空白のフォニックスを選択'**
   String get gameFillInBlankDesc;
 
   /// No description provided for @audioLibrary.
@@ -545,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @audioLibraryDesc.
   ///
   /// In ja, this message translates to:
-  /// **'100の基本単語を聞こう'**
+  /// **'100の基本単語を確認'**
   String get audioLibraryDesc;
 
   /// No description provided for @lessons.
@@ -587,7 +587,7 @@ abstract class AppLocalizations {
   /// No description provided for @tapToListen.
   ///
   /// In ja, this message translates to:
-  /// **'タップして発音を聞こう'**
+  /// **'タップして発音を確認'**
   String get tapToListen;
 }
 

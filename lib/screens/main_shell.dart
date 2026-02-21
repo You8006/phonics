@@ -72,7 +72,7 @@ class _MainShellState extends State<MainShell> {
                   onTap: () => setState(() => _currentIndex = 0),
                 ),
                 _NavItem(
-                  icon: Icons.sports_esports_rounded,
+                  icon: Icons.quiz_rounded,
                   label: 'Games',
                   isSelected: _currentIndex == 1,
                   color: AppColors.navGames,
@@ -202,7 +202,7 @@ class _SettingsPageState extends State<_SettingsPage> {
               _SettingsTile(
                 icon: Icons.info_outline_rounded,
                 title: 'About',
-                subtitle: 'Pop Phonics v1.0.0',
+                subtitle: 'Phonics Sense v1.0.0',
                 color: AppColors.accentPurple,
                 onTap: () {},
               ),
