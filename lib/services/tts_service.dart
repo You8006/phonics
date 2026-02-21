@@ -100,6 +100,7 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      await _player.setVolume(1.0);
       await _player.play(AssetSource('$prefix/words_library/word_${key}_slow.mp3'));
     } catch (e) {
       debugPrint('No pre-generated audio for library word slow: $key ($e)');
@@ -112,16 +113,21 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      await _player.setVolume(1.0);
       await _player.play(AssetSource('$prefix/words_library/word_$key.mp3'));
     } catch (e) {
       debugPrint('No pre-generated audio for library word: $key ($e)');
     }
   }
 
+  /// 効果音の音量（フォニックス音声より控えめ）
+  static const _seVolume = 0.4;
+
   /// 正解時の効果音を即時再生
   static Future<void> playCorrect() async {
     try {
       _sePlayer.stop();
+      await _sePlayer.setVolume(_seVolume);
       await _sePlayer.play(AssetSource('audio/effects/成功.mp3'));
     } catch (e) {
       debugPrint('Effect fallback for correct: $e');
@@ -132,9 +138,22 @@ class TtsService {
   static Future<void> playWrong() async {
     try {
       _sePlayer.stop();
+      await _sePlayer.setVolume(_seVolume);
       await _sePlayer.play(AssetSource('audio/effects/失敗.mp3'));
     } catch (e) {
       debugPrint('Effect fallback for wrong: $e');
+    }
+  }
+
+  /// 最終スコア効果音を再生（合格/不合格）
+  static Future<void> playScoreResult({required bool passed}) async {
+    final file = passed ? '最終スコア合格.mp3' : '最終スコア不合格.mp3';
+    try {
+      _sePlayer.stop();
+      await _sePlayer.setVolume(_seVolume);
+      await _sePlayer.play(AssetSource('audio/effects/$file'));
+    } catch (e) {
+      debugPrint('Effect fallback for score result: $e');
     }
   }
 
@@ -144,6 +163,7 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      await _player.setVolume(1.0);
       await _player.play(
         AssetSource('$prefix/feedback/feedback_$feedbackKey.mp3'),
       );
@@ -165,6 +185,7 @@ class TtsService {
     }
     try {
       _player.stop();
+      await _player.setVolume(1.0);
       await _player.play(AssetSource('$prefix/sample_phrase.mp3'));
     } catch (e) {
       debugPrint('No pre-generated sample phrase for $type: $e');

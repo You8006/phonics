@@ -46,8 +46,13 @@ class _ResultScreenState extends State<ResultScreen>
     if (mounted) setState(() => _streak = s);
   }
 
-  /// 結果に応じたフィードバック音声を再生（事前生成済みアセット）
+  /// 結果に応じた効果音＋フィードバック音声を再生
   Future<void> _speakFeedback() async {
+    if (!mounted) return;
+    // 最終スコア効果音（合格: 80%以上）
+    await TtsService.playScoreResult(passed: _accuracy >= 0.8);
+    // 効果音が少し鳴ってからフィードバック音声
+    await Future.delayed(const Duration(milliseconds: 1500));
     if (!mounted) return;
     await TtsService.speakFeedback(_feedbackKey);
   }
