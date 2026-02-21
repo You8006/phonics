@@ -19,6 +19,12 @@ class TtsService {
   static final AudioPlayer _sePlayer = AudioPlayer()
     ..setPlayerMode(PlayerMode.lowLatency);   // SE も低遅延モード
 
+  /// 通常音量（他アプリと同程度に聞こえるよう既定値より高め）
+  static const double _baseVolume = 1.5;
+
+  /// 音量が小さめの音（TH, 鼻音など）向けブースト音量
+  static const double _boostVolume = 2.0;
+
   /// 現在選択中の声
   static VoiceType _voiceType = VoiceType.female;
   static VoiceType get voiceType => _voiceType;
@@ -71,11 +77,11 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop(); // await しない — 即座に次の play へ
-      // 音量が小さい音はブーストする
+      // 音量が小さい音はさらにブーストする
       if (_quietSoundKeys.contains(key)) {
-        await _player.setVolume(1.5);
+        await _player.setVolume(_boostVolume);
       } else {
-        await _player.setVolume(1.0);
+        await _player.setVolume(_baseVolume);
       }
       await _player.play(AssetSource('$prefix/sounds/sound_$key.mp3'));
     } catch (e) {
@@ -100,6 +106,7 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      await _player.setVolume(_baseVolume);
       await _player.play(AssetSource('$prefix/words_library/word_${key}_slow.mp3'));
     } catch (e) {
       debugPrint('No pre-generated audio for library word slow: $key ($e)');
@@ -112,6 +119,7 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      await _player.setVolume(_baseVolume);
       await _player.play(AssetSource('$prefix/words_library/word_$key.mp3'));
     } catch (e) {
       debugPrint('No pre-generated audio for library word: $key ($e)');
@@ -122,6 +130,7 @@ class TtsService {
   static Future<void> playCorrect() async {
     try {
       _sePlayer.stop();
+      await _sePlayer.setVolume(_baseVolume);
       await _sePlayer.play(AssetSource('audio/effects/成功.mp3'));
     } catch (e) {
       debugPrint('Effect fallback for correct: $e');
@@ -132,6 +141,7 @@ class TtsService {
   static Future<void> playWrong() async {
     try {
       _sePlayer.stop();
+      await _sePlayer.setVolume(_baseVolume);
       await _sePlayer.play(AssetSource('audio/effects/失敗.mp3'));
     } catch (e) {
       debugPrint('Effect fallback for wrong: $e');
@@ -144,6 +154,7 @@ class TtsService {
     final prefix = _voicePrefix();
     try {
       _player.stop();
+      await _player.setVolume(_baseVolume);
       await _player.play(
         AssetSource('$prefix/feedback/feedback_$feedbackKey.mp3'),
       );
@@ -165,6 +176,7 @@ class TtsService {
     }
     try {
       _player.stop();
+      await _player.setVolume(_baseVolume);
       await _player.play(AssetSource('$prefix/sample_phrase.mp3'));
     } catch (e) {
       debugPrint('No pre-generated sample phrase for $type: $e');
