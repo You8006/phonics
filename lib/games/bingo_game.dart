@@ -183,7 +183,7 @@ class _BingoGameState extends State<BingoGame> {
     final accentColor = AppColors.primary;
 
     return Scaffold(
-      appBar: scoreAppBar('${_markedIndices.length} / ${_boardItems.length}'),
+      appBar: progressAppBar('${_markedIndices.length} / ${_boardItems.length}'),
       body: SafeArea(
         child: Column(
           children: [
