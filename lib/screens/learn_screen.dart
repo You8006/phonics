@@ -5,6 +5,7 @@ import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
+import 'learn_complete_screen.dart';
 
 /// Learn 画面: カードをスワイプして音を聞く + 例単語
 class LearnScreen extends StatefulWidget {
@@ -193,15 +194,34 @@ class _LearnScreenState extends State<LearnScreen> {
                     );
                   }),
                 ),
-                IconButton.filledTonal(
-                  onPressed: _current < _items.length - 1
-                      ? () => _page.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeOut,
-                          )
-                      : null,
-                  icon: const Icon(Icons.arrow_forward_rounded),
-                ),
+                _current < _items.length - 1
+                    ? IconButton.filledTonal(
+                        onPressed: () => _page.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            ),
+                        icon: const Icon(Icons.arrow_forward_rounded),
+                      )
+                    : FilledButton.icon(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => LearnCompleteScreen(
+                                group: widget.group,
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.check_rounded, size: 18),
+                        label: Text(l10n.lessonDone),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.correct,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                        ),
+                      ),
               ],
             ),
           ),

@@ -181,6 +181,13 @@
 
   "listenAndChoose": "Listen & Choose",
 
+  "lessonComplete": "Lesson Complete!",
+  "lessonCompleteDesc": "You've finished all cards in {group}.",
+  "@lessonCompleteDesc": { "placeholders": { "group": { "type": "String" } } },
+  "tryQuiz": "Try the Quiz",
+  "nextLesson": "Next Lesson",
+  "lessonDone": "Done",
+
   "selectVoice": "Select Voice",
   "voiceFemale": "Female",
   "voiceFemaleDesc": "Jenny — Warm and clear",

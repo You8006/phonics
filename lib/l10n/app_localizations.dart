@@ -950,6 +950,36 @@ abstract class AppLocalizations {
   /// **'聞いて選ぶ'**
   String get listenAndChoose;
 
+  /// No description provided for @lessonComplete.
+  ///
+  /// In ja, this message translates to:
+  /// **'レッスン完了！'**
+  String get lessonComplete;
+
+  /// No description provided for @lessonCompleteDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'{group} のすべてのカードを学習しました。'**
+  String lessonCompleteDesc(String group);
+
+  /// No description provided for @tryQuiz.
+  ///
+  /// In ja, this message translates to:
+  /// **'クイズに挑戦'**
+  String get tryQuiz;
+
+  /// No description provided for @nextLesson.
+  ///
+  /// In ja, this message translates to:
+  /// **'次のレッスンへ'**
+  String get nextLesson;
+
+  /// No description provided for @lessonDone.
+  ///
+  /// In ja, this message translates to:
+  /// **'完了'**
+  String get lessonDone;
+
   /// No description provided for @selectVoice.
   ///
   /// In ja, this message translates to:

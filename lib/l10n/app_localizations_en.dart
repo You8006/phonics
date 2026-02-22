@@ -461,6 +461,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listenAndChoose => 'Listen & Choose';
 
   @override
+  String get lessonComplete => 'Lesson Complete!';
+
+  @override
+  String lessonCompleteDesc(String group) {
+    return 'You\'ve finished all cards in $group.';
+  }
+
+  @override
+  String get tryQuiz => 'Try the Quiz';
+
+  @override
+  String get nextLesson => 'Next Lesson';
+
+  @override
+  String get lessonDone => 'Done';
+
+  @override
   String get selectVoice => 'Select Voice';
 
   @override

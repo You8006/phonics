@@ -181,6 +181,13 @@
 
   "listenAndChoose": "聞いて選ぶ",
 
+  "lessonComplete": "レッスン完了！",
+  "lessonCompleteDesc": "{group} のすべてのカードを学習しました。",
+  "@lessonCompleteDesc": { "placeholders": { "group": { "type": "String" } } },
+  "tryQuiz": "クイズに挑戦",
+  "nextLesson": "次のレッスンへ",
+  "lessonDone": "完了",
+
   "selectVoice": "音声を選択",
   "voiceFemale": "女性",
   "voiceFemaleDesc": "Jenny — 温かく明瞭な声",

@@ -461,6 +461,23 @@ class AppLocalizationsJa extends AppLocalizations {
   String get listenAndChoose => '聞いて選ぶ';
 
   @override
+  String get lessonComplete => 'レッスン完了！';
+
+  @override
+  String lessonCompleteDesc(String group) {
+    return '$group のすべてのカードを学習しました。';
+  }
+
+  @override
+  String get tryQuiz => 'クイズに挑戦';
+
+  @override
+  String get nextLesson => '次のレッスンへ';
+
+  @override
+  String get lessonDone => '完了';
+
+  @override
   String get selectVoice => '音声を選択';
 
   @override
