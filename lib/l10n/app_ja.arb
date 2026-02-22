@@ -84,6 +84,10 @@
   "gameMinimalPairsDesc": "似た音の聞き分け練習",
   "gameFillInBlank": "穴うめクイズ",
   "gameFillInBlankDesc": "音を聞いて空白のフォニックスを選択",
+  "gameSoundExplorer": "サウンド探検",
+  "gameSoundExplorerDesc": "文字を見て、正しい音を探す",
+  "findThisSound": "この音を見つけて",
+  "listenThenChoose": "聞いてから選択",
 
   "audioLibrary": "単語ライブラリー",
   "audioLibraryDesc": "100の基本単語を確認",

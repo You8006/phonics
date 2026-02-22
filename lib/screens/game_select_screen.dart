@@ -16,6 +16,7 @@ class GameSelectScreen extends StatelessWidget {
     AppColors.accentGreen,   // Word Chaining
     AppColors.accentPurple,  // Minimal Pairs
     AppColors.accentPink,    // Fill-in-Blank
+    AppColors.accentAmber,   // Sound Explorer
   ];
 
   @override
@@ -37,6 +38,8 @@ class GameSelectScreen extends StatelessWidget {
           l10n.gameMinimalPairsDesc, Icons.hearing_rounded, _gameColors[5]),
       _GameDef(GameType.fillInBlank, l10n.gameFillInBlank,
           l10n.gameFillInBlankDesc, Icons.edit_note_rounded, _gameColors[6]),
+      _GameDef(GameType.soundExplorer, l10n.gameSoundExplorer,
+          l10n.gameSoundExplorerDesc, Icons.explore_rounded, _gameColors[7]),
     ];
 
     return Scaffold(

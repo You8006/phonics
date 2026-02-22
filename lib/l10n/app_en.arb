@@ -84,6 +84,10 @@
   "gameMinimalPairsDesc": "Spot the difference in sounds",
   "gameFillInBlank": "Fill-in Quiz",
   "gameFillInBlankDesc": "Listen and fill in the missing phonics",
+  "gameSoundExplorer": "Sound Explorer",
+  "gameSoundExplorerDesc": "See a letter, find its sound",
+  "findThisSound": "Find this sound",
+  "listenThenChoose": "Listen, then choose",
 
   "audioLibrary": "Word Library",
   "audioLibraryDesc": "Browse and listen to 100 essential words",

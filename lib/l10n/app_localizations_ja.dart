@@ -228,6 +228,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gameFillInBlankDesc => '音を聞いて空白のフォニックスを選択';
 
   @override
+  String get gameSoundExplorer => 'サウンド探検';
+
+  @override
+  String get gameSoundExplorerDesc => '文字を見て、正しい音を探す';
+
+  @override
+  String get findThisSound => 'この音を見つけて';
+
+  @override
+  String get listenThenChoose => '聞いてから選択';
+
+  @override
   String get audioLibrary => '単語ライブラリー';
 
   @override

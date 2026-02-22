@@ -536,6 +536,30 @@ abstract class AppLocalizations {
   /// **'音を聞いて空白のフォニックスを選択'**
   String get gameFillInBlankDesc;
 
+  /// No description provided for @gameSoundExplorer.
+  ///
+  /// In ja, this message translates to:
+  /// **'サウンド探検'**
+  String get gameSoundExplorer;
+
+  /// No description provided for @gameSoundExplorerDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'文字を見て、正しい音を探す'**
+  String get gameSoundExplorerDesc;
+
+  /// No description provided for @findThisSound.
+  ///
+  /// In ja, this message translates to:
+  /// **'この音を見つけて'**
+  String get findThisSound;
+
+  /// No description provided for @listenThenChoose.
+  ///
+  /// In ja, this message translates to:
+  /// **'聞いてから選択'**
+  String get listenThenChoose;
+
   /// No description provided for @audioLibrary.
   ///
   /// In ja, this message translates to:

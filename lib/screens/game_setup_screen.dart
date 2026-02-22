@@ -6,6 +6,7 @@ import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
 import '../games/bingo_game.dart';
+import '../games/sound_explorer_game.dart';
 import 'practice_games_screen.dart';
 
 // ── Game Type Enum ──
@@ -18,6 +19,7 @@ enum GameType {
   wordChaining,
   minimalPairs,
   fillInBlank,
+  soundExplorer,
 }
 
 // ── Setup Screen ──
@@ -49,6 +51,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
     GameType.wordChaining: AppColors.accentGreen,
     GameType.minimalPairs: AppColors.accentPurple,
     GameType.fillInBlank: AppColors.accentPink,
+    GameType.soundExplorer: AppColors.accentAmber,
   };
 
   @override
@@ -97,6 +100,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
       case GameType.wordChaining: return l10n.gameWordChaining;
       case GameType.minimalPairs: return l10n.gameMinimalPairs;
       case GameType.fillInBlank: return l10n.gameFillInBlank;
+      case GameType.soundExplorer: return l10n.gameSoundExplorer;
     }
   }
 
@@ -159,6 +163,12 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         );
       case GameType.bingo:
         game = BingoGame(items: items, gridSize: _gridSize);
+      case GameType.soundExplorer:
+        game = SoundExplorerGame(
+          items: items,
+          numOptions: _choices.clamp(2, items.length),
+          maxQuestions: _questions,
+        );
       case GameType.blending:
       case GameType.wordChaining:
       case GameType.minimalPairs:
@@ -368,7 +378,8 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
         const SizedBox(height: AppSpacing.lg),
 
         if (widget.gameType == GameType.soundQuiz ||
-            widget.gameType == GameType.ipaQuiz) ...[          _optionRow(l10n.choicesLabel, [
+            widget.gameType == GameType.ipaQuiz ||
+            widget.gameType == GameType.soundExplorer) ...[          _optionRow(l10n.choicesLabel, [
             _Opt('2', 2), _Opt('3', 3), _Opt('4', 4),
           ], _choices, (v) => setState(() => _choices = v as int)),
           const SizedBox(height: AppSpacing.lg),

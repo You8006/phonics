@@ -228,6 +228,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameFillInBlankDesc => 'Listen and fill in the missing phonics';
 
   @override
+  String get gameSoundExplorer => 'Sound Explorer';
+
+  @override
+  String get gameSoundExplorerDesc => 'See a letter, find its sound';
+
+  @override
+  String get findThisSound => 'Find this sound';
+
+  @override
+  String get listenThenChoose => 'Listen, then choose';
+
+  @override
   String get audioLibrary => 'Word Library';
 
   @override
