@@ -578,16 +578,15 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
       await ProgressService.recordCorrect('mini:chain:$_currentWord>$_answer');
       _score++;
       await TtsService.playCorrect();
-      // 正解単語を読み上げ
-      await TtsService.speakLibraryWordNormal(_answer);
     } else {
       await ProgressService.recordWrong('mini:chain:$_currentWord>$_answer');
       await TtsService.playWrong();
     }
 
     setState(() => _selected = selected);
-    await Future.delayed(const Duration(milliseconds: 800));
+  }
 
+  void _goNext() {
     if (_round >= _totalRounds) {
       if (!mounted) return;
       Navigator.pushReplacement(
@@ -683,7 +682,9 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: GestureDetector(
-                    onTap: _answered ? null : () => _tapChoice(w),
+                    onTap: _answered
+                        ? () => TtsService.speakLibraryWordNormal(w)
+                        : () => _tapChoice(w),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(vertical: 14),
@@ -693,19 +694,48 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                         border: Border.all(color: borderColor, width: AppBorder.normal),
                       ),
                       alignment: Alignment.center,
-                      child: Text(
-                        w,
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                          color: textColor,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (_answered)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Icon(Icons.volume_up, size: 20, color: textColor),
+                            ),
+                          Text(
+                            w,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              color: textColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 );
               },
             ),
+            // Next button (shown after answering)
+            if (_answered) ...[
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: _goNext,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accentGreen,
+                  foregroundColor: AppColors.onPrimary,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                ),
+                child: Text(
+                  l10n.next,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
           ],
         ),
       ),
