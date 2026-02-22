@@ -171,14 +171,20 @@ class _ResultScreenState extends State<ResultScreen>
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text(l10n.backToHome),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(l10n.backToHome),
+                        ),
                       ),
                     ),
                     const SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: FilledButton(
                         onPressed: () => Navigator.pop(context, true),
-                        child: Text(l10n.playAgainBtn),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(l10n.playAgainBtn),
+                        ),
                       ),
                     ),
                   ],
