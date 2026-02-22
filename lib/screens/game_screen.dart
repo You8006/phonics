@@ -224,7 +224,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: scoreAppBar('$_score / $_total'),
+      appBar: scoreAppBar('${_current + 1} / $_total'),
       body: SafeArea(
         child: Column(
           children: [
