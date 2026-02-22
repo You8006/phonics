@@ -383,6 +383,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
             const SizedBox(height: 16),
             // Letter chips
             Wrap(
+              alignment: WrapAlignment.center,
               spacing: 6,
               runSpacing: 6,
               children: List.generate(_pool.length, (i) {
