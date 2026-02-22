@@ -120,8 +120,8 @@ class TtsService {
     }
   }
 
-  /// 効果音の音量（フォニックス音声より控えめ）
-  static const _seVolume = 0.4;
+  /// 効果音の音量（フォニックス音声より控えめ — SE は本質ではないため小さめ）
+  static const _seVolume = 0.2;
 
   /// 正解時の効果音を即時再生
   static Future<void> playCorrect() async {
