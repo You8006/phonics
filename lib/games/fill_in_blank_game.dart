@@ -152,7 +152,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
     }
 
     return Scaffold(
-      appBar: scoreAppBar('$_correctCount / ${_questions.length}'),
+      appBar: progressAppBar('${_index + 1} / ${_questions.length}'),
       body: SafeArea(
         child: Column(
           children: [
