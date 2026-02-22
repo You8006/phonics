@@ -24,15 +24,22 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   String? _playingWord;
   _PlayMode? _playMode;
   LibraryViewMode _viewMode = LibraryViewMode.words;
+  String? _selectedCategory;
 
   List<WordItem> get _filteredWords {
-    if (_searchQuery.isEmpty) return wordLibrary;
-    final q = _searchQuery.toLowerCase();
-    return wordLibrary
-        .where((w) =>
-            w.word.toLowerCase().contains(q) ||
-            w.meaning.contains(q))
-        .toList();
+    var list = wordLibrary.toList();
+    if (_selectedCategory != null) {
+      list = list.where((w) => w.category == _selectedCategory).toList();
+    }
+    if (_searchQuery.isNotEmpty) {
+      final q = _searchQuery.toLowerCase();
+      list = list
+          .where((w) =>
+              w.word.toLowerCase().contains(q) ||
+              w.meaning.contains(q))
+          .toList();
+    }
+    return list;
   }
 
   Future<void> _playWordSlow(String word) async {
@@ -173,6 +180,36 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             ),
           ),
 
+          // ── カテゴリフィルター ──
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.md),
+              child: Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  _CategoryChip(
+                    label: l10n.allCategories,
+                    color: AppColors.primary,
+                    selected: _selectedCategory == null,
+                    onTap: () =>
+                        setState(() => _selectedCategory = null),
+                  ),
+                  for (final cat in wordCategories)
+                    _CategoryChip(
+                      label: cat.nameJa,
+                      color: Color(cat.color),
+                      selected: _selectedCategory == cat.id,
+                      onTap: () => setState(() =>
+                          _selectedCategory =
+                              _selectedCategory == cat.id ? null : cat.id),
+                    ),
+                ],
+              ),
+            ),
+          ),
+
           // ── 単語リスト ──
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -242,6 +279,42 @@ class _ViewModeTab extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w700,
             color: selected ? AppColors.textPrimary : AppColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── カテゴリチップ ──
+
+class _CategoryChip extends StatelessWidget {
+  const _CategoryChip({
+    required this.label,
+    required this.color,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final Color color;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: AppDecoration.chip(color, selected: selected),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: selected ? AppColors.onPrimary : color,
           ),
         ),
       ),
