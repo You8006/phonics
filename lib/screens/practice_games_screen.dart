@@ -586,13 +586,19 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
     }).toList()..shuffle(_rng);
     _choices = [_answer, ...distractors.take(2)]..shuffle(_rng);
     _answered = false;
+    _selected = null;
     setState(() {});
   }
 
-  Future<void> _tapChoice(String selected) async {
+  void _tapChoice(String selected) {
     if (_answered) return;
+    setState(() => _selected = selected);
+  }
+
+  Future<void> _confirmAnswer() async {
+    if (_answered || _selected == null) return;
     _answered = true; // ダブルタップ防止: await前に即座にセット
-    final correct = selected == _answer;
+    final correct = _selected == _answer;
 
     await ProgressService.recordAttempt('mini:chain:$_currentWord>$_answer');
     if (correct) {
@@ -604,7 +610,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
       await TtsService.playWrong();
     }
 
-    setState(() => _selected = selected);
+    setState(() {});
   }
 
   void _goNext() {
@@ -699,6 +705,9 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                     textColor = AppColors.onPrimary;
                     borderColor = AppColors.wrong;
                   }
+                } else if (w == _selected) {
+                  bg = AppColors.accentBlue.withValues(alpha: 0.12);
+                  borderColor = AppColors.accentBlue;
                 }
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -738,6 +747,25 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
                 );
               },
             ),
+            // Check button (shown when selected but not yet confirmed)
+            if (!_answered && _selected != null) ...[
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: _confirmAnswer,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accentBlue,
+                  foregroundColor: AppColors.onPrimary,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                ),
+                child: Text(
+                  l10n.check,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
             // Next button (shown after answering)
             if (_answered) ...[
               const SizedBox(height: 8),
