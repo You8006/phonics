@@ -17,12 +17,13 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
+  final _homeKey = GlobalKey<HomeScreenState>();
 
-  final _pages = const <Widget>[
-    HomeScreen(),
-    GameSelectScreen(),
-    AudioLibraryScreen(),
-    _SettingsPage(),
+  late final List<Widget> _pages = <Widget>[
+    HomeScreen(key: _homeKey),
+    const GameSelectScreen(),
+    const AudioLibraryScreen(),
+    const _SettingsPage(),
   ];
 
   @override
@@ -69,7 +70,10 @@ class _MainShellState extends State<MainShell> {
               _NavItem(
                 icon: Icons.auto_stories_rounded,
                 isSelected: _currentIndex == 0,
-                onTap: () => setState(() => _currentIndex = 0),
+                onTap: () {
+                  setState(() => _currentIndex = 0);
+                  _homeKey.currentState?.refreshIfNeeded();
+                },
               ),
               _NavItem(
                 icon: Icons.quiz_rounded,

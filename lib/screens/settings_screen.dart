@@ -11,10 +11,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   final Map<int, double> _masteryCache = {};
   List<PhonicsItem> _dueItems = [];
   DailyMission? _mission;
@@ -25,6 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _refresh();
   }
+
+  /// 外部（MainShell のタブ切り替え）から呼出し可能なリフレッシュ
+  void refreshIfNeeded() => _refresh();
 
   Future<void> _refresh() async {
     final streak = await ProgressService.getStreak();
