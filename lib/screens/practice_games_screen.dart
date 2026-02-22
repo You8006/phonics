@@ -284,8 +284,9 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
     }
 
     setState(() => _lastCorrect = correct);
-    await Future.delayed(const Duration(milliseconds: 800));
+  }
 
+  void _goNext() {
     if (_round >= _totalRounds) {
       if (!mounted) return;
       Navigator.pushReplacement(
@@ -456,13 +457,33 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
               ],
             ),
             const Spacer(),
-            SizedBox(
-              height: 48,
-              child: FilledButton(
-                onPressed: _typed.length == _answer.length && !_answered ? _check : null,
-                child: Text(l10n.check),
+            if (!_answered)
+              SizedBox(
+                height: 48,
+                child: FilledButton(
+                  onPressed: _typed.length == _answer.length ? _check : null,
+                  child: Text(l10n.check),
+                ),
               ),
-            ),
+            if (_answered)
+              SizedBox(
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _goNext,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accentGreen,
+                    foregroundColor: AppColors.onPrimary,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
+                  ),
+                  child: Text(
+                    l10n.next,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
