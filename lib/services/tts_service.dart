@@ -59,24 +59,13 @@ class TtsService {
     return '${item.letter}_${item.sound}'.replaceAll('-', '_');
   }
 
-  /// 音量が小さくなりがちな音のキー一覧（TH, 鼻音 など）
-  static const _quietSoundKeys = {
-    'th_thh', 'th_th_voiced', // TH 系
-    'm_mmm', 'n_nnn', 'ng_nng', // 鼻音
-  };
-
   /// プリレコードされたフォニックス音を再生
   static Future<void> speakSound(PhonicsItem item) async {
     final key = _audioKey(item);
     final prefix = _voicePrefix();
     try {
-      _player.stop(); // await しない — 即座に次の play へ
-      // 音量が小さい音はブーストする
-      if (_quietSoundKeys.contains(key)) {
-        await _player.setVolume(1.5);
-      } else {
-        await _player.setVolume(1.0);
-      }
+      await _player.stop();
+      await _player.setVolume(1.0);
       await _player.play(AssetSource('$prefix/sounds/sound_$key.mp3'));
     } catch (e) {
       debugPrint('No audio file for sound $key: $e');

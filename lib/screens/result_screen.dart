@@ -37,8 +37,7 @@ class _ResultScreenState extends State<ResultScreen>
     _scale = CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut);
     _ctrl.forward();
     _loadStreak();
-    // アニメーション完了後にフィードバックを英語音声で読み上げ
-    Future.delayed(const Duration(milliseconds: 900), _speakFeedback);
+    _speakFeedback();
   }
 
   Future<void> _loadStreak() async {
@@ -46,14 +45,11 @@ class _ResultScreenState extends State<ResultScreen>
     if (mounted) setState(() => _streak = s);
   }
 
-  /// 結果に応じた効果音＋フィードバック音声を再生
+  /// 結果に応じた効果音＋フィードバック音声を同時再生
   Future<void> _speakFeedback() async {
     if (!mounted) return;
-    // 最終スコア効果音（合格: 80%以上）
-    await TtsService.playScoreResult(passed: _accuracy >= 0.8);
-    // 効果音が少し鳴ってからフィードバック音声
-    await Future.delayed(const Duration(milliseconds: 1500));
-    if (!mounted) return;
+    // SE（_sePlayer）とフィードバック音声（_player）を同時に鳴らす
+    TtsService.playScoreResult(passed: _accuracy >= 0.8);
     await TtsService.speakFeedback(_feedbackKey);
   }
 
@@ -61,7 +57,6 @@ class _ResultScreenState extends State<ResultScreen>
   String get _feedbackKey {
     if (_accuracy == 1.0) return 'excellent';
     if (_accuracy >= 0.8) return 'well_done';
-    if (_accuracy >= 0.5) return 'solid';
     return 'keep';
   }
 
