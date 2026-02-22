@@ -57,6 +57,7 @@ class _ResultScreenState extends State<ResultScreen>
   String get _feedbackKey {
     if (_accuracy == 1.0) return 'excellent';
     if (_accuracy >= 0.8) return 'well_done';
+    if (_accuracy >= 0.5) return 'solid';
     return 'keep';
   }
 
