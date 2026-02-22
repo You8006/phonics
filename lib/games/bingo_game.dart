@@ -175,6 +175,11 @@ class _BingoGameState extends State<BingoGame> {
     setState(() => _bingo = true);
     // No playCorrect here — already played in _onCellTap
     ProgressService.updateStreak();
+    ProgressService.recordGameSession(
+      gameType: 'bingo',
+      score: _boardItems.length - _wrongCount,
+      total: _boardItems.length,
+    );
   }
 
   @override

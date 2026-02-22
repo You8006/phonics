@@ -237,6 +237,12 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
       // 単語がない場合は即終了
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
+        ProgressService.updateStreak();
+        ProgressService.recordGameSession(
+          gameType: 'blending',
+          score: _score,
+          total: max(1, _round - 1),
+        );
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -289,6 +295,12 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
   void _goNext() {
     if (_round >= _totalRounds) {
       if (!mounted) return;
+      ProgressService.updateStreak();
+      ProgressService.recordGameSession(
+        gameType: 'blending',
+        score: _score,
+        total: _totalRounds,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -558,6 +570,12 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
     if (pairs.isEmpty) {
       // ペアが見つからない場合はゲームを終了
       if (!mounted) return;
+      ProgressService.updateStreak();
+      ProgressService.recordGameSession(
+        gameType: 'wordChaining',
+        score: _score,
+        total: _round - 1,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -616,6 +634,12 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
   void _goNext() {
     if (_round >= _totalRounds) {
       if (!mounted) return;
+      ProgressService.updateStreak();
+      ProgressService.recordGameSession(
+        gameType: 'wordChaining',
+        score: _score,
+        total: _totalRounds,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -861,6 +885,12 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
 
     if (_round >= _totalRounds) {
       if (!mounted) return;
+      ProgressService.updateStreak();
+      ProgressService.recordGameSession(
+        gameType: 'minimalPairs',
+        score: _score,
+        total: _totalRounds,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

@@ -497,4 +497,29 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get voiceYoungDesc => 'Ana — 若い声';
+
+  @override
+  String get statsTitle => '学習統計';
+
+  @override
+  String get loginStreakLabel => '連続ログイン';
+
+  @override
+  String get totalGamesLabel => '総プレイ数';
+
+  @override
+  String get totalLessonsLabel => 'レッスン数';
+
+  @override
+  String get todaySessionsLabel => '今日';
+
+  @override
+  String daysUnit(int count) {
+    return '$count日';
+  }
+
+  @override
+  String timesUnit(int count) {
+    return '$count回';
+  }
 }

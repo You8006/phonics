@@ -201,6 +201,11 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     _waitingForNext = false;
     if (_current + 1 >= _total) {
       ProgressService.updateStreak();
+      ProgressService.recordGameSession(
+        gameType: widget.mode == GameMode.soundToLetter ? 'soundQuiz' : 'ipaQuiz',
+        score: _score,
+        total: _total,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

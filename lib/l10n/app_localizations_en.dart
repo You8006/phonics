@@ -497,4 +497,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceYoungDesc => 'Ana — Young speaker';
+
+  @override
+  String get statsTitle => 'Learning Stats';
+
+  @override
+  String get loginStreakLabel => 'Login Streak';
+
+  @override
+  String get totalGamesLabel => 'Total Games';
+
+  @override
+  String get totalLessonsLabel => 'Lessons';
+
+  @override
+  String get todaySessionsLabel => 'Today';
+
+  @override
+  String daysUnit(int count) {
+    return '$count days';
+  }
+
+  @override
+  String timesUnit(int count) {
+    return '$count times';
+  }
 }

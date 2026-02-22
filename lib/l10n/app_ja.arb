@@ -194,5 +194,15 @@
   "voiceMale": "男性",
   "voiceMaleDesc": "Andrew — 深く自然な声",
   "voiceYoung": "ヤングスピーカー",
-  "voiceYoungDesc": "Ana — 若い声"
+  "voiceYoungDesc": "Ana — 若い声",
+
+  "statsTitle": "学習統計",
+  "loginStreakLabel": "連続ログイン",
+  "totalGamesLabel": "総プレイ数",
+  "totalLessonsLabel": "レッスン数",
+  "todaySessionsLabel": "今日",
+  "daysUnit": "{count}日",
+  "@daysUnit": { "placeholders": { "count": { "type": "int" } } },
+  "timesUnit": "{count}回",
+  "@timesUnit": { "placeholders": { "count": { "type": "int" } } }
 }

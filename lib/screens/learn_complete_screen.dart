@@ -41,6 +41,9 @@ class _LearnCompleteScreenState extends State<LearnCompleteScreen>
     // 合格 SE を再生してアニメーション開始
     TtsService.playScoreResult(passed: true);
     _animController.forward();
+
+    // レッスン完了を記録
+    ProgressService.recordLessonComplete(widget.group.id);
   }
 
   @override

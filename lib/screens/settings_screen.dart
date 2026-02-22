@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final Map<int, double> _masteryCache = {};
   List<PhonicsItem> _dueItems = [];
   DailyMission? _mission;
+  UserStats? _stats;
 
   @override
   void initState() {
@@ -41,12 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
       streak: streak,
       mastery: avgMastery,
     );
+    final stats = await ProgressService.getUserStats();
 
     if (!mounted) return;
     setState(() {
       _masteryCache.addAll(mastery);
       _dueItems = dueItems;
       _mission = mission;
+      _stats = stats;
     });
   }
 
@@ -86,6 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: AppSpacing.xl),
+
+            // ── 学習統計 ──
+            if (_stats != null)
+              _StatsCard(stats: _stats!),
+            if (_stats != null) const SizedBox(height: AppSpacing.lg),
 
             // ── ミッション + SRS復習 ──
             if (_mission != null) ...[
@@ -304,6 +312,122 @@ class _GroupCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ── 学習統計カード ──
+
+class _StatsCard extends StatelessWidget {
+  const _StatsCard({required this.stats});
+
+  final UserStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: AppDecoration.card(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.bar_chart_rounded,
+                  size: 20, color: AppColors.textSecondary),
+              const SizedBox(width: 8),
+              Text(l10n.statsTitle, style: AppTextStyle.cardTitle),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: _StatTile(
+                  icon: Icons.local_fire_department_rounded,
+                  iconColor: const Color(0xFFF57C00),
+                  label: l10n.loginStreakLabel,
+                  value: l10n.daysUnit(stats.loginStreak),
+                ),
+              ),
+              Expanded(
+                child: _StatTile(
+                  icon: Icons.sports_esports_rounded,
+                  iconColor: AppColors.primary,
+                  label: l10n.totalGamesLabel,
+                  value: l10n.timesUnit(stats.totalGameSessions),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: [
+              Expanded(
+                child: _StatTile(
+                  icon: Icons.menu_book_rounded,
+                  iconColor: const Color(0xFF43A047),
+                  label: l10n.totalLessonsLabel,
+                  value: l10n.timesUnit(stats.totalLessonCompletions),
+                ),
+              ),
+              Expanded(
+                child: _StatTile(
+                  icon: Icons.today_rounded,
+                  iconColor: const Color(0xFF5C6BC0),
+                  label: l10n.todaySessionsLabel,
+                  value: l10n.timesUnit(stats.todayGameSessions),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatTile extends StatelessWidget {
+  const _StatTile({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 28, color: iconColor),
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textTertiary,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

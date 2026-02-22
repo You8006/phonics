@@ -194,5 +194,15 @@
   "voiceMale": "Male",
   "voiceMaleDesc": "Andrew — Deep and natural",
   "voiceYoung": "Young Speaker",
-  "voiceYoungDesc": "Ana — Young speaker"
+  "voiceYoungDesc": "Ana — Young speaker",
+
+  "statsTitle": "Learning Stats",
+  "loginStreakLabel": "Login Streak",
+  "totalGamesLabel": "Total Games",
+  "totalLessonsLabel": "Lessons",
+  "todaySessionsLabel": "Today",
+  "daysUnit": "{count} days",
+  "@daysUnit": { "placeholders": { "count": { "type": "int" } } },
+  "timesUnit": "{count} times",
+  "@timesUnit": { "placeholders": { "count": { "type": "int" } } }
 }

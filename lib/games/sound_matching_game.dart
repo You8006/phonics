@@ -136,6 +136,11 @@ class _SoundMatchingGameState extends State<SoundMatchingGame> {
 
   void _showResult() {
     ProgressService.updateStreak();
+    ProgressService.recordGameSession(
+      gameType: 'soundMatch',
+      score: _score,
+      total: _total,
+    );
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

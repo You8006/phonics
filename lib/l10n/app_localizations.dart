@@ -1021,6 +1021,48 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'Ana — 若い声'**
   String get voiceYoungDesc;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'学習統計'**
+  String get statsTitle;
+
+  /// No description provided for @loginStreakLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'連続ログイン'**
+  String get loginStreakLabel;
+
+  /// No description provided for @totalGamesLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'総プレイ数'**
+  String get totalGamesLabel;
+
+  /// No description provided for @totalLessonsLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'レッスン数'**
+  String get totalLessonsLabel;
+
+  /// No description provided for @todaySessionsLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'今日'**
+  String get todaySessionsLabel;
+
+  /// No description provided for @daysUnit.
+  ///
+  /// In ja, this message translates to:
+  /// **'{count}日'**
+  String daysUnit(int count);
+
+  /// No description provided for @timesUnit.
+  ///
+  /// In ja, this message translates to:
+  /// **'{count}回'**
+  String timesUnit(int count);
 }
 
 class _AppLocalizationsDelegate

@@ -127,6 +127,12 @@ class _FillInBlankGameState extends State<FillInBlankGame>
   }
 
   void _showResult() {
+    ProgressService.updateStreak();
+    ProgressService.recordGameSession(
+      gameType: 'fillInBlank',
+      score: _correctCount,
+      total: _questions.length,
+    );
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
