@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
+import '../services/progress_service.dart';
 import '../theme/app_theme.dart';
 import 'game_screen.dart';
 import 'learn_screen.dart';
@@ -49,7 +50,7 @@ class _LearnCompleteScreenState extends State<LearnCompleteScreen>
   @override
   void dispose() {
     _animController.dispose();
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 

@@ -69,7 +69,22 @@ class ProgressService {
     final map = await _loadMap('wrong');
     map[progressKey] = (map[progressKey] ?? 0) + 1;
     await _saveMap('wrong', map);
+    await _addReviewPending(progressKey);
     await _updateSrs(progressKey, wasCorrect: false);
+  }
+
+  static Future<void> _addReviewPending(String progressKey) async {
+    final map = await _loadMap('review_pending');
+    map[progressKey] = DateTime.now().millisecondsSinceEpoch;
+    await _saveMap('review_pending', map);
+  }
+
+  /// 復習セッションで1回解いた項目を復習キューから削除
+  static Future<void> consumeReviewPending(String progressKey) async {
+    final map = await _loadMap('review_pending');
+    if (map.remove(progressKey) != null) {
+      await _saveMap('review_pending', map);
+    }
   }
 
   static Future<void> _updateSrs(
@@ -127,6 +142,15 @@ class ProgressService {
   }
 
   static Future<List<PhonicsItem>> getDueItemsAll({int limit = 20}) async {
+    final pending = await _loadMap('review_pending');
+    if (pending.isNotEmpty) {
+      final pendingKeys = pending.keys.toSet();
+      return allPhonicsItems
+          .where((item) => pendingKeys.contains(item.progressKey))
+          .take(limit)
+          .toList();
+    }
+
     final dueMap = await _loadStringMap('srs_due');
     final attempts = await _loadMap('attempts');
     final today = DateTime.now();
@@ -152,6 +176,15 @@ class ProgressService {
     PhonicsGroup group, {
     int limit = 12,
   }) async {
+    final pending = await _loadMap('review_pending');
+    if (pending.isNotEmpty) {
+      final pendingKeys = pending.keys.toSet();
+      return group.items
+          .where((item) => pendingKeys.contains(item.progressKey))
+          .take(limit)
+          .toList();
+    }
+
     final dueMap = await _loadStringMap('srs_due');
     final attempts = await _loadMap('attempts');
     final today = DateTime.now();
@@ -540,6 +573,19 @@ class ProgressService {
   // ═══════════════════════════════════════════
   //  8. 統計サマリー（ホーム画面用）
   // ═══════════════════════════════════════════
+
+  // ═══════════════════════════════════════════
+  //  9. 学習記録リセット
+  // ═══════════════════════════════════════════
+
+  /// すべての学習記録を削除（設定は保持）
+  static Future<void> resetAllProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys().where((k) => k.startsWith(_prefix)).toList();
+    for (final key in keys) {
+      await prefs.remove(key);
+    }
+  }
 
   /// ダッシュボード用の統計データを一括取得
   static Future<UserStats> getUserStats() async {

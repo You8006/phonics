@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
+import '../services/progress_service.dart';
 import '../screens/result_screen.dart';
 import '../theme/app_theme.dart';
 import '../widgets/score_app_bar.dart';
@@ -60,7 +61,7 @@ class _SoundExplorerGameState extends State<SoundExplorerGame> {
 
   @override
   void dispose() {
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 

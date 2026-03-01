@@ -1,0 +1,319 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Phonics Sense",
+  "gameSelectTitle": "练习",
+  "selectGame": "练习",
+  "selectGameSubtitle": "选择一个练习进行练习",
+  "beginner": "初学者",
+  "intermediate": "中级",
+  "advanced": "高级",
+  "game2Choice": "2-选择",
+  "gameSprint": "短跑",
+  "gameStandard": "标准",
+  "gameSingleFocus": "单焦点",
+  "gameDigraphs": "双字母组合",
+  "gameDrill": "强化练习",
+  "gameIpaQuiz": "IPA 测验",
+  "gameIpaQuizDesc": "听音并选择正确的 IPA 音标",
+  "gameIpaSprint": "IPA 冲刺",
+  "game4Choice": "4-选择",
+  "gameMarathon": "马拉松",
+  "practiceLab": "实践实验室",
+  "backToHome": "返回首页",
+  "playAgain": "再玩一次",
+  "score": "分数",
+  "correct": "正确的",
+  "streak": "连续记录",
+  "resultPerfect": "出色的",
+  "resultGreat": "干得好",
+  "resultGood": "扎实努力",
+  "resultKeep": "继续练习",
+  "soundToLetterSubtitle": "听并选择正确的字母",
+  "soundToIpaSubtitle": "听音并选择正确的 IPA 音标",
+  "soundToLetterTitle": "声音游戏",
+  "soundToIpaTitle": "IPA 游戏",
+  "play": "播放声音",
+  "playAgainBtn": "再玩一次",
+  "listenSound": "听",
+  "groupTitle0": "第 1 步：第一个声音",
+  "groupDesc0": "学习阅读：sat、pin 等",
+  "groupTitle1": "第二步：有用的辅音",
+  "groupDesc1": "学习阅读：hen、red 等",
+  "groupTitle2": "第三步：日常用语",
+  "groupDesc2": "学习阅读：dog、bus 等",
+  "groupTitle3": "第 4 步：长元音 1",
+  "groupDesc3": "学习阅读：rain、boat 等",
+  "groupTitle4": "第 5 步：长元音 2",
+  "groupDesc4": "学习阅读：book、moon 等",
+  "groupTitle5": "第六步：棘手的声音",
+  "groupDesc5": "学习阅读：ship、thin 等等",
+  "groupTitle6": "第 7 步：最后步骤",
+  "groupDesc6": "学习阅读：queen、car 等",
+  "gameNewVariations": "新的变化",
+  "gameBingo": "宾果游戏",
+  "gameCapitalMatch": "大小写配对",
+  "gameSoundQuiz": "声音测验",
+  "gameSoundQuizDesc": "听并选择正确的字母",
+  "gameBingoDesc": "完成宾果游戏网格",
+  "gameCapitalMatchDesc": "匹配大小写",
+  "shortVowels": "短元音",
+  "basicConsonants": "辅音",
+  "digraphsLabel": "双字母组合",
+  "settingsLabel": "设置",
+  "choicesLabel": "选择",
+  "questionsLabel": "问题",
+  "gridSizeLabel": "网格尺寸",
+  "modeLabel": "模式",
+  "readingDisplayLabel": "读音显示",
+  "readingDisplayIpa": "仅IPA",
+  "readingDisplayDetail": "详细",
+  "selectSoundsHint": "选择声音，然后开始",
+  "gameBlending": "混合",
+  "gameBlendingDesc": "从声音构建单词",
+  "gameWordChaining": "字链",
+  "gameWordChainingDesc": "一次改变一种声音",
+  "gameMinimalPairs": "听力",
+  "gameMinimalPairsDesc": "找出声音的差异",
+  "gameFillInBlank": "填写测验",
+  "gameFillInBlankDesc": "听并填入缺失发音",
+  "gameSoundExplorer": "声音探索者",
+  "gameSoundExplorerDesc": "看一个字母，找到它的声音",
+  "findThisSound": "找到这个声音",
+  "listenThenChoose": "听，然后选择",
+  "audioLibrary": "词库",
+  "audioLibraryDesc": "听 100 个基础单词",
+  "lessons": "课程",
+  "games": "游戏",
+  "library": "图书馆",
+  "settings": "设置",
+  "searchWords": "搜索词...",
+  "allCategories": "全部",
+  "tapToListen": "点按单词即可发音",
+  "masterSounds": "掌握42个英语发音",
+  "phaseLabel": "阶段 {phase}",
+  "@phaseLabel": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "srsReview": "SRS 复习（{count}）",
+  "@srsReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customizePrefs": "自定义应用偏好",
+  "voiceSettings": "语音设置",
+  "changeVoiceType": "更改语音类型",
+  "languageSettings": "语言设置",
+  "changeAppLanguage": "切换应用语言",
+  "selectLanguage": "选择语言",
+  "about": "关于",
+  "appVersion": "Phonics Sense v1.0.0",
+  "lessonCountLabel": "已学习 {count} 次",
+  "@lessonCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "learn": "学习",
+  "exampleWords": "示例词",
+  "playSound": "播放声音",
+  "wordsTab": "单词",
+  "phonicsTab": "自然拼读法",
+  "wordLibrary": "词库",
+  "nWords": "{count} 个字",
+  "@nWords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phonicsSoundDict": "自然拼读发音词典",
+  "nSounds": "{count} 声音",
+  "@nSounds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tapSpellingToSeeWords": "点拼写查看单词",
+  "groupLabel": "组别：",
+  "wordsWithSpelling": "带“{spelling}”的单词",
+  "@wordsWithSpelling": {
+    "placeholders": {
+      "spelling": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceLabTitle": "{group} — 实践实验室",
+  "@practiceLabTitle": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceLabTitleDefault": "实践实验室",
+  "allSoundsMix": "所有声音混合 (42)",
+  "practiceAllSounds": "随机练习 42 个音",
+  "vowelSoundFocus": "元音声音焦点",
+  "focusOnVowels": "专注于元音",
+  "consonantSoundFocus": "辅音焦点",
+  "focusOnConsonants": "专注于辅音",
+  "blendingBuilder": "混合生成器",
+  "buildWordsByArranging": "排列字母拼单词",
+  "wordChainingTitle": "词链",
+  "changeOneSoundNewWord": "改一个音组成新词",
+  "minimalPairListening": "最少配对聆听",
+  "distinguishSounds": "辨别相近发音",
+  "blendingRound": "混合 {round} / {total}",
+  "@blendingRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "slow": "慢的",
+  "normal": "普通的",
+  "buildWordYouHear": "构建你听到的单词",
+  "undo": "撤消",
+  "reset": "重置",
+  "check": "查看",
+  "wordChainingRound": "词链 {round} / {total}",
+  "@wordChainingRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "changeOneSound": "改变一种声音",
+  "minimalPairsRound": "最小对 {round} / {total}",
+  "@minimalPairsRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "whichWordDoYouHear": "你听到哪个词？",
+  "focusOn": "焦点：{focus}",
+  "@focusOn": {
+    "placeholders": {
+      "focus": {
+        "type": "String"
+      }
+    }
+  },
+  "tapToPlay": "点击播放",
+  "bingoWin": "BINGO",
+  "newGame": "新游戏",
+  "missCount": "错误：{count}",
+  "@missCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fillInBlankTitle": "填空",
+  "noQuestionsAvailable": "没有可用的问题",
+  "chooseCorrectSpelling": "选择正确拼写",
+  "next": "下一个",
+  "tryAgain": "再试一次",
+  "selectAtLeastSounds": "至少选择 {count} 个声音",
+  "@selectAtLeastSounds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playBtn": "玩",
+  "allLabel": "全部",
+  "listenAndChoose": "聆听并选择",
+  "lessonComplete": "课程完成！",
+  "lessonCompleteDesc": "已完成 {group} 全部卡片",
+  "@lessonCompleteDesc": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "tryQuiz": "尝试一下测验",
+  "nextLesson": "下一课",
+  "lessonDone": "完成",
+  "selectVoice": "选择语音",
+  "voiceFemale": "女性",
+  "voiceFemaleDesc": "Jenny——温暖而清晰",
+  "voiceMale": "男性",
+  "voiceMaleDesc": "安德鲁——深邃而自然",
+  "voiceYoung": "年轻演讲者",
+  "voiceYoungDesc": "安娜——年轻的演讲者",
+  "statsTitle": "学习统计",
+  "homeGuideTitle": "学习指南",
+  "homeGuideGroupInfo": "• 每组是一类发音（元音/辅音/双字母）",
+  "homeGuideFlow": "• 先在“学习”听音，再到“游戏”巩固练习",
+  "homeGuideReview": "• 答错会加入复习，用下方按钮反复练习",
+  "loginStreakLabel": "连续登录",
+  "totalGamesLabel": "总比赛数",
+  "totalLessonsLabel": "课程数",
+  "todaySessionsLabel": "今天",
+  "daysUnit": "{count} 天",
+  "@daysUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timesUnit": "{count} 次",
+  "@timesUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "resetProgress": "重置学习数据",
+  "resetProgressDesc": "删除所有分数、连续记录和历史",
+  "resetProgressConfirmTitle": "重置所有学习数据？",
+  "resetProgressConfirmBody": "这将永久删除所有学习记录、分数、连续记录和游戏历史。此操作无法撤销。",
+  "resetProgressConfirmBtn": "重置",
+  "cancelBtn": "取消",
+  "resetProgressDone": "学习数据已重置。",
+
+  "dontShowAgain": "不再显示",
+  "startGame": "开始",
+  "howToPlay": "玩法说明",
+  "tutorialSoundQuiz": "① 选择要练习的音（元音、辅音、双字母组合）\n② 设置选项数量（2/3/4）和题目数量（5–20）\n③ 听声音，点击正确的字母\n④ 即时反馈：绿色=正确，红色=错误",
+  "tutorialIpaQuiz": "① 选择要练习的音\n② 设置选项数量（2/3/4）和题目数量（5–20）\n③ 听声音，点击正确的IPA音标符号\n④ 在训练听力的同时学习音标记号",
+  "tutorialBingo": "① 选择宾果棋盘使用的音\n② 选择网格大小（3×3 / 4×4 / 5×5）\n③ 听声音，点击正确的格子\n④ 完成一行、一列或对角线即可获胜！",
+  "tutorialBlending": "① 用慢速或正常按钮听单词\n② 按正确顺序点击字母块来拼写\n③ 拼错了可以用撤销或重置\n④ 共8轮——提升你的拼写和自然拼读能力！",
+  "tutorialWordChaining": "① 听当前单词，选择改变了一个音的单词\n② 从3个选项中选择——只有一个是正确的\n③ 回答后点击每个单词可以听发音\n④ 共8轮——训练你分辨细微差异的能力！",
+  "tutorialMinimalPairs": "① 用慢速或正常按钮听一个单词\n② 显示两个相似的单词——点击你听到的那个\n③ 注意高亮标注的发音差异\n④ 最多12轮——训练你捕捉细微发音差别的耳朵！",
+  "tutorialFillInBlank": "① 看到一个缺少发音的单词及其含义\n② 用喇叭按钮听单词\n③ 从选项中点击正确的自然拼读模式\n④ 共15题——用你的自然拼读知识来填空！",
+  "tutorialSoundExplorer": "① 选择要探索的音\n② 设置选项数量（2/3/4）和题目数量（5–20）\n③ 看到一个字母——点击各喇叭试听，然后点✓选择正确答案\n④ 与Sound Quiz相反：看字母，找声音！"
+}

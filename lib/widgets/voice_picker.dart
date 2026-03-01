@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:phonics/l10n/app_localizations.dart';
+import '../services/settings_service.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 
@@ -41,7 +43,7 @@ void showVoicePicker(BuildContext context, [VoidCallback? onChanged]) {
                   subtitle: info.subtitle,
                   selected: TtsService.voiceType == type,
                   onTap: () async {
-                    await TtsService.setVoiceType(type);
+                    await ctx.read<SettingsService>().setVoiceType(type);
                     onChanged?.call();
                     if (ctx.mounted) Navigator.pop(ctx);
                   },

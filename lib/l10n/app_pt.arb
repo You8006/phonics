@@ -1,0 +1,319 @@
+{
+  "@@locale": "pt",
+  "appTitle": "Phonics Sense",
+  "gameSelectTitle": "Exercícios",
+  "selectGame": "Exercícios",
+  "selectGameSubtitle": "Escolha um exercício para praticar",
+  "beginner": "Novato",
+  "intermediate": "Intermediário",
+  "advanced": "Avançado",
+  "game2Choice": "2-Escolha",
+  "gameSprint": "Sprint",
+  "gameStandard": "Padrão",
+  "gameSingleFocus": "Foco único",
+  "gameDigraphs": "Dígrafos",
+  "gameDrill": "Treino intensivo",
+  "gameIpaQuiz": "Quiz IPA",
+  "gameIpaQuizDesc": "Ouça e escolha o símbolo IPA correto",
+  "gameIpaSprint": "Sprint IPA",
+  "game4Choice": "4-Escolha",
+  "gameMarathon": "Maratona",
+  "practiceLab": "Laboratório prático",
+  "backToHome": "De volta para casa",
+  "playAgain": "Jogue novamente",
+  "score": "Pontuação",
+  "correct": "Correto",
+  "streak": "Sequência",
+  "resultPerfect": "Excelente",
+  "resultGreat": "Bom trabalho",
+  "resultGood": "Esforço Sólido",
+  "resultKeep": "Continue praticando",
+  "soundToLetterSubtitle": "Ouça e escolha a letra correta",
+  "soundToIpaSubtitle": "Ouça e escolha o símbolo IPA correto",
+  "soundToLetterTitle": "Jogo de som",
+  "soundToIpaTitle": "Jogo IPA",
+  "play": "Reproduzir som",
+  "playAgainBtn": "Jogue novamente",
+  "listenSound": "Ouvir",
+  "groupTitle0": "Etapa 1: primeiros sons",
+  "groupDesc0": "Aprenda a ler: sat, pin e muito mais",
+  "groupTitle1": "Etapa 2: consoantes úteis",
+  "groupDesc1": "Aprenda a ler: hen, red e mais",
+  "groupTitle2": "Etapa 3: palavras do dia a dia",
+  "groupDesc2": "Aprenda a ler: dog, bus e mais",
+  "groupTitle3": "Etapa 4: vogais longas 1",
+  "groupDesc3": "Aprenda a ler: rain, boat e mais",
+  "groupTitle4": "Etapa 5: vogais longas 2",
+  "groupDesc4": "Aprenda a ler: book, moon e mais",
+  "groupTitle5": "Etapa 6: sons complicados",
+  "groupDesc5": "Aprenda a ler: ship, thin e mais",
+  "groupTitle6": "Etapa 7: etapas finais",
+  "groupDesc6": "Aprenda a ler: queen, car e mais",
+  "gameNewVariations": "Novas Variações",
+  "gameBingo": "Bingo",
+  "gameCapitalMatch": "Maiúsculas e minúsculas",
+  "gameSoundQuiz": "Questionário de som",
+  "gameSoundQuizDesc": "Ouça e escolha a letra certa",
+  "gameBingoDesc": "Complete a grade do bingo",
+  "gameCapitalMatchDesc": "Combine maiúsculas e minúsculas",
+  "shortVowels": "Vogais curtas",
+  "basicConsonants": "Consoantes",
+  "digraphsLabel": "Dígrafos",
+  "settingsLabel": "Configurações",
+  "choicesLabel": "Escolhas",
+  "questionsLabel": "Questões",
+  "gridSizeLabel": "Tamanho da grade",
+  "modeLabel": "Modo",
+  "readingDisplayLabel": "Leitura",
+  "readingDisplayIpa": "Só IPA",
+  "readingDisplayDetail": "Detalhe",
+  "selectSoundsHint": "Selecione sons e comece",
+  "gameBlending": "Mistura",
+  "gameBlendingDesc": "Construa palavras a partir de sons",
+  "gameWordChaining": "Cadeia de palavras",
+  "gameWordChainingDesc": "Mude um som de cada vez",
+  "gameMinimalPairs": "Audição",
+  "gameMinimalPairsDesc": "Descubra a diferença nos sons",
+  "gameFillInBlank": "Questionário de preenchimento",
+  "gameFillInBlankDesc": "Ouça e complete o som que falta",
+  "gameSoundExplorer": "Explorador de Som",
+  "gameSoundExplorerDesc": "Veja uma letra, encontre seu som",
+  "findThisSound": "Encontre este som",
+  "listenThenChoose": "Ouça e escolha",
+  "audioLibrary": "Biblioteca de palavras",
+  "audioLibraryDesc": "Navegue e ouça 100 palavras essenciais",
+  "lessons": "Lições",
+  "games": "Jogos",
+  "library": "Biblioteca",
+  "settings": "Configurações",
+  "searchWords": "Pesquisar palavras...",
+  "allCategories": "Todos",
+  "tapToListen": "Toque na palavra para ouvir",
+  "masterSounds": "Domine 42 sons ingleses",
+  "phaseLabel": "Fase {phase}",
+  "@phaseLabel": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "srsReview": "Revisão SRS ({count})",
+  "@srsReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customizePrefs": "Personalize suas preferências",
+  "voiceSettings": "Configurações de voz",
+  "changeVoiceType": "Alterar tipo de voz",
+  "languageSettings": "Configurações de idioma",
+  "changeAppLanguage": "Alterar idioma do app",
+  "selectLanguage": "Selecione o idioma",
+  "about": "Sobre",
+  "appVersion": "Phonics Sense v1.0.0",
+  "lessonCountLabel": "Estudado {count} vezes",
+  "@lessonCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "learn": "Aprender",
+  "exampleWords": "Palavras de exemplo",
+  "playSound": "Reproduzir som",
+  "wordsTab": "Palavras",
+  "phonicsTab": "Fonética",
+  "wordLibrary": "Biblioteca de palavras",
+  "nWords": "{count} palavras",
+  "@nWords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phonicsSoundDict": "Dicionário de sons fonéticos",
+  "nSounds": "{count} sons",
+  "@nSounds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tapSpellingToSeeWords": "Toque na grafia para ver palavras",
+  "groupLabel": "Grupo:",
+  "wordsWithSpelling": "Palavras com \"{spelling}\"",
+  "@wordsWithSpelling": {
+    "placeholders": {
+      "spelling": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceLabTitle": "{group} — Laboratório prático",
+  "@practiceLabTitle": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceLabTitleDefault": "Laboratório prático",
+  "allSoundsMix": "Todos os sons mixados (42)",
+  "practiceAllSounds": "Pratique os 42 sons em ordem aleatória",
+  "vowelSoundFocus": "Foco sonoro vocálico",
+  "focusOnVowels": "Concentre-se nos sons das vogais",
+  "consonantSoundFocus": "Foco Sonoro Consonantal",
+  "focusOnConsonants": "Concentre-se em sons consonantais",
+  "blendingBuilder": "Construtor de mistura",
+  "buildWordsByArranging": "Construa palavras organizando letras",
+  "wordChainingTitle": "Encadeamento de palavras",
+  "changeOneSoundNewWord": "Mude um som para formar uma nova palavra",
+  "minimalPairListening": "Escuta mínima em pares",
+  "distinguishSounds": "Distinguir entre sons semelhantes",
+  "blendingRound": "Misturando {round} / {total}",
+  "@blendingRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "slow": "Lento",
+  "normal": "Normal",
+  "buildWordYouHear": "Construa a palavra que você ouve",
+  "undo": "Desfazer",
+  "reset": "Reiniciar",
+  "check": "Verificar",
+  "wordChainingRound": "Cadeia de palavras {round} / {total}",
+  "@wordChainingRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "changeOneSound": "Alterar um som",
+  "minimalPairsRound": "Pares Mínimos {round} / {total}",
+  "@minimalPairsRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "whichWordDoYouHear": "Qual palavra você ouve?",
+  "focusOn": "Foco: {focus}",
+  "@focusOn": {
+    "placeholders": {
+      "focus": {
+        "type": "String"
+      }
+    }
+  },
+  "tapToPlay": "Toque para jogar",
+  "bingoWin": "BINGO",
+  "newGame": "Novo jogo",
+  "missCount": "Erros: {count}",
+  "@missCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fillInBlankTitle": "Preencha o espaço em branco",
+  "noQuestionsAvailable": "Nenhuma pergunta disponível",
+  "chooseCorrectSpelling": "Escolha a grafia correta",
+  "next": "Próximo",
+  "tryAgain": "Tente novamente",
+  "selectAtLeastSounds": "Selecione pelo menos {count} sons",
+  "@selectAtLeastSounds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playBtn": "Jogar",
+  "allLabel": "Todos",
+  "listenAndChoose": "Ouça e escolha",
+  "lessonComplete": "Lição concluída!",
+  "lessonCompleteDesc": "Você concluiu todos os cartões de {group}.",
+  "@lessonCompleteDesc": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "tryQuiz": "Experimente o questionário",
+  "nextLesson": "Próxima lição",
+  "lessonDone": "Feito",
+  "selectVoice": "Selecione Voz",
+  "voiceFemale": "Feminina",
+  "voiceFemaleDesc": "Jenny - quente e claro",
+  "voiceMale": "Masculina",
+  "voiceMaleDesc": "Andrew – Profundo e natural",
+  "voiceYoung": "Jovem palestrante",
+  "voiceYoungDesc": "Ana — Jovem palestrante",
+  "statsTitle": "Estatísticas de aprendizagem",
+  "homeGuideTitle": "Guia de aprendizagem",
+  "homeGuideGroupInfo": "• Cada grupo reúne sons (vogais, consoantes, dígrafos).",
+  "homeGuideFlow": "• Comece em Lições e reforce em Jogos.",
+  "homeGuideReview": "• Erros entram na revisão; pratique pelo botão abaixo.",
+  "loginStreakLabel": "Sequência de login",
+  "totalGamesLabel": "Total de jogos",
+  "totalLessonsLabel": "Lições",
+  "todaySessionsLabel": "Hoje",
+  "daysUnit": "{count} dias",
+  "@daysUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timesUnit": "{count} vezes",
+  "@timesUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "resetProgress": "Redefinir dados de aprendizado",
+  "resetProgressDesc": "Excluir todas as pontuações, sequências e histórico",
+  "resetProgressConfirmTitle": "Redefinir todos os dados?",
+  "resetProgressConfirmBody": "Isso excluirá permanentemente todos os registros de aprendizado, pontuações, sequências e histórico de jogos. Esta ação não pode ser desfeita.",
+  "resetProgressConfirmBtn": "Redefinir",
+  "cancelBtn": "Cancelar",
+  "resetProgressDone": "Os dados de aprendizado foram redefinidos.",
+
+  "dontShowAgain": "Não mostrar novamente",
+  "startGame": "Começar",
+  "howToPlay": "Como jogar",
+  "tutorialSoundQuiz": "① Selecione os sons que deseja praticar (vogais, consoantes, dígrafos)\n② Escolha o número de opções (2/3/4) e perguntas (5–20)\n③ Ouça um som e toque na letra correta\n④ Feedback instantâneo: verde = correto, vermelho = errado",
+  "tutorialIpaQuiz": "① Selecione os sons que deseja praticar\n② Escolha o número de opções (2/3/4) e perguntas (5–20)\n③ Ouça um som e toque no símbolo IPA correto\n④ Aprenda notação fonética enquanto treina seu ouvido",
+  "tutorialBingo": "① Selecione os sons para o seu tabuleiro de bingo\n② Escolha o tamanho da grade (3×3 / 4×4 / 5×5)\n③ Ouça um som e toque na célula correta\n④ Complete uma linha, coluna ou diagonal para vencer!",
+  "tutorialBlending": "① Ouça a palavra com o botão Lento ou Normal\n② Toque nas letras na ordem correta para soletrá-la\n③ Use Desfazer ou Reiniciar se errar\n④ 8 rodadas — melhore sua ortografia e fonética!",
+  "tutorialWordChaining": "① Ouça a palavra atual e escolha a que tem um som alterado\n② Escolha entre 3 opções — apenas uma está correta\n③ Após responder, toque em cada palavra para ouvi-la\n④ 8 rodadas — aguçe seu ouvido para diferenças sutis!",
+  "tutorialMinimalPairs": "① Ouça uma palavra com o botão Lento ou Normal\n② Duas palavras semelhantes são mostradas — toque na que ouviu\n③ Concentre-se na diferença de som destacada\n④ Até 12 rodadas — treine seu ouvido para captar diferenças mínimas!",
+  "tutorialFillInBlank": "① Veja uma palavra com um som faltando e seu significado\n② Ouça a palavra com os botões de alto-falante\n③ Toque no padrão fonético correto das opções\n④ 15 perguntas — use seu conhecimento fonético para completar!",
+  "tutorialSoundExplorer": "① Selecione os sons que deseja explorar\n② Escolha o número de opções (2/3/4) e perguntas (5–20)\n③ Veja uma letra — toque em cada alto-falante para ouvir sons, depois toque ✓ no correto\n④ O inverso do Sound Quiz: veja a letra, encontre o som!"
+}

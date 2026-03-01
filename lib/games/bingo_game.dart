@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
+import '../screens/result_screen.dart';
 import '../services/tts_service.dart';
+import '../services/progress_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/score_app_bar.dart';
 
@@ -36,7 +38,7 @@ class _BingoGameState extends State<BingoGame> {
 
   @override
   void dispose() {
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 
@@ -174,12 +176,28 @@ class _BingoGameState extends State<BingoGame> {
   void _triggerBingo() {
     setState(() => _bingo = true);
     // No playCorrect here — already played in _onCellTap
+    final score = _markedIndices.length;
+    final total = _markedIndices.length + _wrongCount;
     ProgressService.updateStreak();
     ProgressService.recordGameSession(
       gameType: 'bingo',
-      score: _boardItems.length - _wrongCount,
-      total: _boardItems.length,
+      score: score,
+      total: total,
     );
+    // BINGO! バナーを一瞬見せてから ResultScreen へ遷移
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultScreen(
+            score: score,
+            total: total,
+            groupName: 'Bingo',
+          ),
+        ),
+      );
+    });
   }
 
   @override

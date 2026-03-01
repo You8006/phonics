@@ -1,3 +1,5 @@
+import 'word_library_localizations.dart';
+
 /// 単語ライブラリー用の単語データ
 class WordItem {
   const WordItem({
@@ -5,6 +7,8 @@ class WordItem {
     required this.meaning,
     required this.category,
     this.phonicsNote = '',
+    this.localizedMeanings = const {},
+    this.localizedReadings = const {},
   });
 
   /// 英単語
@@ -13,14 +17,115 @@ class WordItem {
   /// 日本語訳
   final String meaning;
 
+  /// 言語別の意味（将来拡張用）
+  final Map<String, String> localizedMeanings;
+
   /// カテゴリ
   final String category;
 
   /// フォニックスのポイント（どの音が含まれるか等）
   final String phonicsNote;
 
+  /// 言語別の読み（将来拡張用）
+  final Map<String, String> localizedReadings;
+
   /// 音声ファイルのキー（ファイル名用）
   String get audioKey => word.toLowerCase().replaceAll(' ', '_');
+
+  /// 現在言語に応じた意味を返す
+  String meaningFor(String languageCode) {
+    if (languageCode == 'ja') return meaning;
+
+    final localized = localizedMeanings[languageCode];
+    if (localized != null && localized.isNotEmpty) return localized;
+
+    final globalLocalized = wordMeaningsByLocale[languageCode]?[audioKey];
+    if (globalLocalized != null && globalLocalized.isNotEmpty) {
+      return globalLocalized;
+    }
+
+    final en = localizedMeanings['en'];
+    if (en != null && en.isNotEmpty) return en;
+
+    return word;
+  }
+
+  /// 現在言語に応じた読みを返す
+  String readingFor(String languageCode) {
+    final localized = localizedReadings[languageCode];
+    if (localized != null && localized.isNotEmpty) return localized;
+
+    final en = localizedReadings['en'];
+    if (en != null && en.isNotEmpty) return en;
+
+    if (languageCode != 'ja') {
+      final ipa = _extractIpa(phonicsNote);
+      if (ipa.isNotEmpty) return ipa;
+
+      final normalized = _normalizePhonicsNote(phonicsNote, languageCode);
+      if (normalized.isNotEmpty) return normalized;
+    }
+
+    return phonicsNote;
+  }
+
+  String ipaReading() {
+    final ipa = _extractIpa(phonicsNote);
+    if (ipa.isNotEmpty) return ipa;
+    return phonicsNote;
+  }
+
+  String _normalizePhonicsNote(String source, String languageCode) {
+    if (source.isEmpty) return source;
+
+    var text = source;
+
+    final blendLabel = _blendLabel(languageCode);
+    final irregularLabel = _irregularLabel(languageCode);
+    text = text.replaceAll('ブレンド', blendLabel);
+    text = text.replaceAll('不規則', irregularLabel);
+    text = text.replaceAll('（', '(').replaceAll('）', ')');
+
+    return text;
+  }
+
+  String _blendLabel(String languageCode) {
+    switch (languageCode) {
+      case 'es':
+        return 'mezcla';
+      case 'pt':
+        return 'mistura';
+      case 'zh':
+        return '组合';
+      case 'hi':
+        return 'ब्लेंड';
+      default:
+        return 'blend';
+    }
+  }
+
+  String _irregularLabel(String languageCode) {
+    switch (languageCode) {
+      case 'es':
+        return 'irregular';
+      case 'pt':
+        return 'irregular';
+      case 'zh':
+        return '不规则';
+      case 'hi':
+        return 'अनियमित';
+      default:
+        return 'irregular';
+    }
+  }
+
+  String _extractIpa(String source) {
+    final match = RegExp(r'/([^/]+)/').firstMatch(source);
+    if (match == null) return '';
+    final value = match.group(1);
+    if (value == null || value.isEmpty) return '';
+    return '/$value/';
+  }
 }
 
 /// カテゴリ定義
@@ -29,27 +134,101 @@ class WordCategory {
     required this.id,
     required this.nameJa,
     required this.color,
+    this.localizedNames = const {},
   });
 
   final String id;
   final String nameJa;
   final int color;
+  final Map<String, String> localizedNames;
+
+  String labelFor(String languageCode) {
+    if (languageCode == 'ja') return nameJa;
+    final localized = localizedNames[languageCode];
+    if (localized != null && localized.isNotEmpty) return localized;
+    return nameJa;
+  }
 }
 
 const wordCategories = <WordCategory>[
-  WordCategory(id: 'cvc', nameJa: 'CVC単語', color: 0xFF8B7355),
-  WordCategory(id: 'cvc_basic', nameJa: 'CVC基本', color: 0xFFA0896E),
-  WordCategory(id: 'sight', nameJa: 'サイトワード', color: 0xFF6B8F9E),
-  WordCategory(id: 'animals', nameJa: '動物', color: 0xFF7A9E7E),
-  WordCategory(id: 'colors', nameJa: '色', color: 0xFF9E7A8E),
-  WordCategory(id: 'numbers', nameJa: '数', color: 0xFF7E85A0),
-  WordCategory(id: 'body', nameJa: '身体', color: 0xFF6E8CA0),
-  WordCategory(id: 'food', nameJa: '食べ物', color: 0xFFA08070),
-  WordCategory(id: 'family', nameJa: '家族', color: 0xFF7B8FA0),
-  WordCategory(id: 'actions', nameJa: '動作', color: 0xFF6E9490),
-  WordCategory(id: 'adjectives', nameJa: '形容詞', color: 0xFFA0956E),
-  WordCategory(id: 'nature', nameJa: '自然', color: 0xFF6E9478),
-  WordCategory(id: 'daily', nameJa: '日常', color: 0xFF8A8FA0),
+  WordCategory(
+    id: 'cvc',
+    nameJa: 'CVC単語',
+    color: 0xFF8B7355,
+    localizedNames: {'es': 'Palabras CVC', 'pt': 'Palavras CVC', 'zh': 'CVC单词', 'hi': 'CVC शब्द'},
+  ),
+  WordCategory(
+    id: 'cvc_basic',
+    nameJa: 'CVC基本',
+    color: 0xFFA0896E,
+    localizedNames: {'es': 'CVC básico', 'pt': 'CVC básico', 'zh': 'CVC基础', 'hi': 'मूल CVC'},
+  ),
+  WordCategory(
+    id: 'sight',
+    nameJa: 'サイトワード',
+    color: 0xFF6B8F9E,
+    localizedNames: {'es': 'Palabras frecuentes', 'pt': 'Palavras frequentes', 'zh': '常见词', 'hi': 'दृष्टि शब्द'},
+  ),
+  WordCategory(
+    id: 'animals',
+    nameJa: '動物',
+    color: 0xFF7A9E7E,
+    localizedNames: {'es': 'Animales', 'pt': 'Animais', 'zh': '动物', 'hi': 'जानवर'},
+  ),
+  WordCategory(
+    id: 'colors',
+    nameJa: '色',
+    color: 0xFF9E7A8E,
+    localizedNames: {'es': 'Colores', 'pt': 'Cores', 'zh': '颜色', 'hi': 'रंग'},
+  ),
+  WordCategory(
+    id: 'numbers',
+    nameJa: '数',
+    color: 0xFF7E85A0,
+    localizedNames: {'es': 'Números', 'pt': 'Números', 'zh': '数字', 'hi': 'संख्याएँ'},
+  ),
+  WordCategory(
+    id: 'body',
+    nameJa: '身体',
+    color: 0xFF6E8CA0,
+    localizedNames: {'es': 'Cuerpo', 'pt': 'Corpo', 'zh': '身体', 'hi': 'शरीर'},
+  ),
+  WordCategory(
+    id: 'food',
+    nameJa: '食べ物',
+    color: 0xFFA08070,
+    localizedNames: {'es': 'Comida', 'pt': 'Comida', 'zh': '食物', 'hi': 'भोजन'},
+  ),
+  WordCategory(
+    id: 'family',
+    nameJa: '家族',
+    color: 0xFF7B8FA0,
+    localizedNames: {'es': 'Familia', 'pt': 'Família', 'zh': '家庭', 'hi': 'परिवार'},
+  ),
+  WordCategory(
+    id: 'actions',
+    nameJa: '動作',
+    color: 0xFF6E9490,
+    localizedNames: {'es': 'Acciones', 'pt': 'Ações', 'zh': '动作', 'hi': 'क्रियाएँ'},
+  ),
+  WordCategory(
+    id: 'adjectives',
+    nameJa: '形容詞',
+    color: 0xFFA0956E,
+    localizedNames: {'es': 'Adjetivos', 'pt': 'Adjetivos', 'zh': '形容词', 'hi': 'विशेषण'},
+  ),
+  WordCategory(
+    id: 'nature',
+    nameJa: '自然',
+    color: 0xFF6E9478,
+    localizedNames: {'es': 'Naturaleza', 'pt': 'Natureza', 'zh': '自然', 'hi': 'प्रकृति'},
+  ),
+  WordCategory(
+    id: 'daily',
+    nameJa: '日常',
+    color: 0xFF8A8FA0,
+    localizedNames: {'es': 'Vida diaria', 'pt': 'Vida diária', 'zh': '日常', 'hi': 'दैनिक जीवन'},
+  ),
 ];
 
 /// 100単語のデータ

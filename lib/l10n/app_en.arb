@@ -74,6 +74,9 @@
   "questionsLabel": "Questions",
   "gridSizeLabel": "Grid Size",
   "modeLabel": "Mode",
+  "readingDisplayLabel": "Reading",
+  "readingDisplayIpa": "IPA only",
+  "readingDisplayDetail": "Detail",
   "selectSoundsHint": "Select sounds, then start",
 
   "gameBlending": "Blending",
@@ -108,10 +111,13 @@
   "customizePrefs": "Customize your app preferences",
   "voiceSettings": "Voice Settings",
   "changeVoiceType": "Change voice type",
+  "languageSettings": "Language Settings",
+  "changeAppLanguage": "Change app display language",
+  "selectLanguage": "Select language",
   "about": "About",
   "appVersion": "Phonics Sense v1.0.0",
-  "masteredPercent": "{percent}% mastered",
-  "@masteredPercent": { "placeholders": { "percent": { "type": "int" } } },
+  "lessonCountLabel": "Studied {count} times",
+  "@lessonCountLabel": { "placeholders": { "count": { "type": "int" } } },
   "learn": "Learn",
 
   "exampleWords": "Example words",
@@ -201,6 +207,10 @@
   "voiceYoungDesc": "Ana — Young speaker",
 
   "statsTitle": "Learning Stats",
+  "homeGuideTitle": "Learning Guide",
+  "homeGuideGroupInfo": "• Groups are sets of sounds to learn (vowels, consonants, digraphs).",
+  "homeGuideFlow": "• Start with Learn to hear sounds, then use Play to reinforce them.",
+  "homeGuideReview": "• Sounds you miss are added to review, and you can revisit them from the button below.",
   "loginStreakLabel": "Login Streak",
   "totalGamesLabel": "Total Games",
   "totalLessonsLabel": "Lessons",
@@ -208,5 +218,25 @@
   "daysUnit": "{count} days",
   "@daysUnit": { "placeholders": { "count": { "type": "int" } } },
   "timesUnit": "{count} times",
-  "@timesUnit": { "placeholders": { "count": { "type": "int" } } }
+  "@timesUnit": { "placeholders": { "count": { "type": "int" } } },
+
+  "resetProgress": "Reset Learning Data",
+  "resetProgressDesc": "Delete all scores, streaks, and history",
+  "resetProgressConfirmTitle": "Reset all learning data?",
+  "resetProgressConfirmBody": "This will permanently delete all learning records, scores, streaks, and game history. This action cannot be undone.",
+  "resetProgressConfirmBtn": "Reset",
+  "cancelBtn": "Cancel",
+  "resetProgressDone": "Learning data has been reset.",
+
+  "dontShowAgain": "Don't show again",
+  "startGame": "Start",
+  "howToPlay": "How to Play",
+  "tutorialSoundQuiz": "① Select the sounds you want to practice (vowels, consonants, digraphs)\n② Choose the number of answer choices (2/3/4) and questions (5–20)\n③ Listen to a sound and tap the correct letter\n④ Get instant feedback — green for correct, red for wrong",
+  "tutorialIpaQuiz": "① Select the sounds you want to practice\n② Choose the number of choices (2/3/4) and questions (5–20)\n③ Listen to a sound and tap the matching IPA symbol\n④ A great way to learn phonetic notation while training your ear",
+  "tutorialBingo": "① Select the sounds for your bingo board\n② Choose the grid size (3×3 / 4×4 / 5×5)\n③ Listen to a sound and tap the matching cell on the grid\n④ Complete a row, column, or diagonal to win!",
+  "tutorialBlending": "① Listen to the word using the Slow or Normal button\n② Tap the letter tiles in the correct order to spell it\n③ Use Undo or Reset if you make a mistake\n④ 8 rounds — build your spelling and phonics skills!",
+  "tutorialWordChaining": "① Listen to the current word, then pick the word with one sound changed\n② Choose from 3 options — only one is correct\n③ After answering, tap each word to hear it spoken\n④ 8 rounds of chaining — sharpen your ear for subtle differences!",
+  "tutorialMinimalPairs": "① Listen to a word using the Slow or Normal button\n② Two similar words are shown — tap the one you heard\n③ Focus on the highlighted sound difference\n④ Up to 12 rounds — train your ear to catch tiny differences!",
+  "tutorialFillInBlank": "① See a word with a missing sound and its meaning\n② Listen to the word using the speaker buttons\n③ Tap the correct phonics pattern from the choices\n④ 15 questions — use your phonics knowledge to fill in the gaps!",
+  "tutorialSoundExplorer": "① Select the sounds you want to explore\n② Choose the number of choices (2/3/4) and questions (5–20)\n③ See a letter — tap each speaker to preview sounds, then tap ✓ on the correct one\n④ The reverse of Sound Quiz: see the letter, find the sound!"
 }

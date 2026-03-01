@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/word_data.dart';
+import '../services/settings_service.dart';
 import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 import 'phonics_dictionary_screen.dart';
@@ -21,22 +23,34 @@ class AudioLibraryScreen extends StatefulWidget {
 
 class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
   String _searchQuery = '';
+  late final TextEditingController _searchController;
   String? _playingWord;
+    @override
+    void initState() {
+      super.initState();
+      _searchController = TextEditingController();
+    }
+
+    @override
+    void dispose() {
+      _searchController.dispose();
+      super.dispose();
+    }
+
   _PlayMode? _playMode;
   LibraryViewMode _viewMode = LibraryViewMode.words;
-  String? _selectedCategory;
 
-  List<WordItem> get _filteredWords {
+  List<WordItem> _filteredWordsForLocale(String languageCode, String? selectedCategory) {
     var list = wordLibrary.toList();
-    if (_selectedCategory != null) {
-      list = list.where((w) => w.category == _selectedCategory).toList();
+    if (selectedCategory != null) {
+      list = list.where((w) => w.category == selectedCategory).toList();
     }
     if (_searchQuery.isNotEmpty) {
       final q = _searchQuery.toLowerCase();
       list = list
           .where((w) =>
               w.word.toLowerCase().contains(q) ||
-              w.meaning.contains(q))
+              w.meaningFor(languageCode).toLowerCase().contains(q))
           .toList();
     }
     return list;
@@ -109,6 +123,21 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
 
   Widget _buildWordLibrary() {
     final l10n = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final settings = context.watch<SettingsService>();
+    final selectedCategory = settings.audioLibrarySelectedCategory;
+    final filteredWords = _filteredWordsForLocale(languageCode, selectedCategory);
+    final ipaOnlyMode = settings.ipaOnlyReadingMode;
+
+    if (_searchController.text != settings.audioLibrarySearchQuery) {
+      _searchController.value = TextEditingValue(
+        text: settings.audioLibrarySearchQuery,
+        selection: TextSelection.collapsed(
+          offset: settings.audioLibrarySearchQuery.length,
+        ),
+      );
+      _searchQuery = settings.audioLibrarySearchQuery;
+    }
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
@@ -134,7 +163,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
                   child: Text(
-                    l10n.nWords(_filteredWords.length),
+                    l10n.nWords(filteredWords.length),
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -158,7 +187,11 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   borderRadius: BorderRadius.circular(AppRadius.lg),
                 ),
                 child: TextField(
-                  onChanged: (v) => setState(() => _searchQuery = v),
+                  controller: _searchController,
+                  onChanged: (v) {
+                    setState(() => _searchQuery = v);
+                    context.read<SettingsService>().setAudioLibrarySearchQuery(v);
+                  },
                   decoration: InputDecoration(
                     hintText: l10n.searchWords,
                     hintStyle: TextStyle(
@@ -180,6 +213,34 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             ),
           ),
 
+          // ── 読み表示モード ──
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl, 0, AppSpacing.xl, AppSpacing.md),
+              child: Row(
+                children: [
+                  Text(
+                    l10n.readingDisplayLabel,
+                    style: AppTextStyle.label,
+                  ),
+                  const SizedBox(width: 8),
+                  _ModeChip(
+                    label: l10n.readingDisplayIpa,
+                    selected: ipaOnlyMode,
+                    onTap: () => context.read<SettingsService>().setIpaOnlyReadingMode(true),
+                  ),
+                  const SizedBox(width: 6),
+                  _ModeChip(
+                    label: l10n.readingDisplayDetail,
+                    selected: !ipaOnlyMode,
+                    onTap: () => context.read<SettingsService>().setIpaOnlyReadingMode(false),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
           // ── カテゴリフィルター ──
           SliverToBoxAdapter(
             child: Padding(
@@ -192,18 +253,19 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                   _CategoryChip(
                     label: l10n.allCategories,
                     color: AppColors.primary,
-                    selected: _selectedCategory == null,
+                    selected: selectedCategory == null,
                     onTap: () =>
-                        setState(() => _selectedCategory = null),
+                        context.read<SettingsService>().setAudioLibrarySelectedCategory(null),
                   ),
                   for (final cat in wordCategories)
                     _CategoryChip(
-                      label: cat.nameJa,
+                      label: cat.labelFor(languageCode),
                       color: Color(cat.color),
-                      selected: _selectedCategory == cat.id,
-                      onTap: () => setState(() =>
-                          _selectedCategory =
-                              _selectedCategory == cat.id ? null : cat.id),
+                      selected: selectedCategory == cat.id,
+                      onTap: () => context
+                          .read<SettingsService>()
+                          .setAudioLibrarySelectedCategory(
+                              selectedCategory == cat.id ? null : cat.id),
                     ),
                 ],
               ),
@@ -216,7 +278,10 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final word = _filteredWords[index];
+                  final word = filteredWords[index];
+                    final readingText = ipaOnlyMode
+                      ? word.ipaReading()
+                      : word.readingFor(languageCode);
                   final cat = wordCategories.firstWhere(
                     (c) => c.id == word.category,
                     orElse: () => wordCategories.first,
@@ -228,6 +293,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: _WordCard(
                       word: word,
+                      readingText: readingText,
                       category: cat,
                       isPlaying: isPlaying,
                       playMode: playMode,
@@ -236,7 +302,7 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
                     ),
                   );
                 },
-                childCount: _filteredWords.length,
+                childCount: filteredWords.length,
               ),
             ),
           ),
@@ -322,11 +388,48 @@ class _CategoryChip extends StatelessWidget {
   }
 }
 
+class _ModeChip extends StatelessWidget {
+  const _ModeChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 160),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.textPrimary : AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: AppColors.surfaceDim),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: selected ? AppColors.onPrimary : AppColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // ── 単語カード ──
 
 class _WordCard extends StatelessWidget {
   const _WordCard({
     required this.word,
+    required this.readingText,
     required this.category,
     required this.isPlaying,
     required this.playMode,
@@ -335,6 +438,7 @@ class _WordCard extends StatelessWidget {
   });
 
   final WordItem word;
+  final String readingText;
   final WordCategory category;
   final bool isPlaying;
   final _PlayMode? playMode;
@@ -425,15 +529,15 @@ class _WordCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            word.meaning,
+                            word.meaningFor(Localizations.localeOf(context).languageCode),
                             style: AppTextStyle.label,
                           ),
                         ],
                       ),
-                      if (word.phonicsNote.isNotEmpty) ...[
+                      if (readingText.isNotEmpty) ...[
                         const SizedBox(height: 4),
                         Text(
-                          word.phonicsNote,
+                          readingText,
                           style: TextStyle(
                             fontSize: 11,
                             color: AppColors.textTertiary,

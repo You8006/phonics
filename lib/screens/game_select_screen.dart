@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
+import '../widgets/game_tutorial_overlay.dart';
 import 'game_setup_screen.dart';
 import '../games/fill_in_blank_game.dart';
 
@@ -112,16 +113,25 @@ class _GameTypeCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.lg),
           onTap: () {
-            if (def.type == GameType.fillInBlank) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const FillInBlankGame()));
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => GameSetupScreen(gameType: def.type)),
-              );
-            }
+            GameTutorialOverlay.showIfNeeded(
+              context: context,
+              type: def.type,
+              title: def.title,
+              icon: def.icon,
+              color: def.color,
+              onStart: () {
+                if (def.type == GameType.fillInBlank) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const FillInBlankGame()));
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => GameSetupScreen(gameType: def.type)),
+                  );
+                }
+              },
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.lg),

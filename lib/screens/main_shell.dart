@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../services/tts_service.dart';
+import '../services/progress_service.dart';
+import '../services/settings_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/voice_picker.dart';
 import 'game_select_screen.dart';
-import 'settings_screen.dart';
+import 'home_screen.dart';
 import 'audio_library_screen.dart';
 
 /// メインナビゲーションシェル
@@ -189,16 +192,113 @@ class _SettingsPageState extends State<_SettingsPage> {
               ),
               const SizedBox(height: AppSpacing.md),
               _SettingsTile(
+                icon: Icons.language_rounded,
+                title: l10n.languageSettings,
+                subtitle: l10n.changeAppLanguage,
+                color: AppColors.accentGreen,
+                onTap: () => _showLanguagePicker(context),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _SettingsTile(
                 icon: Icons.info_outline_rounded,
                 title: l10n.about,
                 subtitle: l10n.appVersion,
                 color: AppColors.accentPurple,
                 onTap: () {},
               ),
+              const SizedBox(height: AppSpacing.xxxl),
+              _SettingsTile(
+                icon: Icons.delete_outline_rounded,
+                title: l10n.resetProgress,
+                subtitle: l10n.resetProgressDesc,
+                color: AppColors.wrong,
+                onTap: () => _showResetConfirmation(context),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _showResetConfirmation(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.resetProgressConfirmTitle),
+        content: Text(l10n.resetProgressConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancelBtn),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.wrong,
+            ),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.resetProgressConfirmBtn),
+          ),
+        ],
+      ),
+    ).then((confirmed) async {
+      if (confirmed == true && mounted) {
+        await ProgressService.resetAllProgress();
+        if (mounted) {
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(l10n.resetProgressDone),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          setState(() {});
+        }
+      }
+    });
+  }
+
+  void _showLanguagePicker(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+      ),
+      builder: (ctx) {
+        final settings = ctx.watch<SettingsService>();
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.selectLanguage, style: AppTextStyle.sectionHeading),
+                const SizedBox(height: AppSpacing.md),
+                ...SettingsService.supportedLocales.map((locale) {
+                  final selected =
+                      settings.locale.languageCode == locale.languageCode;
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                    title: Text(settings.localeLabel(locale)),
+                    trailing: selected
+                        ? const Icon(Icons.check_circle_rounded,
+                            color: AppColors.primary)
+                        : null,
+                    onTap: () async {
+                      await ctx.read<SettingsService>().setLocale(locale);
+                      if (ctx.mounted) Navigator.pop(ctx);
+                    },
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

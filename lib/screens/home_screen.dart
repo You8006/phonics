@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
-import '../services/tts_service.dart';
+import '../services/progress_service.dart';
 import '../theme/app_theme.dart';
 import 'learn_screen.dart';
 import 'game_screen.dart';
@@ -15,9 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  final Map<int, double> _masteryCache = {};
+  final Map<int, int> _lessonCountCache = {};
   List<PhonicsItem> _dueItems = [];
-  DailyMission? _mission;
   UserStats? _stats;
 
   @override
@@ -30,28 +29,16 @@ class HomeScreenState extends State<HomeScreen> {
   void refreshIfNeeded() => _refresh();
 
   Future<void> _refresh() async {
-    final streak = await ProgressService.getStreak();
-    final mastery = <int, double>{};
-    for (final g in phonicsGroups) {
-      mastery[g.id] = await ProgressService.groupMastery(g);
-    }
-
+    final lessonCounts = await ProgressService.getAllLessonCounts();
     final dueItems = await ProgressService.getDueItemsAll(limit: 16);
-    final avgMastery = mastery.isEmpty
-        ? 0.0
-        : mastery.values.fold<double>(0, (a, b) => a + b) / mastery.length;
-    final mission = await ProgressService.getTodayMission(
-      dueCount: dueItems.length,
-      streak: streak,
-      mastery: avgMastery,
-    );
     final stats = await ProgressService.getUserStats();
 
     if (!mounted) return;
     setState(() {
-      _masteryCache.addAll(mastery);
+      _lessonCountCache
+        ..clear()
+        ..addAll(lessonCounts);
       _dueItems = dueItems;
-      _mission = mission;
       _stats = stats;
     });
   }
@@ -98,87 +85,88 @@ class HomeScreenState extends State<HomeScreen> {
               _StatsCard(stats: _stats!),
             if (_stats != null) const SizedBox(height: AppSpacing.lg),
 
-            // ── ミッション + SRS復習 ──
-            if (_mission != null) ...[
-              Container(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                decoration: AppDecoration.card(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.event_note_rounded,
-                            size: 20, color: AppColors.textSecondary),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            _mission!.title,
-                            style: AppTextStyle.cardTitle,
-                          ),
+            // ── ガイド + 復習 ──
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              decoration: AppDecoration.card(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.lightbulb_outline_rounded,
+                          size: 20, color: AppColors.textSecondary),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          l10n.homeGuideTitle,
+                          style: AppTextStyle.cardTitle,
                         ),
-                        Container(
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    l10n.homeGuideGroupInfo,
+                    style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    l10n.homeGuideFlow,
+                    style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    l10n.homeGuideReview,
+                    style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                  ),
+                  if (_dueItems.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.md),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: _dueItems.take(10).map((item) {
+                        return Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.08),
+                            color: AppColors.accentAmber.withValues(alpha: 0.1),
                             borderRadius:
                                 BorderRadius.circular(AppRadius.full),
                           ),
                           child: Text(
-                            l10n.phaseLabel(_mission!.phase),
+                            item.letter,
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
+                              color: AppColors.accentAmber,
                             ),
                           ),
-                        ),
-                      ],
+                        );
+                      }).toList(),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
-                    for (final t in _mission!.tasks.take(3))
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 3),
-                        child: Text(
-                          '• $t',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      _mission!.tip,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textTertiary,
+                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: _startDueReview,
+                        icon: const Icon(Icons.history, size: 18),
+                        label: Text(l10n.srsReview(_dueItems.length)),
                       ),
                     ),
-                    if (_dueItems.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.md),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton.icon(
-                          onPressed: _startDueReview,
-                          icon: const Icon(Icons.history, size: 18),
-                          label:
-                              Text(l10n.srsReview(_dueItems.length)),
-                        ),
-                      ),
-                    ],
                   ],
-                ),
+                ],
               ),
-              const SizedBox(height: AppSpacing.lg),
-            ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
 
             // ── グループ一覧 ──
             for (final group in phonicsGroups) ...[
               _GroupCard(
                 group: group,
-                mastery: _masteryCache[group.id] ?? 0,
+                lessonCount: _lessonCountCache[group.id] ?? 0,
                 onLearn: () => _goLearn(group),
                 onPlay: () => _goPlay(group),
               ),
@@ -223,6 +211,7 @@ class HomeScreenState extends State<HomeScreen> {
           numOptions: 3,
           groupName: 'SRS Review',
           mode: GameMode.soundToLetter,
+          consumeReviewOnAttempt: true,
         ),
       ),
     ).then((_) => _refresh());
@@ -234,13 +223,13 @@ class HomeScreenState extends State<HomeScreen> {
 class _GroupCard extends StatelessWidget {
   const _GroupCard({
     required this.group,
-    required this.mastery,
+    required this.lessonCount,
     required this.onLearn,
     required this.onPlay,
   });
 
   final PhonicsGroup group;
-  final double mastery;
+  final int lessonCount;
   final VoidCallback onLearn;
   final VoidCallback onPlay;
 
@@ -267,31 +256,23 @@ class _GroupCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
+                  color: lessonCount > 0
+                      ? AppColors.correct.withValues(alpha: 0.08)
+                      : AppColors.surfaceDim,
                   borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Text(
-                  l10n.masteredPercent((mastery * 100).toInt()),
-                  style: const TextStyle(
+                  l10n.lessonCountLabel(lessonCount),
+                  style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
+                    color: lessonCount > 0
+                        ? AppColors.correct
+                        : AppColors.textTertiary,
                   ),
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.full),
-            child: LinearProgressIndicator(
-              value: mastery,
-              minHeight: 6,
-              backgroundColor: AppColors.surfaceDim,
-              valueColor: AlwaysStoppedAnimation(
-                mastery >= 0.6 ? AppColors.correct : AppColors.primary,
-              ),
-            ),
           ),
           const SizedBox(height: AppSpacing.md),
           Row(

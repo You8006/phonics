@@ -74,6 +74,9 @@
   "questionsLabel": "問題数",
   "gridSizeLabel": "マス目",
   "modeLabel": "モード",
+  "readingDisplayLabel": "読み表示",
+  "readingDisplayIpa": "IPAのみ",
+  "readingDisplayDetail": "詳細",
   "selectSoundsHint": "音を選択して開始",
 
   "gameBlending": "ブレンディング",
@@ -108,10 +111,13 @@
   "customizePrefs": "アプリの設定をカスタマイズ",
   "voiceSettings": "音声設定",
   "changeVoiceType": "音声タイプを変更",
+  "languageSettings": "言語設定",
+  "changeAppLanguage": "アプリの表示言語を変更",
+  "selectLanguage": "言語を選択",
   "about": "アプリ情報",
   "appVersion": "Phonics Sense v1.0.0",
-  "masteredPercent": "{percent}% 習得済み",
-  "@masteredPercent": { "placeholders": { "percent": { "type": "int" } } },
+  "lessonCountLabel": "{count}回学習済み",
+  "@lessonCountLabel": { "placeholders": { "count": { "type": "int" } } },
   "learn": "学習",
 
   "exampleWords": "例文",
@@ -201,6 +207,10 @@
   "voiceYoungDesc": "Ana — 若い声",
 
   "statsTitle": "学習統計",
+  "homeGuideTitle": "学習ガイド",
+  "homeGuideGroupInfo": "・グループは学ぶ音のまとまりです（母音/子音/二重字など）。",
+  "homeGuideFlow": "・まず Learn で音を聞き、次に Play で定着させます。",
+  "homeGuideReview": "・間違えた音は復習に出るので、下のボタンから繰り返し確認できます。",
   "loginStreakLabel": "連続ログイン",
   "totalGamesLabel": "総プレイ数",
   "totalLessonsLabel": "レッスン数",
@@ -208,5 +218,25 @@
   "daysUnit": "{count}日",
   "@daysUnit": { "placeholders": { "count": { "type": "int" } } },
   "timesUnit": "{count}回",
-  "@timesUnit": { "placeholders": { "count": { "type": "int" } } }
+  "@timesUnit": { "placeholders": { "count": { "type": "int" } } },
+
+  "resetProgress": "学習データのリセット",
+  "resetProgressDesc": "スコア・ストリーク・履歴をすべて削除",
+  "resetProgressConfirmTitle": "学習データをリセットしますか？",
+  "resetProgressConfirmBody": "すべての学習記録・スコア・ストリーク・ゲーム履歴が完全に削除されます。この操作は元に戻せません。",
+  "resetProgressConfirmBtn": "リセット",
+  "cancelBtn": "キャンセル",
+  "resetProgressDone": "学習データをリセットしました。",
+
+  "dontShowAgain": "次回から表示しない",
+  "startGame": "スタート",
+  "howToPlay": "遊び方",
+  "tutorialSoundQuiz": "① 練習したい音を選択（母音・子音・二重字）\n② 選択肢の数（2/3/4）と問題数（5〜20）を設定\n③ 音を聞いて、正しい文字をタップ\n④ 正解は緑、不正解は赤ですぐにフィードバック",
+  "tutorialIpaQuiz": "① 練習したい音を選択\n② 選択肢の数（2/3/4）と問題数（5〜20）を設定\n③ 音を聞いて、正しいIPA記号をタップ\n④ 耳を鍛えながら発音記号を覚えよう",
+  "tutorialBingo": "① ビンゴに使う音を選択\n② グリッドサイズを選択（3×3 / 4×4 / 5×5）\n③ 音を聞いて、正しいマスをタップ\n④ 縦・横・斜めを揃えたらビンゴ達成！",
+  "tutorialBlending": "① スロー／ノーマルボタンで単語を聞く\n② 正しい順番で文字タイルをタップしてスペル\n③ 間違えたらUndoやResetでやり直し可能\n④ 全8ラウンド — スペル力とフォニックス力を鍛えよう！",
+  "tutorialWordChaining": "① 今の単語を聞いて、1音だけ変えた単語を選ぶ\n② 3つの選択肢から正解を選択\n③ 回答後、各単語をタップして発音を確認できる\n④ 全8ラウンド — 微妙な音の違いを聞き分けよう！",
+  "tutorialMinimalPairs": "① スロー／ノーマルボタンで単語を聞く\n② 似ている2つの単語から、聞こえた方をタップ\n③ ハイライトされた音の違いに注目\n④ 最大12ラウンド — 微妙な発音の違いを聞き取る練習！",
+  "tutorialFillInBlank": "① 欠けた音がある単語と意味が表示される\n② スピーカーボタンで単語を聞く\n③ 選択肢から正しいフォニックスパターンをタップ\n④ 全15問 — フォニックスの知識で穴埋めしよう！",
+  "tutorialSoundExplorer": "① 探検したい音を選択\n② 選択肢の数（2/3/4）と問題数（5〜20）を設定\n③ 文字を見て、各スピーカーで音を試聴し、正解に✓をタップ\n④ サウンドクイズの逆：文字を見て音を探そう！"
 }

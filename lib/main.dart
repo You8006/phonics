@@ -5,6 +5,7 @@ import 'package:phonics/services/settings_service.dart';
 import 'package:phonics/services/progress_service.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import 'screens/main_shell.dart';
+import 'screens/language_selection_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -29,21 +30,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('ja'),
-        Locale('en'),
-      ],
-      debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(context),
-      home: const MainShell(),
+    return Consumer<SettingsService>(
+      builder: (context, settings, _) {
+        return MaterialApp(
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: SettingsService.supportedLocales,
+          locale: settings.locale,
+          debugShowCheckedModeBanner: false,
+          theme: buildAppTheme(context),
+          home: settings.hasSelectedLanguage
+              ? const MainShell()
+              : const LanguageSelectionScreen(),
+        );
+      },
     );
   }
 }

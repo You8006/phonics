@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../models/phonics_data.dart';
 import '../services/tts_service.dart';
+import '../services/progress_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/score_app_bar.dart';
 import 'result_screen.dart';
@@ -52,6 +53,7 @@ class GameScreen extends StatefulWidget {
     required this.groupName,
     required this.mode,
     this.maxQuestions,
+    this.consumeReviewOnAttempt = false,
   });
 
   final List<PhonicsItem> items;
@@ -59,6 +61,7 @@ class GameScreen extends StatefulWidget {
   final String groupName;
   final GameMode mode;
   final int? maxQuestions;
+  final bool consumeReviewOnAttempt;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -173,6 +176,9 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
       await ProgressService.recordCorrect(_answer.progressKey);
     } else {
       await ProgressService.recordWrong(_answer.progressKey);
+    }
+    if (widget.consumeReviewOnAttempt) {
+      await ProgressService.consumeReviewPending(_answer.progressKey);
     }
 
     setState(() {
@@ -344,7 +350,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   @override
   void dispose() {
     _animController.dispose();
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 }

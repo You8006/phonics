@@ -1,0 +1,319 @@
+{
+  "@@locale": "hi",
+  "appTitle": "Phonics Sense",
+  "gameSelectTitle": "अभ्यास",
+  "selectGame": "अभ्यास",
+  "selectGameSubtitle": "अभ्यास के लिए गेम चुनें",
+  "beginner": "शुरुआती",
+  "intermediate": "मध्यवर्ती",
+  "advanced": "विकसित",
+  "game2Choice": "2-विकल्प",
+  "gameSprint": "स्प्रिंट",
+  "gameStandard": "मानक",
+  "gameSingleFocus": "एकल फोकस",
+  "gameDigraphs": "डाइग्राफ",
+  "gameDrill": "गहन अभ्यास",
+  "gameIpaQuiz": "IPA क्विज़",
+  "gameIpaQuizDesc": "सुनें और सही IPA चिन्ह चुनें",
+  "gameIpaSprint": "IPA स्प्रिंट",
+  "game4Choice": "4-विकल्प",
+  "gameMarathon": "मैराथन",
+  "practiceLab": "प्रैक्टिस लैब",
+  "backToHome": "होम पर वापस जाएँ",
+  "playAgain": "फिर से खेलें",
+  "score": "अंक",
+  "correct": "सही",
+  "streak": "लगातार रिकॉर्ड",
+  "resultPerfect": "उत्कृष्ट",
+  "resultGreat": "बहुत अच्छा",
+  "resultGood": "ठोस प्रयास",
+  "resultKeep": "अभ्यास करते रहें",
+  "soundToLetterSubtitle": "सुनें और सही अक्षर चुनें",
+  "soundToIpaSubtitle": "सुनें और सही IPA चिन्ह चुनें",
+  "soundToLetterTitle": "ध्वनि खेल",
+  "soundToIpaTitle": "IPA गेम",
+  "play": "आवाज़ बजाएं",
+  "playAgainBtn": "फिर से खेलें",
+  "listenSound": "सुनना",
+  "groupTitle0": "चरण 1: पहली ध्वनियाँ",
+  "groupDesc0": "उदाहरण: sat, pin",
+  "groupTitle1": "चरण 2: उपयोगी व्यंजन",
+  "groupDesc1": "उदाहरण: hen, red",
+  "groupTitle2": "चरण 3: रोजमर्रा के शब्द",
+  "groupDesc2": "उदाहरण: dog, bus",
+  "groupTitle3": "चरण 4: दीर्घ स्वर 1",
+  "groupDesc3": "उदाहरण: rain, boat",
+  "groupTitle4": "चरण 5: दीर्घ स्वर 2",
+  "groupDesc4": "उदाहरण: book, moon",
+  "groupTitle5": "चरण 6: पेचीदा ध्वनियाँ",
+  "groupDesc5": "उदाहरण: ship, thin",
+  "groupTitle6": "चरण 7: अंतिम चरण",
+  "groupDesc6": "उदाहरण: queen, car",
+  "gameNewVariations": "नये बदलाव",
+  "gameBingo": "बिंगो",
+  "gameCapitalMatch": "कैप-लोअर",
+  "gameSoundQuiz": "ध्वनि प्रश्नोत्तरी",
+  "gameSoundQuizDesc": "सुनें और सही पत्र चुनें",
+  "gameBingoDesc": "बिंगो ग्रिड को पूरा करें",
+  "gameCapitalMatchDesc": "अपरकेस और लोअरकेस का मिलान करें",
+  "shortVowels": "लघु स्वर",
+  "basicConsonants": "व्यंजन",
+  "digraphsLabel": "डाइग्राफ",
+  "settingsLabel": "सेटिंग्स",
+  "choicesLabel": "विकल्प",
+  "questionsLabel": "प्रश्न",
+  "gridSizeLabel": "ग्रिड का आकार",
+  "modeLabel": "तरीका",
+  "readingDisplayLabel": "पठन",
+  "readingDisplayIpa": "केवल IPA",
+  "readingDisplayDetail": "विवरण",
+  "selectSoundsHint": "ध्वनियाँ चुनें, फिर प्रारंभ करें",
+  "gameBlending": "सम्मिश्रण",
+  "gameBlendingDesc": "ध्वनियों से शब्द बनाएं",
+  "gameWordChaining": "शब्द श्रृंखला",
+  "gameWordChainingDesc": "एक समय में एक ध्वनि बदलें",
+  "gameMinimalPairs": "सुनना",
+  "gameMinimalPairsDesc": "ध्वनियों में अंतर पहचानें",
+  "gameFillInBlank": "प्रश्नोत्तरी भरें",
+  "gameFillInBlankDesc": "सुनें और छूटी ध्वनि भरें",
+  "gameSoundExplorer": "ध्वनि एक्सप्लोरर",
+  "gameSoundExplorerDesc": "एक पत्र देखें, उसकी ध्वनि ढूंढें",
+  "findThisSound": "इस ध्वनि को खोजें",
+  "listenThenChoose": "सुनो, फिर चुनो",
+  "audioLibrary": "वर्ड लाइब्रेरी",
+  "audioLibraryDesc": "100 जरूरी शब्द सुनें",
+  "lessons": "पाठ",
+  "games": "खेल",
+  "library": "पुस्तकालय",
+  "settings": "सेटिंग्स",
+  "searchWords": "शब्द खोजें...",
+  "allCategories": "सभी",
+  "tapToListen": "उच्चारण सुनने के लिए शब्द टैप करें",
+  "masterSounds": "42 अंग्रेजी ध्वनियाँ सीखें",
+  "phaseLabel": "चरण {phase}",
+  "@phaseLabel": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "srsReview": "SRS पुनरावृत्ति ({count})",
+  "@srsReview": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customizePrefs": "ऐप सेटिंग अपनी पसंद से बदलें",
+  "voiceSettings": "आवाज सेटिंग्स",
+  "changeVoiceType": "आवाज का प्रकार बदलें",
+  "languageSettings": "भाषा सेटिंग्स",
+  "changeAppLanguage": "ऐप भाषा बदलें",
+  "selectLanguage": "भाषा चुने",
+  "about": "के बारे में",
+  "appVersion": "Phonics Sense v1.0.0",
+  "lessonCountLabel": "{count} बार अध्ययन किया",
+  "@lessonCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "learn": "सीखना",
+  "exampleWords": "उदाहरण शब्द",
+  "playSound": "आवाज़ बजाएं",
+  "wordsTab": "शब्द",
+  "phonicsTab": "नादविद्या",
+  "wordLibrary": "वर्ड लाइब्रेरी",
+  "nWords": "{count} शब्द",
+  "@nWords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phonicsSoundDict": "ध्वन्यात्मक ध्वनि शब्दकोश",
+  "nSounds": "{count} ध्वनि",
+  "@nSounds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tapSpellingToSeeWords": "शब्द देखने हेतु वर्तनी टैप करें",
+  "groupLabel": "समूह:",
+  "wordsWithSpelling": "\"{spelling}\" वाले शब्द",
+  "@wordsWithSpelling": {
+    "placeholders": {
+      "spelling": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceLabTitle": "{group} - प्रैक्टिस लैब",
+  "@practiceLabTitle": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "practiceLabTitleDefault": "प्रैक्टिस लैब",
+  "allSoundsMix": "सभी ध्वनियाँ मिश्रण (42)",
+  "practiceAllSounds": "सभी 42 ध्वनियों का यादृच्छिक अभ्यास",
+  "vowelSoundFocus": "स्वर ध्वनि फोकस",
+  "focusOnVowels": "स्वर ध्वनियों पर ध्यान दें",
+  "consonantSoundFocus": "व्यंजन ध्वनि फोकस",
+  "focusOnConsonants": "व्यंजन ध्वनियों पर ध्यान दें",
+  "blendingBuilder": "सम्मिश्रण निर्माता",
+  "buildWordsByArranging": "अक्षर सजाकर शब्द बनाएं",
+  "wordChainingTitle": "शब्द शृंखला",
+  "changeOneSoundNewWord": "एक ध्वनि बदलकर नया शब्द बनाएं",
+  "minimalPairListening": "न्यूनतम जोड़ी सुनना",
+  "distinguishSounds": "मिलती ध्वनियों का फर्क पहचानें",
+  "blendingRound": "सम्मिश्रण {round} / {total}",
+  "@blendingRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "slow": "धीमा",
+  "normal": "सामान्य",
+  "buildWordYouHear": "सुना हुआ शब्द बनाएं",
+  "undo": "पूर्ववत",
+  "reset": "रीसेट करें",
+  "check": "जाँचें",
+  "wordChainingRound": "शब्द शृंखला {round} / {total}",
+  "@wordChainingRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "changeOneSound": "एक ध्वनि बदलें",
+  "minimalPairsRound": "न्यूनतम जोड़े {round} / {total}",
+  "@minimalPairsRound": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "whichWordDoYouHear": "आप कौन सा शब्द सुनते हैं?",
+  "focusOn": "फोकस: {focus}",
+  "@focusOn": {
+    "placeholders": {
+      "focus": {
+        "type": "String"
+      }
+    }
+  },
+  "tapToPlay": "खेलने के लिए टैप करें",
+  "bingoWin": "BINGO",
+  "newGame": "नया खेल",
+  "missCount": "मिस: {count}",
+  "@missCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fillInBlankTitle": "रिक्त स्थान को भरें",
+  "noQuestionsAvailable": "कोई प्रश्न उपलब्ध नहीं है",
+  "chooseCorrectSpelling": "सही स्पेलिंग चुनें",
+  "next": "अगला",
+  "tryAgain": "पुनः प्रयास करें",
+  "selectAtLeastSounds": "कम से कम {count} ध्वनियाँ चुनें",
+  "@selectAtLeastSounds": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playBtn": "खेल",
+  "allLabel": "सभी",
+  "listenAndChoose": "सुनें और चुनें",
+  "lessonComplete": "पाठ पूरा!",
+  "lessonCompleteDesc": "आपने {group} के सभी कार्ड पूरे किए।",
+  "@lessonCompleteDesc": {
+    "placeholders": {
+      "group": {
+        "type": "String"
+      }
+    }
+  },
+  "tryQuiz": "प्रश्नोत्तरी का प्रयास करें",
+  "nextLesson": "अगला पाठ",
+  "lessonDone": "हो गया",
+  "selectVoice": "आवाज चुनें",
+  "voiceFemale": "महिला",
+  "voiceFemaleDesc": "जेनी - गर्म और स्पष्ट",
+  "voiceMale": "पुरुष",
+  "voiceMaleDesc": "एंड्रयू - गहरा और प्राकृतिक",
+  "voiceYoung": "युवा वक्ता",
+  "voiceYoungDesc": "एना - युवा वक्ता",
+  "statsTitle": "सीखने के आँकड़े",
+  "homeGuideTitle": "सीखने की मार्गदर्शिका",
+  "homeGuideGroupInfo": "• हर समूह एक ध्वनि-सेट है (स्वर/व्यंजन/डाइग्राफ)",
+  "homeGuideFlow": "• पहले “सीखना” में सुनें, फिर “खेल” में अभ्यास करें",
+  "homeGuideReview": "• गलत ध्वनियाँ समीक्षा में जुड़ती हैं; नीचे बटन से दोहराएँ",
+  "loginStreakLabel": "लॉगइन स्ट्रीक",
+  "totalGamesLabel": "कुल खेल",
+  "totalLessonsLabel": "पाठ",
+  "todaySessionsLabel": "आज",
+  "daysUnit": "{count} दिन",
+  "@daysUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timesUnit": "{count} बार",
+  "@timesUnit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "resetProgress": "सीखने का डेटा रीसेट करें",
+  "resetProgressDesc": "सभी स्कोर, स्ट्रीक और इतिहास हटाएं",
+  "resetProgressConfirmTitle": "सभी डेटा रीसेट करें?",
+  "resetProgressConfirmBody": "यह सभी सीखने के रिकॉर्ड, स्कोर, स्ट्रीक और गेम इतिहास को स्थायी रूप से हटा देगा। यह क्रिया पूर्ववत नहीं की जा सकती।",
+  "resetProgressConfirmBtn": "रीसेट",
+  "cancelBtn": "रद्द करें",
+  "resetProgressDone": "सीखने का डेटा रीसेट कर दिया गया है।",
+
+  "dontShowAgain": "दोबारा न दिखाएं",
+  "startGame": "शुरू करें",
+  "howToPlay": "कैसे खेलें",
+  "tutorialSoundQuiz": "① अभ्यास करने के लिए ध्वनियाँ चुनें (स्वर, व्यंजन, संयुक्त अक्षर)\n② विकल्पों की संख्या (2/3/4) और प्रश्नों की संख्या (5–20) चुनें\n③ ध्वनि सुनें और सही अक्षर पर टैप करें\n④ तुरंत प्रतिक्रिया: हरा = सही, लाल = गलत",
+  "tutorialIpaQuiz": "① अभ्यास करने के लिए ध्वनियाँ चुनें\n② विकल्पों की संख्या (2/3/4) और प्रश्नों की संख्या (5–20) चुनें\n③ ध्वनि सुनें और सही IPA प्रतीक पर टैप करें\n④ कान को प्रशिक्षित करते हुए ध्वन्यात्मक संकेतन सीखें",
+  "tutorialBingo": "① बिंगो बोर्ड के लिए ध्वनियाँ चुनें\n② ग्रिड का आकार चुनें (3×3 / 4×4 / 5×5)\n③ ध्वनि सुनें और सही सेल पर टैप करें\n④ एक पंक्ति, स्तंभ या विकर्ण पूरा करके जीतें!",
+  "tutorialBlending": "① धीमा या सामान्य बटन से शब्द सुनें\n② सही क्रम में अक्षर टाइलों पर टैप करके स्पेल करें\n③ गलती होने पर Undo या Reset करें\n④ 8 राउंड — अपनी स्पेलिंग और फोनिक्स क्षमता बढ़ाएं!",
+  "tutorialWordChaining": "① वर्तमान शब्द सुनें, फिर एक ध्वनि बदला हुआ शब्द चुनें\n② 3 विकल्पों में से चुनें — केवल एक सही है\n③ उत्तर देने के बाद, हर शब्द पर टैप करके सुन सकते हैं\n④ 8 राउंड — सूक्ष्म अंतर पहचानने की क्षमता बढ़ाएं!",
+  "tutorialMinimalPairs": "① धीमा या सामान्य बटन से एक शब्द सुनें\n② दो समान शब्द दिखाए जाते हैं — जो सुना उस पर टैप करें\n③ हाइलाइट किए गए ध्वनि अंतर पर ध्यान दें\n④ 12 राउंड तक — छोटे अंतर पकड़ने के लिए कान को प्रशिक्षित करें!",
+  "tutorialFillInBlank": "① एक लापता ध्वनि वाला शब्द और उसका अर्थ देखें\n② स्पीकर बटन से शब्द सुनें\n③ विकल्पों में से सही फोनिक्स पैटर्न पर टैप करें\n④ 15 प्रश्न — अपने फोनिक्स ज्ञान से रिक्त स्थान भरें!",
+  "tutorialSoundExplorer": "① खोजने के लिए ध्वनियाँ चुनें\n② विकल्पों की संख्या (2/3/4) और प्रश्नों की संख्या (5–20) चुनें\n③ एक अक्षर देखें — हर स्पीकर पर टैप करके ध्वनि सुनें, फिर सही पर ✓ टैप करें\n④ Sound Quiz का उल्टा: अक्षर देखें, ध्वनि खोजें!"
+}

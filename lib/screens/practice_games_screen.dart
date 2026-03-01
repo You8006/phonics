@@ -4,6 +4,7 @@ import '../models/phonics_data.dart';
 import '../models/sound_group_data.dart';
 import '../models/word_data.dart';
 import '../services/tts_service.dart';
+import '../services/progress_service.dart';
 import '../theme/app_theme.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import 'game_screen.dart';
@@ -227,7 +228,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
 
   @override
   void dispose() {
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 
@@ -533,7 +534,7 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
 
   @override
   void dispose() {
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 
@@ -844,7 +845,7 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
 
   @override
   void dispose() {
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 

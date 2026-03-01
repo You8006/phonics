@@ -201,6 +201,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get modeLabel => 'モード';
 
   @override
+  String get readingDisplayLabel => '読み表示';
+
+  @override
+  String get readingDisplayIpa => 'IPAのみ';
+
+  @override
+  String get readingDisplayDetail => '詳細';
+
+  @override
   String get selectSoundsHint => '音を選択して開始';
 
   @override
@@ -289,14 +298,23 @@ class AppLocalizationsJa extends AppLocalizations {
   String get changeVoiceType => '音声タイプを変更';
 
   @override
+  String get languageSettings => '言語設定';
+
+  @override
+  String get changeAppLanguage => 'アプリの表示言語を変更';
+
+  @override
+  String get selectLanguage => '言語を選択';
+
+  @override
   String get about => 'アプリ情報';
 
   @override
   String get appVersion => 'Phonics Sense v1.0.0';
 
   @override
-  String masteredPercent(int percent) {
-    return '$percent% 習得済み';
+  String lessonCountLabel(int count) {
+    return '$count回学習済み';
   }
 
   @override
@@ -514,6 +532,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get statsTitle => '学習統計';
 
   @override
+  String get homeGuideTitle => '学習ガイド';
+
+  @override
+  String get homeGuideGroupInfo => '・グループは学ぶ音のまとまりです（母音/子音/二重字など）。';
+
+  @override
+  String get homeGuideFlow => '・まず Learn で音を聞き、次に Play で定着させます。';
+
+  @override
+  String get homeGuideReview => '・間違えた音は復習に出るので、下のボタンから繰り返し確認できます。';
+
+  @override
   String get loginStreakLabel => '連続ログイン';
 
   @override
@@ -534,4 +564,67 @@ class AppLocalizationsJa extends AppLocalizations {
   String timesUnit(int count) {
     return '$count回';
   }
+
+  @override
+  String get resetProgress => '学習データのリセット';
+
+  @override
+  String get resetProgressDesc => 'スコア・ストリーク・履歴をすべて削除';
+
+  @override
+  String get resetProgressConfirmTitle => '学習データをリセットしますか？';
+
+  @override
+  String get resetProgressConfirmBody =>
+      'すべての学習記録・スコア・ストリーク・ゲーム履歴が完全に削除されます。この操作は元に戻せません。';
+
+  @override
+  String get resetProgressConfirmBtn => 'リセット';
+
+  @override
+  String get cancelBtn => 'キャンセル';
+
+  @override
+  String get resetProgressDone => '学習データをリセットしました。';
+
+  @override
+  String get dontShowAgain => '次回から表示しない';
+
+  @override
+  String get startGame => 'スタート';
+
+  @override
+  String get howToPlay => '遊び方';
+
+  @override
+  String get tutorialSoundQuiz =>
+      '① 練習したい音を選択（母音・子音・二重字）\n② 選択肢の数（2/3/4）と問題数（5〜20）を設定\n③ 音を聞いて、正しい文字をタップ\n④ 正解は緑、不正解は赤ですぐにフィードバック';
+
+  @override
+  String get tutorialIpaQuiz =>
+      '① 練習したい音を選択\n② 選択肢の数（2/3/4）と問題数（5〜20）を設定\n③ 音を聞いて、正しいIPA記号をタップ\n④ 耳を鍛えながら発音記号を覚えよう';
+
+  @override
+  String get tutorialBingo =>
+      '① ビンゴに使う音を選択\n② グリッドサイズを選択（3×3 / 4×4 / 5×5）\n③ 音を聞いて、正しいマスをタップ\n④ 縦・横・斜めを揃えたらビンゴ達成！';
+
+  @override
+  String get tutorialBlending =>
+      '① スロー／ノーマルボタンで単語を聞く\n② 正しい順番で文字タイルをタップしてスペル\n③ 間違えたらUndoやResetでやり直し可能\n④ 全8ラウンド — スペル力とフォニックス力を鍛えよう！';
+
+  @override
+  String get tutorialWordChaining =>
+      '① 今の単語を聞いて、1音だけ変えた単語を選ぶ\n② 3つの選択肢から正解を選択\n③ 回答後、各単語をタップして発音を確認できる\n④ 全8ラウンド — 微妙な音の違いを聞き分けよう！';
+
+  @override
+  String get tutorialMinimalPairs =>
+      '① スロー／ノーマルボタンで単語を聞く\n② 似ている2つの単語から、聞こえた方をタップ\n③ ハイライトされた音の違いに注目\n④ 最大12ラウンド — 微妙な発音の違いを聞き取る練習！';
+
+  @override
+  String get tutorialFillInBlank =>
+      '① 欠けた音がある単語と意味が表示される\n② スピーカーボタンで単語を聞く\n③ 選択肢から正しいフォニックスパターンをタップ\n④ 全15問 — フォニックスの知識で穴埋めしよう！';
+
+  @override
+  String get tutorialSoundExplorer =>
+      '① 探検したい音を選択\n② 選択肢の数（2/3/4）と問題数（5〜20）を設定\n③ 文字を見て、各スピーカーで音を試聴し、正解に✓をタップ\n④ サウンドクイズの逆：文字を見て音を探そう！';
 }

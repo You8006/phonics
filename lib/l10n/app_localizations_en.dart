@@ -201,6 +201,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modeLabel => 'Mode';
 
   @override
+  String get readingDisplayLabel => 'Reading';
+
+  @override
+  String get readingDisplayIpa => 'IPA only';
+
+  @override
+  String get readingDisplayDetail => 'Detail';
+
+  @override
   String get selectSoundsHint => 'Select sounds, then start';
 
   @override
@@ -289,14 +298,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changeVoiceType => 'Change voice type';
 
   @override
+  String get languageSettings => 'Language Settings';
+
+  @override
+  String get changeAppLanguage => 'Change app display language';
+
+  @override
+  String get selectLanguage => 'Select language';
+
+  @override
   String get about => 'About';
 
   @override
   String get appVersion => 'Phonics Sense v1.0.0';
 
   @override
-  String masteredPercent(int percent) {
-    return '$percent% mastered';
+  String lessonCountLabel(int count) {
+    return 'Studied $count times';
   }
 
   @override
@@ -514,6 +532,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsTitle => 'Learning Stats';
 
   @override
+  String get homeGuideTitle => 'Learning Guide';
+
+  @override
+  String get homeGuideGroupInfo =>
+      '• Groups are sets of sounds to learn (vowels, consonants, digraphs).';
+
+  @override
+  String get homeGuideFlow =>
+      '• Start with Learn to hear sounds, then use Play to reinforce them.';
+
+  @override
+  String get homeGuideReview =>
+      '• Sounds you miss are added to review, and you can revisit them from the button below.';
+
+  @override
   String get loginStreakLabel => 'Login Streak';
 
   @override
@@ -534,4 +567,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String timesUnit(int count) {
     return '$count times';
   }
+
+  @override
+  String get resetProgress => 'Reset Learning Data';
+
+  @override
+  String get resetProgressDesc => 'Delete all scores, streaks, and history';
+
+  @override
+  String get resetProgressConfirmTitle => 'Reset all learning data?';
+
+  @override
+  String get resetProgressConfirmBody =>
+      'This will permanently delete all learning records, scores, streaks, and game history. This action cannot be undone.';
+
+  @override
+  String get resetProgressConfirmBtn => 'Reset';
+
+  @override
+  String get cancelBtn => 'Cancel';
+
+  @override
+  String get resetProgressDone => 'Learning data has been reset.';
+
+  @override
+  String get dontShowAgain => 'Don\'t show again';
+
+  @override
+  String get startGame => 'Start';
+
+  @override
+  String get howToPlay => 'How to Play';
+
+  @override
+  String get tutorialSoundQuiz =>
+      '① Select the sounds you want to practice (vowels, consonants, digraphs)\n② Choose the number of answer choices (2/3/4) and questions (5–20)\n③ Listen to a sound and tap the correct letter\n④ Get instant feedback — green for correct, red for wrong';
+
+  @override
+  String get tutorialIpaQuiz =>
+      '① Select the sounds you want to practice\n② Choose the number of choices (2/3/4) and questions (5–20)\n③ Listen to a sound and tap the matching IPA symbol\n④ A great way to learn phonetic notation while training your ear';
+
+  @override
+  String get tutorialBingo =>
+      '① Select the sounds for your bingo board\n② Choose the grid size (3×3 / 4×4 / 5×5)\n③ Listen to a sound and tap the matching cell on the grid\n④ Complete a row, column, or diagonal to win!';
+
+  @override
+  String get tutorialBlending =>
+      '① Listen to the word using the Slow or Normal button\n② Tap the letter tiles in the correct order to spell it\n③ Use Undo or Reset if you make a mistake\n④ 8 rounds — build your spelling and phonics skills!';
+
+  @override
+  String get tutorialWordChaining =>
+      '① Listen to the current word, then pick the word with one sound changed\n② Choose from 3 options — only one is correct\n③ After answering, tap each word to hear it spoken\n④ 8 rounds of chaining — sharpen your ear for subtle differences!';
+
+  @override
+  String get tutorialMinimalPairs =>
+      '① Listen to a word using the Slow or Normal button\n② Two similar words are shown — tap the one you heard\n③ Focus on the highlighted sound difference\n④ Up to 12 rounds — train your ear to catch tiny differences!';
+
+  @override
+  String get tutorialFillInBlank =>
+      '① See a word with a missing sound and its meaning\n② Listen to the word using the speaker buttons\n③ Tap the correct phonics pattern from the choices\n④ 15 questions — use your phonics knowledge to fill in the gaps!';
+
+  @override
+  String get tutorialSoundExplorer =>
+      '① Select the sounds you want to explore\n② Choose the number of choices (2/3/4) and questions (5–20)\n③ See a letter — tap each speaker to preview sounds, then tap ✓ on the correct one\n④ The reverse of Sound Quiz: see the letter, find the sound!';
 }

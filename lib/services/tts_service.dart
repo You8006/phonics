@@ -4,9 +4,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/phonics_data.dart';
 
-// ProgressService は progress_service.dart に分離済み
-export 'progress_service.dart';
-
 // ═══════════════════════════════════════════
 //  TTS Service
 // ═══════════════════════════════════════════
@@ -25,6 +22,9 @@ class TtsService {
   static VoiceType _voiceType = VoiceType.female;
   static VoiceType get voiceType => _voiceType;
 
+  /// 内部状態のみ変更（SharedPreferences 保存なし — loadSettings 復元時用）
+  static set voiceTypeInternal(VoiceType type) => _voiceType = type;
+
   /// 声を変更して SharedPreferences に保存
   static Future<void> setVoiceType(VoiceType type) async {
     _voiceType = type;
@@ -32,29 +32,20 @@ class TtsService {
     await prefs.setString('phonics_voice_type', type.name);
   }
 
-  /// SharedPreferences から声設定を復元
-  static Future<void> loadVoiceType() async {
-    final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getString('phonics_voice_type');
-    if (saved != null) {
-      _voiceType = VoiceType.values.firstWhere(
-        (v) => v.name == saved,
-        orElse: () => VoiceType.female,
-      );
+  /// 任意の声タイプに対応するオーディオパスのプレフィックスを返す
+  static String _voicePrefixFor(VoiceType type) {
+    switch (type) {
+      case VoiceType.female:
+        return 'audio';
+      case VoiceType.male2:
+        return 'audio/male2';
+      case VoiceType.child:
+        return 'audio/child';
     }
   }
 
-  /// 声タイプに応じたオーディオパスのプレフィックスを返す
-  static String _voicePrefix() {
-    switch (_voiceType) {
-      case VoiceType.female:
-        return 'audio'; // 既存: audio/sounds/, audio/words/
-      case VoiceType.male2:
-        return 'audio/male2'; // audio/male2/sounds/, audio/male2/words/
-      case VoiceType.child:
-        return 'audio/child'; // audio/child/sounds/, audio/child/words/
-    }
-  }
+  /// 現在選択中の声タイプのプレフィックス
+  static String _voicePrefix() => _voicePrefixFor(_voiceType);
 
   /// ファイル名用キーを生成（phonics_data の letter + sound）
   static String _audioKey(PhonicsItem item) {
@@ -148,32 +139,9 @@ class TtsService {
     }
   }
 
-  /// ゲーム結果フィードバック音声を再生（事前生成済みアセット）
-  /// [feedbackKey] は 'excellent', 'well_done', 'solid', 'keep' のいずれか
-  static Future<void> speakFeedback(String feedbackKey) async {
-    final prefix = _voicePrefix();
-    try {
-      await _player.stop();
-      await _player.setVolume(1.0);
-      await _player.play(
-        AssetSource('$prefix/feedback/feedback_$feedbackKey.mp3'),
-      );
-    } catch (e) {
-      debugPrint('No pre-generated feedback audio for $feedbackKey: $e');
-    }
-  }
-
   /// 指定ボイスでサンプルフレーズを再生 (Voice Picker プレビュー用)
   static Future<void> speakSample(VoiceType type) async {
-    String prefix;
-    switch (type) {
-      case VoiceType.female:
-        prefix = 'audio';
-      case VoiceType.male2:
-        prefix = 'audio/male2';
-      case VoiceType.child:
-        prefix = 'audio/child';
-    }
+    final prefix = _voicePrefixFor(type);
     try {
       await _player.stop();
       await _player.setVolume(1.0);
@@ -183,6 +151,13 @@ class TtsService {
     }
   }
 
+  /// 音声のみ停止（SE プレイヤーは止めない）
+  /// ゲーム画面の dispose で使用。ResultScreen の SE を殺さないため。
+  static Future<void> stopSpeech() async {
+    await _player.stop();
+  }
+
+  /// 音声 + SE 全停止
   static Future<void> stop() async {
     await _player.stop();
     await _sePlayer.stop();

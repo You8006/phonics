@@ -30,7 +30,7 @@ class _LearnScreenState extends State<LearnScreen> {
   @override
   void dispose() {
     _page.dispose();
-    TtsService.stop();
+    TtsService.stopSpeech();
     super.dispose();
   }
 
