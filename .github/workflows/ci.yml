@@ -67,6 +67,11 @@ jobs:
       - name: Build Web
         run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
 
+      - name: Copy static pages
+        run: |
+          cp web/privacy.html build/web/privacy.html
+          cp web/support.html build/web/support.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
         with:

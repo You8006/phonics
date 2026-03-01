@@ -1,4 +1,4 @@
-package com.example.phonics
+package com.uedayohei.phonicssense
 
 import io.flutter.embedding.android.FlutterActivity
 
