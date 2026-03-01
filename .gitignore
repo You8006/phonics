@@ -72,3 +72,20 @@ ios/.symlinks/
 
 /.github/agents*
 
+
+# Certificates & signing (secrets)
+certs/
+*.p12
+*.p8
+*.pem
+*.cer
+*.key
+*.csr
+*.mobileprovision
+*.jks
+*.keystore
+
+# Screenshot automation (local tool)
+take_screenshots.py
+.venv/
+__pycache__/
