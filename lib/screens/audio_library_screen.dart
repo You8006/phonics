@@ -121,14 +121,11 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
     );
   }
 
-  Widget _buildWordLibrary() {
-    final l10n = AppLocalizations.of(context)!;
-    final languageCode = Localizations.localeOf(context).languageCode;
-    final settings = context.watch<SettingsService>();
-    final selectedCategory = settings.audioLibrarySelectedCategory;
-    final filteredWords = _filteredWordsForLocale(languageCode, selectedCategory);
-    final ipaOnlyMode = settings.ipaOnlyReadingMode;
-
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // SettingsService の検索クエリとコントローラを同期（build 内の副作用を回避）
+    final settings = context.read<SettingsService>();
     if (_searchController.text != settings.audioLibrarySearchQuery) {
       _searchController.value = TextEditingValue(
         text: settings.audioLibrarySearchQuery,
@@ -138,6 +135,16 @@ class _AudioLibraryScreenState extends State<AudioLibraryScreen> {
       );
       _searchQuery = settings.audioLibrarySearchQuery;
     }
+  }
+
+  Widget _buildWordLibrary() {
+    final l10n = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final settings = context.watch<SettingsService>();
+    final selectedCategory = settings.audioLibrarySelectedCategory;
+    final filteredWords = _filteredWordsForLocale(languageCode, selectedCategory);
+    final ipaOnlyMode = settings.ipaOnlyReadingMode;
+
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [

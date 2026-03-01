@@ -52,34 +52,6 @@ class HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.lg),
           children: [
-            // ── ヒーローバナー ──
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.appTitle,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.onPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.masterSounds,
-                    style: const TextStyle(fontSize: 13, color: Color(0xB3FFFFFF)),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-
             // ── 学習統計 ──
             if (_stats != null)
               _StatsCard(stats: _stats!),
@@ -209,7 +181,7 @@ class HomeScreenState extends State<HomeScreen> {
         builder: (_) => GameScreen(
           items: _dueItems,
           numOptions: 3,
-          groupName: 'SRS Review',
+          groupName: AppLocalizations.of(context)!.srsReviewGroupName,
           mode: GameMode.soundToLetter,
           consumeReviewOnAttempt: true,
         ),

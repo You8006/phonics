@@ -289,6 +289,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get srsReviewGroupName => 'SRS 复习';
+
+  @override
   String get customizePrefs => '自定义应用偏好';
 
   @override

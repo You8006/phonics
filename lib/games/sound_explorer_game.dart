@@ -158,7 +158,6 @@ class _SoundExplorerGameState extends State<SoundExplorerGame> {
   }
 
   void _showResult() {
-    ProgressService.updateStreak();
     ProgressService.recordGameSession(
       gameType: 'soundExplorer',
       score: _score,
@@ -171,6 +170,11 @@ class _SoundExplorerGameState extends State<SoundExplorerGame> {
           score: _score,
           total: _total,
           groupName: 'Sound Explorer',
+          retryBuilder: (_) => SoundExplorerGame(
+            items: widget.items,
+            numOptions: widget.numOptions,
+            maxQuestions: widget.maxQuestions,
+          ),
         ),
       ),
     );

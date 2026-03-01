@@ -289,6 +289,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get srsReviewGroupName => 'Repaso SRS';
+
+  @override
   String get customizePrefs => 'Personaliza tus preferencias';
 
   @override

@@ -12,11 +12,15 @@ class ResultScreen extends StatefulWidget {
     required this.score,
     required this.total,
     required this.groupName,
+    this.retryBuilder,
   });
 
   final int score;
   final int total;
   final String groupName;
+
+  /// 「もう一度プレイ」用。指定されていれば pushReplacement で新ゲームを起動する。
+  final WidgetBuilder? retryBuilder;
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
@@ -421,7 +425,16 @@ class _ResultScreenState extends State<ResultScreen>
         const SizedBox(width: AppSpacing.lg),
         Expanded(
           child: FilledButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () {
+              if (widget.retryBuilder != null) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: widget.retryBuilder!),
+                );
+              } else {
+                Navigator.pop(context, true);
+              }
+            },
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(l10n.playAgainBtn),
@@ -519,6 +532,7 @@ class _ConfettiPainter extends CustomPainter {
 
   final List<_ConfettiParticle> particles;
   final double progress;
+  final Paint _paint = Paint();
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -528,7 +542,7 @@ class _ConfettiPainter extends CustomPainter {
 
       // Fade out towards end
       final opacity = t < 0.7 ? 1.0 : (1.0 - (t - 0.7) / 0.3);
-      final paint = Paint()..color = p.color.withValues(alpha: opacity * 0.85);
+      _paint.color = p.color.withValues(alpha: opacity * 0.85);
 
       // Position: start from top, fall down
       final dx = p.x * size.width +
@@ -540,7 +554,7 @@ class _ConfettiPainter extends CustomPainter {
       canvas.rotate(p.rotation + t * p.rotationSpeed);
 
       if (p.isCircle) {
-        canvas.drawCircle(Offset.zero, p.size / 2, paint);
+        canvas.drawCircle(Offset.zero, p.size / 2, _paint);
       } else {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -551,7 +565,7 @@ class _ConfettiPainter extends CustomPainter {
             ),
             Radius.circular(p.size * 0.15),
           ),
-          paint,
+          _paint,
         );
       }
       canvas.restore();

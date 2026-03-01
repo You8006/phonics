@@ -289,6 +289,9 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get srsReviewGroupName => 'SRS पुनरावृत्ति';
+
+  @override
   String get customizePrefs => 'ऐप सेटिंग अपनी पसंद से बदलें';
 
   @override

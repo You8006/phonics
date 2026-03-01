@@ -106,6 +106,7 @@
       }
     }
   },
+  "srsReviewGroupName": "SRS 复习",
   "customizePrefs": "自定义应用偏好",
   "voiceSettings": "语音设置",
   "changeVoiceType": "更改语音类型",

@@ -9,6 +9,13 @@ import '../models/phonics_data.dart';
 class ProgressService {
   static const _prefix = 'phonics_v2_';
 
+  // ── SharedPreferences キャッシュ ──
+
+  static SharedPreferences? _prefs;
+
+  static Future<SharedPreferences> _getPrefs() async =>
+      _prefs ??= await SharedPreferences.getInstance();
+
   // ── SharedPreferences ヘルパー ──
 
   static String _dayKey(DateTime d) => d.toIso8601String().substring(0, 10);
@@ -24,19 +31,19 @@ class ProgressService {
   }
 
   static Future<Map<String, int>> _loadMap(String key) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final raw = prefs.getString('$_prefix$key');
     if (raw == null) return {};
     return Map<String, int>.from(json.decode(raw) as Map);
   }
 
   static Future<void> _saveMap(String key, Map<String, int> map) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     await prefs.setString('$_prefix$key', json.encode(map));
   }
 
   static Future<Map<String, String>> _loadStringMap(String key) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final raw = prefs.getString('$_prefix$key');
     if (raw == null) return {};
     return Map<String, String>.from(json.decode(raw) as Map);
@@ -44,7 +51,7 @@ class ProgressService {
 
   static Future<void> _saveStringMap(
       String key, Map<String, String> map) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     await prefs.setString('$_prefix$key', json.encode(map));
   }
 
@@ -229,48 +236,13 @@ class ProgressService {
     return scored.take(limit).map((e) => e.item).toList();
   }
 
-  static Future<bool> isGroupUnlocked(int groupId) async {
-    if (groupId == 0) return true;
-    final prev = phonicsGroups[groupId - 1];
-    final mastery = await groupMastery(prev);
-    return mastery >= 0.6;
-  }
-
   static Future<int> totalCorrect() async {
     final map = await _loadMap('correct');
     return map.values.fold<int>(0, (a, b) => a + b);
   }
 
   // ═══════════════════════════════════════════
-  //  3. ストリーク（連続学習日数）
-  // ═══════════════════════════════════════════
-
-  static Future<int> getStreak() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('${_prefix}streak') ?? 0;
-  }
-
-  static Future<void> updateStreak() async {
-    final prefs = await SharedPreferences.getInstance();
-    final today = _dayKey(DateTime.now());
-    final lastDay = prefs.getString('${_prefix}last_day') ?? '';
-    final streak = prefs.getInt('${_prefix}streak') ?? 0;
-
-    if (lastDay == today) return;
-
-    final yesterday = _dayKey(
-      DateTime.now().subtract(const Duration(days: 1)),
-    );
-    if (lastDay == yesterday) {
-      await prefs.setInt('${_prefix}streak', streak + 1);
-    } else {
-      await prefs.setInt('${_prefix}streak', 1);
-    }
-    await prefs.setString('${_prefix}last_day', today);
-  }
-
-  // ═══════════════════════════════════════════
-  //  4. レッスン受講記録
+  //  3. レッスン受講記録
   // ═══════════════════════════════════════════
 
   /// レッスン完了を記録（グループIDごとにカウント）
@@ -280,7 +252,7 @@ class ProgressService {
     await _saveMap('lesson_count', map);
 
     // 完了日時も記録
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final key = '${_prefix}lesson_last_group_$groupId';
     await prefs.setString(key, DateTime.now().toIso8601String());
   }
@@ -333,7 +305,7 @@ class ProgressService {
     await _saveMap('game_daily_$today', dailyMap);
 
     // 総セッション数
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final totalKey = '${_prefix}total_sessions';
     final cur = prefs.getInt(totalKey) ?? 0;
     await prefs.setInt(totalKey, cur + 1);
@@ -346,6 +318,23 @@ class ProgressService {
       if (accuracy > prevBest) {
         bestMap[gameType] = accuracy.toStringAsFixed(3);
         await _saveStringMap('game_best', bestMap);
+      }
+    }
+
+    // 古い日次データを削除（30日以上前）
+    await _cleanupOldDailyData(prefs);
+  }
+
+  /// 30日以上前の game_daily_* キーを削除
+  static Future<void> _cleanupOldDailyData(SharedPreferences prefs) async {
+    final cutoff = DateTime.now().subtract(const Duration(days: 30));
+    final prefix = '${_prefix}game_daily_';
+    final keys = prefs.getKeys().where((k) => k.startsWith(prefix)).toList();
+    for (final key in keys) {
+      final dateStr = key.substring(prefix.length);
+      final date = DateTime.tryParse(dateStr);
+      if (date != null && date.isBefore(cutoff)) {
+        await prefs.remove(key);
       }
     }
   }
@@ -363,7 +352,7 @@ class ProgressService {
 
   /// 総セッション数
   static Future<int> getTotalSessions() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     return prefs.getInt('${_prefix}total_sessions') ?? 0;
   }
 
@@ -386,7 +375,7 @@ class ProgressService {
 
   /// 今日のログインを記録
   static Future<void> recordLogin() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final today = _dayKey(DateTime.now());
 
     // ログイン日のセットを読み込み
@@ -436,7 +425,7 @@ class ProgressService {
 
   /// 現在のログイン連続日数
   static Future<int> getLoginStreak() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final lastLogin = prefs.getString('${_prefix}login_last') ?? '';
     final today = _dayKey(DateTime.now());
     final yesterday = _dayKey(
@@ -452,13 +441,13 @@ class ProgressService {
 
   /// 最長ログイン連続日数
   static Future<int> getMaxLoginStreak() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     return prefs.getInt('${_prefix}login_max_streak') ?? 0;
   }
 
   /// 累計ログイン日数
   static Future<int> getTotalLoginDays() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final raw = prefs.getString('${_prefix}login_days');
     if (raw == null) return 0;
     final days = List<String>.from(json.decode(raw) as List);
@@ -467,7 +456,7 @@ class ProgressService {
 
   /// 直近N日のログイン状況（カレンダー用）
   static Future<Map<String, bool>> getLoginCalendar({int days = 30}) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final raw = prefs.getString('${_prefix}login_days');
     final Set<String> loginDays;
     if (raw != null) {
@@ -488,103 +477,27 @@ class ProgressService {
 
   /// 今日ログイン済みかどうか
   static Future<bool> hasLoggedInToday() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final lastLogin = prefs.getString('${_prefix}login_last') ?? '';
     return lastLogin == _dayKey(DateTime.now());
   }
 
   // ═══════════════════════════════════════════
-  //  7. 14日学習サイクル & ミッション
-  // ═══════════════════════════════════════════
-
-  static Future<int> getFortnightDay() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = '${_prefix}plan_start';
-    final stored = prefs.getString(key);
-
-    DateTime start;
-    if (stored == null) {
-      start = DateTime.now();
-      await prefs.setString(key, _dayKey(start));
-    } else {
-      start = _toDate(stored);
-    }
-
-    final today = DateTime.now();
-    final diff = DateTime(today.year, today.month, today.day)
-        .difference(DateTime(start.year, start.month, start.day))
-        .inDays;
-    return (diff % 14) + 1;
-  }
-
-  static Future<DailyMission> getTodayMission({
-    required int dueCount,
-    required int streak,
-    required double mastery,
-  }) async {
-    final day = await getFortnightDay();
-
-    final tasks = <String>[];
-    if (day <= 3) {
-      tasks.add('Play Sound → Letter twice');
-      tasks.add('Learn for 5 min (review sounds)');
-    } else if (day <= 6) {
-      tasks.add('Play Letter → Sound twice');
-      tasks.add('Play Blending Builder once');
-    } else if (day <= 9) {
-      tasks.add('Play IPA → Letter twice');
-      tasks.add('Play Word Chaining once');
-    } else if (day <= 12) {
-      tasks.add('Play Minimal Pair Listening twice');
-      tasks.add('Play Weakness Drill once');
-    } else {
-      tasks.add('Pick 3 games from any mode');
-      tasks.add('Review missed sounds in Learn');
-    }
-
-    if (dueCount > 0) {
-      tasks.insert(0, 'SRS Review: $dueCount items due');
-    }
-    if (streak < 3) {
-      tasks.add('Keep your streak (finish 1 session today)');
-    }
-
-    final phase = day <= 4
-        ? 'Foundation'
-        : day <= 9
-            ? 'Practice'
-            : 'Challenge';
-
-    final tip = mastery < 0.4
-        ? 'Listen to the sound first, then choose — it helps retention.'
-        : mastery < 0.7
-            ? 'Review weak sounds first to boost accuracy.'
-            : 'Focus on advanced modes (IPA / Minimal Pairs).';
-
-    return DailyMission(
-      day: day,
-      phase: phase,
-      title: 'Day $day / 14 Mission',
-      tasks: tasks,
-      tip: tip,
-    );
-  }
-
-  // ═══════════════════════════════════════════
-  //  8. 統計サマリー（ホーム画面用）
+  //  7. 統計サマリー（ホーム画面用）
   // ═══════════════════════════════════════════
 
   // ═══════════════════════════════════════════
-  //  9. 学習記録リセット
+  //  8. 学習記録リセット
   // ═══════════════════════════════════════════
 
   /// すべての学習記録を削除（設定は保持）
   static Future<void> resetAllProgress() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = await _getPrefs();
     final keys = prefs.getKeys().where((k) => k.startsWith(_prefix)).toList();
     for (final key in keys) {
       await prefs.remove(key);
     }
+    _prefs = null; // キャッシュをクリア
   }
 
   /// ダッシュボード用の統計データを一括取得
@@ -618,22 +531,6 @@ class ProgressService {
 // ═══════════════════════════════════════════
 //  Data Models
 // ═══════════════════════════════════════════
-
-class DailyMission {
-  const DailyMission({
-    required this.day,
-    required this.phase,
-    required this.title,
-    required this.tasks,
-    required this.tip,
-  });
-
-  final int day;
-  final String phase;
-  final String title;
-  final List<String> tasks;
-  final String tip;
-}
 
 class UserStats {
   const UserStats({

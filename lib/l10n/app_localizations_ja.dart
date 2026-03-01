@@ -289,6 +289,9 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get srsReviewGroupName => '復習';
+
+  @override
   String get customizePrefs => 'アプリの設定をカスタマイズ';
 
   @override

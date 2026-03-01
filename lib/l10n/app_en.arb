@@ -108,6 +108,7 @@
   "@phaseLabel": { "placeholders": { "phase": { "type": "String" } } },
   "srsReview": "SRS Review ({count})",
   "@srsReview": { "placeholders": { "count": { "type": "int" } } },
+  "srsReviewGroupName": "SRS Review",
   "customizePrefs": "Customize your app preferences",
   "voiceSettings": "Voice Settings",
   "changeVoiceType": "Change voice type",

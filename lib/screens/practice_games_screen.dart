@@ -43,7 +43,7 @@ class PracticeGamesScreen extends StatelessWidget {
                 builder: (_) => GameScreen(
                   items: allPhonicsItems,
                   numOptions: 4,
-                  groupName: 'All Sounds Mix',
+                  groupName: l10n.allSoundsMix,
                   mode: GameMode.soundToLetter,
                   maxQuestions: 14,
                 ),
@@ -68,7 +68,7 @@ class PracticeGamesScreen extends StatelessWidget {
                     builder: (_) => GameScreen(
                       items: vowelLike,
                       numOptions: 4,
-                      groupName: 'Vowel Focus',
+                      groupName: l10n.vowelSoundFocus,
                       mode: GameMode.soundToLetter,
                       maxQuestions: 12,
                     ),
@@ -95,7 +95,7 @@ class PracticeGamesScreen extends StatelessWidget {
                     builder: (_) => GameScreen(
                       items: consonantLike,
                       numOptions: 4,
-                      groupName: 'Consonant Focus',
+                      groupName: l10n.consonantSoundFocus,
                       mode: GameMode.soundToLetter,
                       maxQuestions: 12,
                     ),
@@ -219,6 +219,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
   bool? _lastCorrect;
   final Set<String> _usedWords = {};
   final List<bool> _chipUsed = [];
+  final List<int> _tappedIndices = [];
 
   @override
   void initState() {
@@ -238,7 +239,6 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
       // 単語がない場合は即終了
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        ProgressService.updateStreak();
         ProgressService.recordGameSession(
           gameType: 'blending',
           score: _score,
@@ -247,7 +247,12 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => ResultScreen(score: _score, total: max(1, _round - 1), groupName: 'Blending Builder'),
+            builder: (_) => ResultScreen(
+              score: _score,
+              total: max(1, _round - 1),
+              groupName: AppLocalizations.of(context)!.blendingBuilder,
+              retryBuilder: (_) => BlendingBuilderGameScreen(cvcWords: widget.cvcWords),
+            ),
           ),
         );
       });
@@ -268,6 +273,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
     _chipUsed
       ..clear()
       ..addAll(List.filled(_pool.length, false));
+    _tappedIndices.clear();
 
     _typed = '';
     _answered = false;
@@ -296,7 +302,6 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
   void _goNext() {
     if (_round >= _totalRounds) {
       if (!mounted) return;
-      ProgressService.updateStreak();
       ProgressService.recordGameSession(
         gameType: 'blending',
         score: _score,
@@ -305,7 +310,12 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => ResultScreen(score: _score, total: _totalRounds, groupName: 'Blending Builder'),
+          builder: (_) => ResultScreen(
+            score: _score,
+            total: _totalRounds,
+            groupName: AppLocalizations.of(context)!.blendingBuilder,
+            retryBuilder: (_) => BlendingBuilderGameScreen(cvcWords: widget.cvcWords),
+          ),
         ),
       );
       return;
@@ -408,6 +418,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                       ? () => setState(() {
                             _typed += ch;
                             _chipUsed[i] = true;
+                            _tappedIndices.add(i);
                           })
                       : null,
                   child: AnimatedContainer(
@@ -442,13 +453,8 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                   child: OutlinedButton(
                     onPressed: _typed.isNotEmpty && !_answered
                         ? () {
-                            final lastChar = _typed[_typed.length - 1];
-                            for (var j = _pool.length - 1; j >= 0; j--) {
-                              if (_pool[j] == lastChar && _chipUsed[j]) {
-                                _chipUsed[j] = false;
-                                break;
-                              }
-                            }
+                            final idx = _tappedIndices.removeLast();
+                            _chipUsed[idx] = false;
                             setState(() => _typed = _typed.substring(0, _typed.length - 1));
                           }
                         : null,
@@ -462,6 +468,7 @@ class _BlendingBuilderGameScreenState extends State<BlendingBuilderGameScreen> {
                         ? () => setState(() {
                               _typed = '';
                               _chipUsed.fillRange(0, _chipUsed.length, false);
+                              _tappedIndices.clear();
                             })
                         : null,
                     child: Text(l10n.reset),
@@ -526,19 +533,35 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
   String? _selected;
   final Set<String> _usedPairs = {};
 
+  /// 1音差ペア（initState で一度だけ計算）
+  late final List<(String, String)> _allPairs;
+  late final List<String> _words;
+
   @override
   void initState() {
     super.initState();
+    _words = widget.cvcWords
+        .where((w) => w.length >= 3 && w.length <= 4)
+        .map((e) => e.toLowerCase())
+        .toSet()
+        .toList();
+    _allPairs = _buildPairList(_words);
     _nextQuestion();
   }
 
-  @override
-  void dispose() {
-    TtsService.stopSpeech();
-    super.dispose();
+  static List<(String, String)> _buildPairList(List<String> words) {
+    final pairs = <(String, String)>[];
+    for (var i = 0; i < words.length; i++) {
+      for (var j = i + 1; j < words.length; j++) {
+        if (_editDist(words[i], words[j]) == 1) {
+          pairs.add((words[i], words[j]));
+        }
+      }
+    }
+    return pairs;
   }
 
-  int _dist(String a, String b) {
+  static int _editDist(String a, String b) {
     if (a.length != b.length) return 99;
     var d = 0;
     for (var i = 0; i < a.length; i++) {
@@ -547,31 +570,24 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
     return d;
   }
 
+  @override
+  void dispose() {
+    TtsService.stopSpeech();
+    super.dispose();
+  }
+
   void _nextQuestion() {
-    final words = widget.cvcWords.where((w) => w.length >= 3 && w.length <= 4).map((e) => e.toLowerCase()).toSet().toList();
-
-    // 1音差ペアを作る
-    final allPairs = <(String, String)>[];
-    for (var i = 0; i < words.length; i++) {
-      for (var j = i + 1; j < words.length; j++) {
-        if (_dist(words[i], words[j]) == 1) {
-          allPairs.add((words[i], words[j]));
-        }
-      }
-    }
-
-    // 未使用ペアを優先
-    final unusedPairs = allPairs.where((p) {
+    // 未使用ペアを優先（キャッシュ済みペアリストを使用）
+    final unusedPairs = _allPairs.where((p) {
       final key = '${p.$1}>${p.$2}';
       final keyRev = '${p.$2}>${p.$1}';
       return !_usedPairs.contains(key) && !_usedPairs.contains(keyRev);
     }).toList();
-    final pairs = unusedPairs.isNotEmpty ? unusedPairs : allPairs;
+    final pairs = unusedPairs.isNotEmpty ? unusedPairs : _allPairs;
 
     if (pairs.isEmpty) {
       // ペアが見つからない場合はゲームを終了
       if (!mounted) return;
-      ProgressService.updateStreak();
       ProgressService.recordGameSession(
         gameType: 'wordChaining',
         score: _score,
@@ -580,7 +596,12 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => ResultScreen(score: _score, total: _round - 1, groupName: 'Word Chaining'),
+          builder: (_) => ResultScreen(
+            score: _score,
+            total: _round - 1,
+            groupName: AppLocalizations.of(context)!.wordChainingTitle,
+            retryBuilder: (_) => WordChainingGameScreen(cvcWords: widget.cvcWords),
+          ),
         ),
       );
       return;
@@ -598,10 +619,9 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
     _usedPairs.add('$_currentWord>$_answer');
 
     // ディストラクタ: 正解ではなく、かつ currentWordから1音差でない単語を選ぶ
-    final distractors = words.where((w) {
+    final distractors = _words.where((w) {
       if (w == _answer || w == _currentWord) return false;
-      // currentWordとの編集距離が1の単語は選択肢から除外
-      return _dist(w, _currentWord) != 1;
+      return _editDist(w, _currentWord) != 1;
     }).toList()..shuffle(_rng);
     _choices = [_answer, ...distractors.take(2)]..shuffle(_rng);
     _answered = false;
@@ -635,7 +655,6 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
   void _goNext() {
     if (_round >= _totalRounds) {
       if (!mounted) return;
-      ProgressService.updateStreak();
       ProgressService.recordGameSession(
         gameType: 'wordChaining',
         score: _score,
@@ -644,7 +663,12 @@ class _WordChainingGameScreenState extends State<WordChainingGameScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => ResultScreen(score: _score, total: _totalRounds, groupName: 'Word Chaining'),
+          builder: (_) => ResultScreen(
+            score: _score,
+            total: _totalRounds,
+            groupName: AppLocalizations.of(context)!.wordChainingTitle,
+            retryBuilder: (_) => WordChainingGameScreen(cvcWords: widget.cvcWords),
+          ),
         ),
       );
       return;
@@ -852,10 +876,11 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
   void _nextQuestion() {
     // 重複しないように未出題のペアを選ぶ
     if (_usedIndices.length >= minimalPairs.length) _usedIndices.clear();
-    int idx;
-    do {
-      idx = _rng.nextInt(minimalPairs.length);
-    } while (_usedIndices.contains(idx));
+    // シャッフル方式で無限ループを回避
+    final available = List.generate(minimalPairs.length, (i) => i)
+      ..removeWhere((i) => _usedIndices.contains(i))
+      ..shuffle(_rng);
+    final idx = available.first;
     _usedIndices.add(idx);
     _pair = minimalPairs[idx];
     _target = _rng.nextBool() ? _pair.a : _pair.b;
@@ -886,7 +911,6 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
 
     if (_round >= _totalRounds) {
       if (!mounted) return;
-      ProgressService.updateStreak();
       ProgressService.recordGameSession(
         gameType: 'minimalPairs',
         score: _score,
@@ -895,7 +919,12 @@ class _MinimalPairsGameScreenState extends State<MinimalPairsGameScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => ResultScreen(score: _score, total: _totalRounds, groupName: 'Minimal Pairs'),
+          builder: (_) => ResultScreen(
+            score: _score,
+            total: _totalRounds,
+            groupName: AppLocalizations.of(context)!.minimalPairListening,
+            retryBuilder: (_) => const MinimalPairsGameScreen(),
+          ),
         ),
       );
       return;
@@ -1036,7 +1065,7 @@ class _PlayButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: compact ? 14 : 16,
-          vertical: compact ? 8 : 10,
+          vertical: compact ? 12 : 12,
         ),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.08),

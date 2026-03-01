@@ -108,6 +108,7 @@
   "@phaseLabel": { "placeholders": { "phase": { "type": "String" } } },
   "srsReview": "復習 ({count})",
   "@srsReview": { "placeholders": { "count": { "type": "int" } } },
+  "srsReviewGroupName": "復習",
   "customizePrefs": "アプリの設定をカスタマイズ",
   "voiceSettings": "音声設定",
   "changeVoiceType": "音声タイプを変更",

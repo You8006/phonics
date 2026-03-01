@@ -39,13 +39,14 @@ class _LearnScreenState extends State<LearnScreen> {
   List<Widget> _buildRelatedWords(PhonicsItem item) {
     final words = _relatedWords(item);
     if (words.isEmpty) return [];
+    final lang = Localizations.localeOf(context).languageCode;
 
     String meaning(String key) {
       final wi = wordLibrary.cast<WordItem?>().firstWhere(
             (w) => w!.word.toLowerCase() == key,
             orElse: () => null,
           );
-      return wi?.meaning ?? '';
+      return wi?.meaningFor(lang) ?? '';
     }
 
     return [

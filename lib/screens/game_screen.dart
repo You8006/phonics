@@ -101,6 +101,14 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     }
     _total = _queue.length;
     _buildChoices();
+    _autoPlay();
+  }
+
+  /// 問題表示後に自動で音声を再生
+  void _autoPlay() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !_answered) _playSound();
+    });
   }
 
   PhonicsItem get _answer => _queue[_current];
@@ -206,7 +214,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   void _next() {
     _waitingForNext = false;
     if (_current + 1 >= _total) {
-      ProgressService.updateStreak();
       ProgressService.recordGameSession(
         gameType: widget.mode == GameMode.soundToLetter ? 'soundQuiz' : 'ipaQuiz',
         score: _score,
@@ -219,6 +226,14 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
             score: _score,
             total: _total,
             groupName: widget.groupName,
+            retryBuilder: (_) => GameScreen(
+              items: widget.items,
+              numOptions: widget.numOptions,
+              groupName: widget.groupName,
+              mode: widget.mode,
+              maxQuestions: widget.maxQuestions,
+              consumeReviewOnAttempt: widget.consumeReviewOnAttempt,
+            ),
           ),
         ),
       );
@@ -228,6 +243,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
       _current++;
       _buildChoices();
     });
+    _autoPlay();
   }
 
   @override

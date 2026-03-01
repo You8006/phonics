@@ -106,6 +106,7 @@
       }
     }
   },
+  "srsReviewGroupName": "Revisão SRS",
   "customizePrefs": "Personalize suas preferências",
   "voiceSettings": "Configurações de voz",
   "changeVoiceType": "Alterar tipo de voz",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:phonics/l10n/app_localizations.dart';
 import '../services/tts_service.dart';
@@ -31,24 +32,82 @@ class _MainShellState extends State<MainShell> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
-        actions: [
-          IconButton(
-            icon: Icon(
-              voiceIcon(TtsService.voiceType),
-              color: AppColors.textSecondary,
-              size: 22,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [AppColors.primary, Color(0xFFFF6B6B)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Center(
+                child: Text(
+                  'P',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                    height: 1,
+                  ),
+                ),
+              ),
             ),
-            tooltip: 'Voice',
-            onPressed: () => showVoicePicker(context, () {
-              if (mounted) setState(() {});
-            }),
+            const SizedBox(width: 10),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Phonics',
+                    style: GoogleFonts.nunito(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' Sense',
+                    style: GoogleFonts.nunito(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.primary,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceDim,
+              borderRadius: BorderRadius.circular(AppRadius.sm),
+            ),
+            child: IconButton(
+              icon: Icon(
+                voiceIcon(TtsService.voiceType),
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
+              tooltip: 'Voice',
+              onPressed: () => showVoicePicker(context, () {
+                if (mounted) setState(() {});
+              }),
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+              padding: EdgeInsets.zero,
+            ),
           ),
-          const SizedBox(width: 4),
         ],
       ),
       body: IndexedStack(index: _currentIndex, children: _pages),

@@ -128,7 +128,6 @@ class _FillInBlankGameState extends State<FillInBlankGame>
   }
 
   void _showResult() {
-    ProgressService.updateStreak();
     ProgressService.recordGameSession(
       gameType: 'fillInBlank',
       score: _correctCount,
@@ -141,6 +140,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
           score: _correctCount,
           total: _questions.length,
           groupName: 'Fill in Blank',
+          retryBuilder: (_) => const FillInBlankGame(),
         ),
       ),
     );
@@ -187,7 +187,7 @@ class _FillInBlankGameState extends State<FillInBlankGame>
                     children: [
                       // Meaning hint
                       Text(
-                        _q.wordItem.meaning,
+                        _q.wordItem.meaningFor(Localizations.localeOf(context).languageCode),
                         style: AppTextStyle.label.copyWith(color: AppColors.textTertiary),
                       ),
                       const SizedBox(height: 12),

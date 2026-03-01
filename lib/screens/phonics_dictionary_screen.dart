@@ -68,6 +68,12 @@ class _PhonicsDictionaryScreenState extends State<PhonicsDictionaryScreen> {
   }
 
   @override
+  void dispose() {
+    TtsService.stopSpeech();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final sections = soundGroupSections;
@@ -237,9 +243,9 @@ class _SoundGroupCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Text(
-                  'Group:',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.groupLabel,
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                     color: AppColors.onPrimary,
@@ -526,7 +532,7 @@ class _SpellingWordList extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      word.meaning,
+                      word.meaningFor(Localizations.localeOf(context).languageCode),
                       style: TextStyle(
                         fontSize: 11,
                         color: AppColors.textTertiary,

@@ -316,7 +316,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
               onTap: () => _toggleAll(items),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: allSelected ? color : AppColors.surfaceDim,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
@@ -345,7 +345,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 width: 50,
-                height: 44,
+                height: 48,
                 decoration: BoxDecoration(
                   color: sel ? color : AppColors.surfaceDim,
                   borderRadius: BorderRadius.circular(AppRadius.sm),

@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +12,27 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // グローバルエラーハンドラ
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    debugPrint('FlutterError: ${details.exceptionAsString()}');
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('PlatformError: $error\n$stack');
+    return true;
+  };
+
   final settingsService = SettingsService();
-  await settingsService.loadSettings();
-  await ProgressService.recordLogin();
+  try {
+    await settingsService.loadSettings();
+  } catch (e) {
+    debugPrint('Settings load error (non-fatal): $e');
+  }
+  try {
+    await ProgressService.recordLogin();
+  } catch (e) {
+    debugPrint('Login record error (non-fatal): $e');
+  }
 
   runApp(
     MultiProvider(

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 /// 1つのフォニックス音（文字と発音の対応）
 class PhonicsItem {
   const PhonicsItem(
@@ -188,9 +190,12 @@ const phonicsGroups = <PhonicsGroup>[
   ),
 ];
 
-/// 全グループの全アイテムを1リストで返す
+/// 全グループの全アイテムを1リストで返す（キャッシュ済み・不変）
+List<PhonicsItem>? _allPhonicsItemsCache;
+
 List<PhonicsItem> get allPhonicsItems =>
-    [...phonicsGroups.expand((g) => g.items), ..._extraItems];
+    _allPhonicsItemsCache ??= UnmodifiableListView(
+        [...phonicsGroups.expand((g) => g.items), ..._extraItems]);
 
 /// 最小ペア（1音だけ違う単語）
 class MinimalPair {

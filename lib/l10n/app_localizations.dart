@@ -658,6 +658,12 @@ abstract class AppLocalizations {
   /// **'SRS Review ({count})'**
   String srsReview(int count);
 
+  /// No description provided for @srsReviewGroupName.
+  ///
+  /// In en, this message translates to:
+  /// **'SRS Review'**
+  String get srsReviewGroupName;
+
   /// No description provided for @customizePrefs.
   ///
   /// In en, this message translates to:

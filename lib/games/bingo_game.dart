@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:phonics/l10n/app_localizations.dart';
@@ -29,6 +30,7 @@ class _BingoGameState extends State<BingoGame> {
   final Set<int> _markedIndices = {};
   bool _bingo = false;
   int _wrongCount = 0;
+  Timer? _bingoTimer;
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _BingoGameState extends State<BingoGame> {
 
   @override
   void dispose() {
+    _bingoTimer?.cancel();
     TtsService.stopSpeech();
     super.dispose();
   }
@@ -178,14 +181,13 @@ class _BingoGameState extends State<BingoGame> {
     // No playCorrect here — already played in _onCellTap
     final score = _markedIndices.length;
     final total = _markedIndices.length + _wrongCount;
-    ProgressService.updateStreak();
     ProgressService.recordGameSession(
       gameType: 'bingo',
       score: score,
       total: total,
     );
     // BINGO! バナーを一瞬見せてから ResultScreen へ遷移
-    Future.delayed(const Duration(milliseconds: 800), () {
+    _bingoTimer = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -194,6 +196,10 @@ class _BingoGameState extends State<BingoGame> {
             score: score,
             total: total,
             groupName: 'Bingo',
+            retryBuilder: (_) => BingoGame(
+              items: widget.items,
+              gridSize: widget.gridSize,
+            ),
           ),
         ),
       );
