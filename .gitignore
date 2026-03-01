@@ -68,3 +68,7 @@ Desktop.ini
 *.ipa
 ios/Pods/
 ios/.symlinks/
+
+
+/.github/agents*
+
