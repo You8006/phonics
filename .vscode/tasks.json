@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "agent:oneshot",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".github/agents/scripts/run-one-shot.ps1"
+      ],
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -48,8 +48,10 @@ class _ResultScreenState extends State<ResultScreen>
   /// 結果に応じた効果音＋フィードバック音声を同時再生
   Future<void> _speakFeedback() async {
     if (!mounted) return;
-    // SE（_sePlayer）とフィードバック音声（_player）を同時に鳴らす
-    TtsService.playScoreResult(passed: _accuracy >= 0.8);
+    // オーディオ競合を避けるため、SE -> フィードバック音声の順で再生
+    await TtsService.playScoreResult(passed: _accuracy >= 0.8);
+    await Future.delayed(const Duration(milliseconds: 220));
+    if (!mounted) return;
     await TtsService.speakFeedback(_feedbackKey);
   }
 
